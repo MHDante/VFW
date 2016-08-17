@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Vexe.Runtime.Types;
 
 namespace VFWExamples
 {
 #if UNITY_EDITOR
+
 	public static class BSOMenuItem
 	{
 		[UnityEditor.MenuItem("Tools/Vexe/Examples/Create BSO Asset")]
@@ -13,6 +14,7 @@ namespace VFWExamples
 			UnityEditor.AssetDatabase.CreateAsset(ex, "Assets/BSO.asset");
 		}
 	}
+
 #endif
 
 	public class BSOExample : BaseScriptableObject
@@ -27,7 +29,7 @@ namespace VFWExamples
 		public Vector3 Target;
 
 		[Show]
-		void method()
+		private void method()
 		{
 			Debug.Log("method");
 		}

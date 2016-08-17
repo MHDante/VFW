@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
@@ -48,19 +48,19 @@ namespace Vexe.Editor.GUIs
 
 		public int IntSlider(GUIContent content, int value, int leftValue, int rightValue, Layout option)
 		{
-			return Mathf.RoundToInt(FloatSlider(content, (float)value, (float)leftValue, (float)rightValue, option));
+			return Mathf.RoundToInt(FloatSlider(content, (float) value, (float) leftValue, (float) rightValue, option));
 		}
 
-        public void MinMaxSlider(ref float minValue, ref float maxValue, float minLimit, float maxLimit)
-        {
-            MinMaxSlider(string.Empty, ref minValue, ref maxValue, minLimit, maxLimit);
-        }
+		public void MinMaxSlider(ref float minValue, ref float maxValue, float minLimit, float maxLimit)
+		{
+			MinMaxSlider(string.Empty, ref minValue, ref maxValue, minLimit, maxLimit);
+		}
 
-        public void MinMaxSlider(string label, ref float minValue, ref float maxValue, float minLimit, float maxLimit)
-        {
-            MinMaxSlider(GetContent(label), ref minValue, ref maxValue, minLimit, maxLimit, Layout.None);
-        }
+		public void MinMaxSlider(string label, ref float minValue, ref float maxValue, float minLimit, float maxLimit)
+		{
+			MinMaxSlider(GetContent(label), ref minValue, ref maxValue, minLimit, maxLimit, Layout.None);
+		}
 
-        public abstract void MinMaxSlider(GUIContent content, ref float minValue, ref float maxValue, float minLimit, float maxLimit, Layout option);
+		public abstract void MinMaxSlider(GUIContent content, ref float minValue, ref float maxValue, float minLimit, float maxLimit, Layout option);
 	}
 }

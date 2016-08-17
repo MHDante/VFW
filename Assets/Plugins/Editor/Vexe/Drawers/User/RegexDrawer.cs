@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.Drawers

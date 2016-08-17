@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Vexe.Runtime.Types
 {
@@ -75,5 +75,5 @@ namespace Vexe.Runtime.Types
 			: this(name, -1, explicitMembers)
 		{
 		}
-    }
+	}
 }

@@ -19,10 +19,10 @@ namespace Vexe.Editor.Drawers
 					@setTarget: name =>
 					{
 						if (names[currentIndex] != name)
-                        { 
+						{
 							memberValue = name.ParseEnum(memberType);
-                            member.Write();
-                        }
+							member.Write();
+						}
 					},
 					@getValueName: name => name,
 					@title: memberTypeName + "s"

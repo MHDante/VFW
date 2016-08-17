@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
-using Vexe.Editor;
 using Vexe.Editor.Helpers;
 using Vexe.Runtime.Extensions;
 
@@ -9,14 +8,13 @@ namespace Vexe.Editor
 	public enum MiniButtonStyle { Left, Mid, Right, ModLeft, ModMid, ModRight }
 }
 
-
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
 		public bool Button(string text)
 		{
-			return Button(text, (Layout)null);
+			return Button(text, (Layout) null);
 		}
 
 		public bool Button(string text, GUIStyle style)
@@ -30,9 +28,9 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public bool Button(string text, string tooltip, Layout layout)
-        {
-            return Button(text, tooltip, GUIStyles.Button, layout);
-        }
+		{
+			return Button(text, tooltip, GUIStyles.Button, layout);
+		}
 
 		public bool Button(string text, Layout option)
 		{

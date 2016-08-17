@@ -15,6 +15,7 @@ namespace Vexe.Editor.GUIs
 
 		public float safeHeight { get { return height.HasValue ? height.Value : 0f; } }
 		public float safeWidth { get { return width.HasValue ? width.Value : 0f; } }
+
 		public Rect rect
 		{
 			get
@@ -43,7 +44,7 @@ namespace Vexe.Editor.GUIs
 			vSpacing = BaseGUI.GetVSpacing(data.type);
 			hSpacing = BaseGUI.GetHSpacing(data.type);
 
-			width  = null;
+			width = null;
 			height = null;
 		}
 
@@ -57,23 +58,23 @@ namespace Vexe.Editor.GUIs
 					width = UnityEditor.EditorGUIUtility.labelWidth - 5f;
 				else if (option.width.HasValue)
 					width = option.width.Value;
-                else if (option.fit)
-                {
-                    var size = data.style.CalcSize(data.content);
-                    width = size.x;
-                }
+				else if (option.fit)
+				{
+					var size = data.style.CalcSize(data.content);
+					width = size.x;
+				}
 				height = option.height.HasValue ? option.height.Value : BaseGUI.GetHeight(data.type);
 			}
 			else
 			{
-				width  = null;
+				width = null;
 				height = BaseGUI.GetHeight(data.type);
 			}
 		}
 
-        public override string ToString()
-        {
-            return data.type.ToString();
-        }
+		public override string ToString()
+		{
+			return data.type.ToString();
+		}
 	}
 }

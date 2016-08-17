@@ -1,6 +1,5 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
-using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.Types
 {

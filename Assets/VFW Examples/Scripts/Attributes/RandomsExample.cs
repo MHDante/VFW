@@ -1,4 +1,5 @@
-﻿using Vexe.Runtime.Types;
+using Vexe.Runtime.Types;
+
 namespace VFWExamples
 {
 	public class RandomsExample : BaseBehaviour

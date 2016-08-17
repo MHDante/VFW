@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Vexe.Runtime.Types;
 
@@ -24,10 +24,10 @@ namespace VFWExamples
 		[PerItem, BetterV3]
 		public List<Vector3> BetterVectors;
 
-        // Here, we're telling PerItem that we only want to apply 'Tags' per item
-        // leaving Comment to be applied on the array itself
-        // this gives you more control how you want your attributes to be applied
-        // for more details see CollectionElementExample.cs
+		// Here, we're telling PerItem that we only want to apply 'Tags' per item
+		// leaving Comment to be applied on the array itself
+		// this gives you more control how you want your attributes to be applied
+		// for more details see CollectionElementExample.cs
 		[PerItem("Tags"), Tags, Comment("This comment is applied on the array")]
 		public string[] Tags;
 	}

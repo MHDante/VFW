@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+using System;
 using System.Text.RegularExpressions;
 using Vexe.Editor.GUIs;
 using Vexe.Editor.Helpers;
@@ -13,109 +12,110 @@ namespace Vexe.Editor.Drawers
 	{
 		private readonly string[] _values;
 		private readonly Action<string> _setValue;
-        private readonly int _id;
+		private readonly int _id;
 		private string _pattern, _previousPattern, _previousMatch;
-        private bool _toggle;
-        private EditorRecord _prefs;
+		private bool _toggle;
+		private EditorRecord _prefs;
 
-        static Func<string, Regex> _getRegex;
-        static Regex GetRegex(string pattern)
-        {
-            if (_getRegex == null)
-                _getRegex = new Func<string, Regex>(x => new Regex(x, RegexOptions.IgnoreCase)).Memoize();
-            return _getRegex(pattern);
-        }
+		private static Func<string, Regex> _getRegex;
+
+		private static Regex GetRegex(string pattern)
+		{
+			if (_getRegex == null)
+				_getRegex = new Func<string, Regex>(x => new Regex(x, RegexOptions.IgnoreCase)).Memoize();
+			return _getRegex(pattern);
+		}
 
 		public TextFilter(string[] values, int id, EditorRecord prefs, Action<string> setValue)
-            : this(values, id, true, prefs, setValue)
-        {
-        }
+			: this(values, id, true, prefs, setValue)
+		{
+		}
 
 		public TextFilter(string[] values, int id, bool initialToggle, EditorRecord prefs, Action<string> setValue)
 		{
-            _prefs = prefs;
+			_prefs = prefs;
 			_values = values;
 			_setValue = setValue;
-            _id = RuntimeHelper.CombineHashCodes(id, "Filter");
+			_id = RuntimeHelper.CombineHashCodes(id, "Filter");
 
-            _toggle = _prefs.ValueOrDefault(this._id, initialToggle);
-            _pattern = _prefs.ValueOrDefault(this._id, "");
+			_toggle = _prefs.ValueOrDefault(this._id, initialToggle);
+			_pattern = _prefs.ValueOrDefault(this._id, "");
 		}
 
-        public bool Field(BaseGUI gui, float width)
-        {
-            bool changed = false;
-            if (_toggle)
-            {
-                gui.BeginCheck();
-                var text = gui.Text(_pattern, Layout.sWidth(width));
-                if (gui.HasChanged())
-                {
-                    changed = true;
-                    _pattern = text;
-                    _prefs[_id] = _pattern;
-                }
-            }
-            else gui.Text("", Layout.sWidth(5f));
+		public bool Field(BaseGUI gui, float width)
+		{
+			bool changed = false;
+			if (_toggle)
+			{
+				gui.BeginCheck();
+				var text = gui.Text(_pattern, Layout.sWidth(width));
+				if (gui.HasChanged())
+				{
+					changed = true;
+					_pattern = text;
+					_prefs[_id] = _pattern;
+				}
+			}
+			else gui.Text("", Layout.sWidth(5f));
 
-            var buttonStr = _toggle ? "<" : ">";
-            if (gui.Button(buttonStr, GUIStyles.None, Layout.sWidth(13f)))
-            {
-                _toggle = !_toggle;
-                _prefs[_id] = _toggle;
-                gui.RequestResetIfRabbit();
-            }
-            return changed;
-        }
+			var buttonStr = _toggle ? "<" : ">";
+			if (gui.Button(buttonStr, GUIStyles.None, Layout.sWidth(13f)))
+			{
+				_toggle = !_toggle;
+				_prefs[_id] = _toggle;
+				gui.RequestResetIfRabbit();
+			}
+			return changed;
+		}
 
-        public bool IsMatch(string input)
-        {
-            return IsMatch(input, _pattern);
-        }
+		public bool IsMatch(string input)
+		{
+			return IsMatch(input, _pattern);
+		}
 
-        public bool IsMatch(string input, string pattern)
-        {
-            try
-            {
-                var regex = GetRegex(pattern);
-                var result = regex.IsMatch(input);
-                return result;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		public bool IsMatch(string input, string pattern)
+		{
+			try
+			{
+				var regex = GetRegex(pattern);
+				var result = regex.IsMatch(input);
+				return result;
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
-        public string Process(string pattern)
-        {
-            if (_previousPattern == pattern)
-                return _previousMatch;
+		public string Process(string pattern)
+		{
+			if (_previousPattern == pattern)
+				return _previousMatch;
 
-            _previousPattern = pattern;
+			_previousPattern = pattern;
 
-            string match = null;
-            for (int i = 0; i < _values.Length; i++)
-            {
-                var x = _values[i];
-                if (IsMatch(x, pattern))
-                {
-                    match = x;
-                    _previousMatch = x;
-                    break;
-                }
-            }
-            return match ?? pattern;
-        }
+			string match = null;
+			for (int i = 0; i < _values.Length; i++)
+			{
+				var x = _values[i];
+				if (IsMatch(x, pattern))
+				{
+					match = x;
+					_previousMatch = x;
+					break;
+				}
+			}
+			return match ?? pattern;
+		}
 
 		public void OnGUI(BaseGUI gui)
-        {
-            OnGUI(gui, 50f);
-        }
-
-        public void OnGUI(BaseGUI gui, float width)
 		{
-            bool changed = Field(gui, width);
+			OnGUI(gui, 50f);
+		}
+
+		public void OnGUI(BaseGUI gui, float width)
+		{
+			bool changed = Field(gui, width);
 			if (changed)
 			{
 				string match = Process(_pattern);
@@ -123,7 +123,7 @@ namespace Vexe.Editor.Drawers
 					_setValue(match);
 			}
 		}
-    }
+	}
 
 	public abstract class FilterDrawer<T, A> : CompositeDrawer<T, A> where A : CompositeAttribute
 	{
@@ -140,6 +140,7 @@ namespace Vexe.Editor.Drawers
 		}
 
 		protected abstract string[] GetValues();
+
 		protected abstract void SetValue(string value);
 	}
 

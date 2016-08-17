@@ -43,6 +43,7 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public abstract void Layout(Rect start);
+
 		public abstract Layout Space(float pxl);
 	}
 }

@@ -1,17 +1,17 @@
-﻿namespace Vexe.Runtime.Extensions
+namespace Vexe.Runtime.Extensions
 {
 	public static class SystemObjectExtensions
 	{
 		public static bool GenericEquals<T>(this T x, T y)
 		{
 			if (typeof(T).IsValueType)
-                return x.Equals(y);
+				return x.Equals(y);
 			else
 			{
 				if (x != null)
-                    return x.Equals(y);
+					return x.Equals(y);
 				else if (y != null)
-                    return y.Equals(x);
+					return y.Equals(x);
 			}
 
 			return true;

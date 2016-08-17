@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Vexe.Runtime.Types
 {
@@ -12,7 +12,7 @@ namespace Vexe.Runtime.Types
 
 		public iSliderAttribute(int left, int right)
 		{
-			this.left  = left;
+			this.left = left;
 			this.right = right;
 		}
 	}
@@ -27,7 +27,7 @@ namespace Vexe.Runtime.Types
 
 		public fSliderAttribute(float left, float right)
 		{
-			this.left  = left;
+			this.left = left;
 			this.right = right;
 		}
 	}
@@ -36,14 +36,14 @@ namespace Vexe.Runtime.Types
 	/// Apply to a Vector2 to store the min/max range in it
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class vSliderAttribute : DrawnAttribute
-    {
-        public readonly float left, right;
+	public class vSliderAttribute : DrawnAttribute
+	{
+		public readonly float left, right;
 
-        public vSliderAttribute(float left, float right)
-        {
-            this.left = left;
-            this.right = right;
-        }
-    }
+		public vSliderAttribute(float left, float right)
+		{
+			this.left = left;
+			this.right = right;
+		}
+	}
 }

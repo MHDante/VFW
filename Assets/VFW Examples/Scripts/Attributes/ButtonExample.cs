@@ -4,44 +4,49 @@ using Vexe.Runtime.Types;
 
 namespace VFWExamples
 {
-    public class ButtonExample : BaseBehaviour
-    {
-        [Button("Log1", "1", "toolbarButton"),
-         Button(0, "Log2", "2"),
-         Button(1, "Log3", "3", "miniButtonRight")]
-        public int value;
+	public class ButtonExample : BaseBehaviour
+	{
+		[Button("Log1", "1", "toolbarButton"),
+		 Button(0, "Log2", "2"),
+		 Button(1, "Log3", "3", "miniButtonRight")]
+		public int value;
 
-        [PerItem, Button("Add")]
-        public Component[] array;
+		[PerItem, Button("Add")]
+		public Component[] array;
 
-        public ButtonStruct test;
+		public ButtonStruct test;
 
-        void Log1(int x) { Log("1: " + x); }
-        void Log2(int x) { Log("2: " + x); }
-        void Log3(int x) { Log("3: " + x); }
+		private void Log1(int x)
+		{ Log("1: " + x); }
 
-        void Add(Component element, int index)
-        {
-            array[index] = GetComponent<Transform>();
-        }
+		private void Log2(int x)
+		{ Log("2: " + x); }
 
-        [Serializable]
-        public struct ButtonStruct
-        {
-            [PerItem, Button("LogGO", "Log"),
-                      Button("ResetPos", "Reset")]
-            public GameObject[] gos;
+		private void Log3(int x)
+		{ Log("3: " + x); }
 
-            void ResetPos(GameObject go)
-            {
-                if (go != null)
-                    go.transform.position = Vector3.zero;
-            }
+		private void Add(Component element, int index)
+		{
+			array[index] = GetComponent<Transform>();
+		}
 
-            void LogGO(GameObject go)
-            {
-                sLog(go);
-            }
-        }
-    }
+		[Serializable]
+		public struct ButtonStruct
+		{
+			[PerItem, Button("LogGO", "Log"),
+					  Button("ResetPos", "Reset")]
+			public GameObject[] gos;
+
+			private void ResetPos(GameObject go)
+			{
+				if (go != null)
+					go.transform.position = Vector3.zero;
+			}
+
+			private void LogGO(GameObject go)
+			{
+				sLog(go);
+			}
+		}
+	}
 }

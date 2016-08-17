@@ -1,9 +1,9 @@
-﻿using Vexe.Runtime.Extensions;
+using Vexe.Runtime.Extensions;
 using Vexe.Runtime.Helpers;
 
 namespace Vexe.Runtime.Types
 {
-	public struct ItemTuple<T1, T2> 
+	public struct ItemTuple<T1, T2>
 	{
 		public readonly T1 Item1;
 		public readonly T2 Item2;
@@ -12,7 +12,7 @@ namespace Vexe.Runtime.Types
 		{
 			this.Item1 = item1;
 			this.Item2 = item2;
-		} 
+		}
 
 		public override string ToString()
 		{
@@ -29,7 +29,7 @@ namespace Vexe.Runtime.Types
 			if (obj == null || obj.GetType() != typeof(ItemTuple<T1, T2>))
 				return false;
 
-			return (ItemTuple<T1, T2>)obj == this;
+			return (ItemTuple<T1, T2>) obj == this;
 		}
 
 		public static bool operator ==(ItemTuple<T1, T2> left, ItemTuple<T1, T2> right)

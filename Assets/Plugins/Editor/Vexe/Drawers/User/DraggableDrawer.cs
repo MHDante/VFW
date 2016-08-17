@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Vexe.Editor.Helpers;
+using UnityEngine;
 using Vexe.Runtime.Types;
 using UnityObject = UnityEngine.Object;
 

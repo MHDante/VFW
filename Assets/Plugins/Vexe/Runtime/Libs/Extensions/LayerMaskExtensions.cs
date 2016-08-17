@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Vexe.Runtime.Extensions
@@ -17,10 +17,10 @@ namespace Vexe.Runtime.Extensions
 
 		public static LayerMask NamesToMask(string[] layerNames)
 		{
-			var ret = (LayerMask)0;
+			var ret = (LayerMask) 0;
 			for (int i = 0; i < layerNames.Length; i++)
 			{
-                var name = layerNames[i];
+				var name = layerNames[i];
 				ret |= (1 << LayerMask.NameToLayer(name));
 			}
 			return ret;
@@ -28,10 +28,10 @@ namespace Vexe.Runtime.Extensions
 
 		public static LayerMask LayerNumbersToMask(int[] layerNumbers)
 		{
-			LayerMask ret = (LayerMask)0;
+			LayerMask ret = (LayerMask) 0;
 			for (int i = 0; i < layerNumbers.Length; i++)
 			{
-                var layer = layerNumbers[i];
+				var layer = layerNumbers[i];
 				ret |= (1 << layer);
 			}
 			return ret;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Vexe.Runtime.Types
 {
@@ -11,17 +11,17 @@ namespace Vexe.Runtime.Types
 		/// <summary>
 		/// How many space pixels to insert at the top
 		/// </summary>
-		public float Top    { get; set; }
+		public float Top { get; set; }
 
 		/// <summary>
 		/// How many space pixels to insert from the left
 		/// </summary>
-		public float Left   { get; set; }
+		public float Left { get; set; }
 
 		/// <summary>
 		/// How many space pixels to insert from the right
 		/// </summary>
-		public float Right  { get; set; }
+		public float Right { get; set; }
 
 		/// <summary>
 		/// How many space pixels to insert at the bottom

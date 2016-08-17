@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Vexe.Editor
@@ -14,24 +14,24 @@ namespace Vexe.Editor
 		public float? maxHeight;
 		public float? maxWidth;
 
-        /// <summary>
-        /// Match control width to better fit its content
-        /// </summary>
-        public bool fit;
+		/// <summary>
+		/// Match control width to better fit its content
+		/// </summary>
+		public bool fit;
 
-        /// <summary>
-        /// Return Auto layout (null) to tell the layout system to figure out the control dimensions itself
-        /// </summary>
-        public static readonly Layout Auto = null;
+		/// <summary>
+		/// Return Auto layout (null) to tell the layout system to figure out the control dimensions itself
+		/// </summary>
+		public static readonly Layout Auto = null;
 
 		public static readonly Layout None;
 
 		public static List<GUILayoutOption> SharedGLOptions;
 
-        public static Layout sFit()
-        {
-            return new Layout().Fit();
-        }
+		public static Layout sFit()
+		{
+			return new Layout().Fit();
+		}
 
 		public static Layout sWidth(float w)
 		{
@@ -45,21 +45,21 @@ namespace Vexe.Editor
 
 		public static Layout sExpandWidth(bool exp = true)
 		{
-            Debug.LogWarning("ExpandWidth is not implemented, it won't do anything. Returning Auto layout");
-            return Auto;
+			Debug.LogWarning("ExpandWidth is not implemented, it won't do anything. Returning Auto layout");
+			return Auto;
 		}
 
 		public static Layout sExpandHeight(bool exp = true)
 		{
-            Debug.LogWarning("ExpandHeight is not implemented, it won't do anything. Returning Auto layout");
-            return Auto;
+			Debug.LogWarning("ExpandHeight is not implemented, it won't do anything. Returning Auto layout");
+			return Auto;
 		}
 
-        public Layout Fit()
-        {
-            fit = true;
-            return this;
-        }
+		public Layout Fit()
+		{
+			fit = true;
+			return this;
+		}
 
 		public Layout Width(float w)
 		{
@@ -75,14 +75,14 @@ namespace Vexe.Editor
 
 		public Layout ExpandWidth(bool exp = true)
 		{
-            Debug.LogWarning("ExpandWidth is not implemented, it won't do anything. Returning Auto layout");
+			Debug.LogWarning("ExpandWidth is not implemented, it won't do anything. Returning Auto layout");
 			return Auto;
 		}
 
 		public Layout ExpandHeight(bool exp = true)
 		{
-            Debug.LogWarning("ExpandHeight is not implemented, it won't do anything. Returning Auto layout");
-            return Auto;
+			Debug.LogWarning("ExpandHeight is not implemented, it won't do anything. Returning Auto layout");
+			return Auto;
 		}
 
 		static Layout()
@@ -91,7 +91,7 @@ namespace Vexe.Editor
 			None = new Layout();
 		}
 
-		public static implicit operator GUILayoutOption[](Layout option)
+		public static implicit operator GUILayoutOption[] (Layout option)
 		{
 			return option == null ? null : option.ToGLOptions();
 		}

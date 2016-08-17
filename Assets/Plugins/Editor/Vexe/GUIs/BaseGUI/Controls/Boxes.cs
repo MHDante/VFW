@@ -1,6 +1,5 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
-
 
 namespace Vexe.Editor.GUIs
 {

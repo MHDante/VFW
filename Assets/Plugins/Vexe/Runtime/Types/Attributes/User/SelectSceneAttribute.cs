@@ -1,4 +1,4 @@
-﻿namespace Vexe.Runtime.Types
+namespace Vexe.Runtime.Types
 {
 	/// <summary>
 	/// Annotate strings with this to display a selection button on the right

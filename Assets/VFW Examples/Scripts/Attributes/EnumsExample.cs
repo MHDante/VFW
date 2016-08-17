@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using Vexe.Runtime.Types;
 
@@ -20,8 +20,8 @@ namespace VFWExamples
 		[Flags]
 		public enum Permissions
 		{
-			Read    = 1 << 0, // 0001
-			Write   = 1 << 1, // 0010
+			Read = 1 << 0, // 0001
+			Write = 1 << 1, // 0010
 			Execute = 1 << 2, // 0100
 
 			/*

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Vexe.Runtime.Types
 {
@@ -21,7 +21,7 @@ namespace Vexe.Runtime.Types
 		}
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Annotate an int with this attribute to constrain it to a max value
 	/// so it won't go above that value
 	/// </summary>

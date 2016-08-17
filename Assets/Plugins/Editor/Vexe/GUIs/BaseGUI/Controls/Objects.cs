@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using UnityEngine;
-using Vexe.Editor.Helpers;
 using UnityObject = UnityEngine.Object;
 
 namespace Vexe.Editor.GUIs
@@ -69,15 +68,15 @@ namespace Vexe.Editor.GUIs
 			return Object(label, value, type, null);
 		}
 
-        public UnityObject Object(UnityObject value, Layout option)
-        {
-            return Object(string.Empty, value, option);
-        }
+		public UnityObject Object(UnityObject value, Layout option)
+		{
+			return Object(string.Empty, value, option);
+		}
 
-        public UnityObject Object(string label, UnityObject value, Layout option)
-        {
-            return Object(label, value, typeof(UnityObject), option);
-        }
+		public UnityObject Object(string label, UnityObject value, Layout option)
+		{
+			return Object(label, value, typeof(UnityObject), option);
+		}
 
 		public UnityObject Object(string label, UnityObject value, Type type, Layout option)
 		{

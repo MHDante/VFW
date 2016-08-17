@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,9 +20,9 @@ namespace Vexe.Editor.Windows
 
 		static SelectionWindow()
 		{
-			IndentWidth     = 15f;
+			IndentWidth = 15f;
 			BackgroundStyle = GUIHelper.DarkGreyStyleDuo.SecondStyle;
-			TabColor        = GUIHelper.LightBlueColorDuo.SecondColor;
+			TabColor = GUIHelper.LightBlueColorDuo.SecondColor;
 		}
 
 		private bool close;
@@ -59,7 +59,7 @@ namespace Vexe.Editor.Windows
 				for (int i = 0; i < tabs.Length; i++)
 				{
 					var tab = tabs[i];
-					using (gui.ColorBlock(tab == currentTab ? TabColor : (Color?)null))
+					using (gui.ColorBlock(tab == currentTab ? TabColor : (Color?) null))
 					{
 						if (gui.Button(tab.title, EditorStyles.toolbarButton))
 						{
@@ -71,7 +71,7 @@ namespace Vexe.Editor.Windows
 				}
 				gui.FlexibleSpace();
 			}
-			
+
 			gui.Space(3f);
 			//GUI.SetNextControlName("SearchBox");
 			search = gui.ToolbarSearch(search);
@@ -132,8 +132,8 @@ namespace Vexe.Editor.Windows
 
 	public abstract class Tab
 	{
-		public string title            { set; get; }
-		public BaseGUI gui             { get; set; }
+		public string title { set; get; }
+		public BaseGUI gui { get; set; }
 		public GUIStyle selectionStyle { get; set; }
 
 		public virtual void Refresh()
@@ -157,13 +157,13 @@ namespace Vexe.Editor.Windows
 
 		public Tab(Func<T[]> getValues, Func<T> getCurrent, Action<T> setTarget, Func<T, string> getValueName, Func<T, StyleDuo> getStyleDuo, string title)
 		{
-			this.getValues    = getValues;
-			this.setTarget    = setTarget;
+			this.getValues = getValues;
+			this.setTarget = setTarget;
 			this.getValueName = getValueName;
-			this.getCurrent   = getCurrent;
-			this.getStyleDuo  = getStyleDuo ?? (x => GUIHelper.DarkGreyStyleDuo);
-			this.title        = title;
-			defaultValue      = (T)typeof(T).GetDefaultValue();
+			this.getCurrent = getCurrent;
+			this.getStyleDuo = getStyleDuo ?? (x => GUIHelper.DarkGreyStyleDuo);
+			this.title = title;
+			defaultValue = (T) typeof(T).GetDefaultValue();
 		}
 
 		public Tab(Func<T[]> getValues, Func<T> getCurrent, Action<T> setTarget, Func<T, string> getValueName, string title)
@@ -198,9 +198,9 @@ namespace Vexe.Editor.Windows
 
 			for (int i = 0; i < filteredValues.Count; i++)
 			{
-				var value      = filteredValues[i];
+				var value = filteredValues[i];
 				var isSelected = value.GenericEquals(getCurrent());
-				var nextStyle  = getStyleDuo(value).NextStyle;
+				var nextStyle = getStyleDuo(value).NextStyle;
 
 				OnValueGUI(value, getValueName(value), width, isSelected, nextStyle,
 					isSelected ? EditorStyles.whiteBoldLabel : EditorStyles.whiteLabel);

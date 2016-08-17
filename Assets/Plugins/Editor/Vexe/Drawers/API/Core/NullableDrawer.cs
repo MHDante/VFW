@@ -1,4 +1,4 @@
-﻿using Vexe.Editor.Types;
+using Vexe.Editor.Types;
 using Vexe.Runtime.Extensions;
 
 namespace Vexe.Editor.Drawers
@@ -10,21 +10,21 @@ namespace Vexe.Editor.Drawers
 		protected override void Initialize()
 		{
 			nullableMember = EditorMember.WrapGetSet(
-				@get          : member.Get,
-				@set          : member.Set,
-				@rawTarget    : member.RawTarget,
-				@unityTarget  : unityTarget,
-				@dataType     : typeof(T),
-				@name         : displayText,
-				@id           : id,
-                @attributes   : attributes
+				@get: member.Get,
+				@set: member.Set,
+				@rawTarget: member.RawTarget,
+				@unityTarget: unityTarget,
+				@dataType: typeof(T),
+				@name: displayText,
+				@id: id,
+				@attributes: attributes
 			);
 		}
 
 		public override void OnGUI()
 		{
 			if (!memberValue.HasValue)
-				memberValue = (T)typeof(T).GetDefaultValue();
+				memberValue = (T) typeof(T).GetDefaultValue();
 
 			MemberField(nullableMember);
 		}

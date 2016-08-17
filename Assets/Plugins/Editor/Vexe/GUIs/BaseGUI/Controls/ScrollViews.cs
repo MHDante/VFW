@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Vexe.Editor.GUIs
@@ -16,7 +16,7 @@ namespace Vexe.Editor.GUIs
 
 			public ScrollViewBlock Begin(ref Vector2 pos)
 			{
-				return Begin(ref pos, (Layout)null);
+				return Begin(ref pos, (Layout) null);
 			}
 
 			public ScrollViewBlock Begin(ref Vector2 pos, Layout option)
@@ -57,6 +57,7 @@ namespace Vexe.Editor.GUIs
 		}
 
 		protected abstract void BeginScrollView(ref Vector2 pos, bool alwaysShowHorizontal, bool alwaysShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, GUIStyle background, Layout option);
+
 		protected abstract void EndScrollView();
 	}
 }

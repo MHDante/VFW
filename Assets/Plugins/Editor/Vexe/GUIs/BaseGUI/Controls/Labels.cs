@@ -1,6 +1,5 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
-
 
 namespace Vexe.Editor.GUIs
 {
@@ -55,7 +54,7 @@ namespace Vexe.Editor.GUIs
 
 		public void Label(string text)
 		{
-			Label(text, (Layout)null);
+			Label(text, (Layout) null);
 		}
 
 		public void Label(string text, Layout option)
@@ -74,9 +73,9 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public void Label(GUIContent content, GUIStyle style)
-        {
-            Label(content, style, null);
-        }
+		{
+			Label(content, style, null);
+		}
 
 		public abstract void Label(GUIContent content, GUIStyle style, Layout option);
 	}

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
+using System;
 
 namespace Vexe.Runtime.Types
 {
@@ -22,25 +20,25 @@ namespace Vexe.Runtime.Types
 		/// </summary>
 		public bool CaseSensitive;
 
-        /// <summary>
-        /// Use a text field dropdown/popup? (same one used setting up Mecanim's conditions)
-        /// </summary>
-        public bool TextField;
+		/// <summary>
+		/// Use a text field dropdown/popup? (same one used setting up Mecanim's conditions)
+		/// </summary>
+		public bool TextField;
 
-        /// <summary>
-        /// Take the last entry in a path string? e.g. One/Two/Three -> Three
-        /// </summary>
-        public bool TakeLastPathItem;
+		/// <summary>
+		/// Take the last entry in a path string? e.g. One/Two/Three -> Three
+		/// </summary>
+		public bool TakeLastPathItem;
 
-        /// <summary>
-        /// Hide update 'U' button?
-        /// </summary>
-        public bool HideUpdate;
+		/// <summary>
+		/// Hide update 'U' button?
+		/// </summary>
+		public bool HideUpdate;
 
-        /// <summary>
-        /// Show a search text box to filter values?
-        /// </summary>
-        public bool Filter;
+		/// <summary>
+		/// Show a search text box to filter values?
+		/// </summary>
+		public bool Filter;
 
 		/// <summary>
 		/// The popup values

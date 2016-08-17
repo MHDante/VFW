@@ -1,4 +1,4 @@
-﻿using Vexe.Runtime.Types;
+using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.Drawers
 {
@@ -8,14 +8,17 @@ namespace Vexe.Editor.Drawers
 		{
 			gui.Space(attribute.Top);
 		}
+
 		public override void OnLowerGUI()
 		{
 			gui.Space(attribute.Bottom);
 		}
+
 		public override void OnRightGUI()
 		{
 			gui.Space(attribute.Right);
 		}
+
 		public override void OnLeftGUI()
 		{
 			gui.Space(attribute.Left);

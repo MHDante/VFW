@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Vexe.Runtime.Types;
 
 namespace VFWExamples
@@ -31,6 +31,7 @@ namespace VFWExamples
 		{
 			print("TestMethod1");
 		}
+
 		[Show]
 		private void TestMethod2()
 		{
@@ -55,26 +56,26 @@ namespace VFWExamples
 	 * A: It's a logical way of combining members (fields, properties and methods) together in one group in the inspector
 	 *		You can use filters to customly add members to a category
 	 *		You can filter by DataType, MemberType, Pattern, Grouping and ExplicitMembers
-	 * 
+	 *
 	 * Q: I didn't define a "Fields", "Properties" nor "Methods" categories, where did they come from?
 	 * A: When you inherit BetterBehaviour, you automatically get 4 non-exclusive categories:
 	 *		a) "Fields": For all visible fields
 	 *		b) "Properties": For all visible properties
 	 *		c) "Methods" For all visible methods
 	 *		d) "Debug" For any member whose name start with "dbg"
-	 *		
+	 *
 	 * Q: What defines a visible member?
 	 * A:	a) Fields: A visible field is defined as a field that's either public or non public annotated with Serialize whose type is supported by Unity's serialization system
 	 *		b) Property: Any property annotated with [Show] regardless of access modifier
 	 *		c) Method: Any method annotated with [Show] regardless of access modifier
-	 *		
+	 *
 	 * Q: What is an exclusive category?
 	 * A: By default a category is exlusive unless the Exclusive flag is set to false
 	 *		When a category is exclusive its members won't be included in other categories even if they're defined in them
 	 *		So for ex, "Fields" is non exclusive, for ex "ExclusiveInts" is an exclusive category for ints starting with "ex"
 	 *		all ints included in "ExclusiveInts" won't be available for the "Fields" category.
 	 *		Change the definition of "ExclusiveInts" to be non exclusive to have its members visible in other categories who require them
-	 *		
+	 *
 	 * Q: How is a category definition resolved?
 	 * A: Like you've probably seen, there's many ways you could filter and categorize your fields
 	 *		If you don't specify a "Grouping" - then the results of all the filter/resolver will get intersected to get the final result
@@ -86,10 +87,10 @@ namespace VFWExamples
 	 *		The final result:					All fields whose data type is string, and whose name start with the word "test"
 	 *		If you specify SetOp.Union for your Grouping, the final result would be different, basically combine the results and pick the distinct members
 	 *		So the result of a union would be:	All fields and all members whose data type is string and all members whose name start with "test"
-	 *		
+	 *
 	 * Q: What is the order of resolution? (resolving categories)
 	 * A: Exclusive ones come first, then the non exclusive come after
-	 * 
+	 *
 	 * Q: Can you talk a bit about how are things defined above?
 	 * A: Sure:
 	 *		1- We already talked about "Fields", "Properties" and "Methods"
@@ -110,7 +111,7 @@ namespace VFWExamples
 	 *			d) Uses explicit member adding by name
 	 *		6- Fields/Custom:
 	 *			Doesn't specify anything - instead members include themselves by using CategoryMember
-	 *	
+	 *
 	 * Q: Looking at the results in the inspector, some things are different from what you described,
 	 *		for ex you said the "Unite" should contain all visible properties, but it doesn't, it only has "floatProp2" what about "floatProp1" and "CustomProp"?
 	 *		And where's "exInt1" in "Explicit"?

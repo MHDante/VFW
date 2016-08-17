@@ -1,12 +1,7 @@
 //#define dbg
 
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Vexe.Runtime.Extensions;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using System;
 
 namespace Vexe.Editor.GUIs
 {
@@ -14,7 +9,7 @@ namespace Vexe.Editor.GUIs
 
 	public class HorizontalBlock : GUIBlock
 	{
-		static List<int> nonDefIndicies = new List<int>();
+		private static List<int> nonDefIndicies = new List<int>();
 
 		public override void Layout(Rect start)
 		{
@@ -24,10 +19,10 @@ namespace Vexe.Editor.GUIs
 
 			int totalControls = controls.Count;
 			if (totalControls == 0)
-            { 
-                height = width = 0;
+			{
+				height = width = 0;
 				return;
-            }
+			}
 
 			var margin = data.style.margin;
 

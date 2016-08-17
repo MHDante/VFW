@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -32,6 +32,7 @@ namespace Vexe.Editor.Helpers
 		{
 			return GUILayoutUtility.GetLastRect();
 		}
+
 		#endregion
 
 		public static class Folds
@@ -45,6 +46,7 @@ namespace Vexe.Editor.Helpers
 		/* <<< Custom action fields >>> */
 		#region
 		private static Func<bool> IsLMBMouseDown = EventsHelper.IsLMBMouseDown;
+
 		public static void CustomActionField(Rect fieldRect, Action action, bool showCursorPredicate, bool clickPredicate, MouseCursor cursor)
 		{
 			if (showCursorPredicate)
@@ -55,50 +57,62 @@ namespace Vexe.Editor.Helpers
 					action();
 			}
 		}
+
 		public static void CustomActionField(Action action, bool showCursorPredicate, bool clickPredicate, MouseCursor cursor)
 		{
 			CustomActionField(GetLastRect(), action, showCursorPredicate, clickPredicate, cursor);
 		}
+
 		public static void SelectField(UnityObject obj, MouseCursor cursor = MouseCursor.Link)
 		{
 			SelectField(GetLastRect(), obj, cursor);
 		}
+
 		public static void SelectField(Rect fieldRect, UnityObject obj, MouseCursor cursor = MouseCursor.Link)
 		{
 			SelectField(fieldRect, obj, IsLMBMouseDown(), cursor);
 		}
+
 		public static void SelectField(Rect fieldRect, UnityObject obj, bool clickPredicate, MouseCursor cursor = MouseCursor.Link)
 		{
 			CustomActionField(fieldRect, () => EditorHelper.SelectObject(obj), obj != null, clickPredicate, cursor);
 		}
+
 		public static void SelectField(UnityObject obj, bool clickPredicate, MouseCursor cursor = MouseCursor.Link)
 		{
 			CustomActionField(() => EditorHelper.SelectObject(obj), obj != null, clickPredicate, cursor);
 		}
+
 		public static void PingField(UnityObject obj, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			PingField(GetLastRect(), obj, cursor);
 		}
+
 		public static void PingField(Rect fieldRect, UnityObject obj, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			PingField(fieldRect, obj, obj != null, IsLMBMouseDown(), cursor);
 		}
+
 		public static void PingField(Rect fieldRect, UnityObject obj, bool showPredicate, bool clickPredicate, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			CustomActionField(fieldRect, () => EditorHelper.PingObject(obj), showPredicate, clickPredicate, cursor);
 		}
+
 		public static void PingField(Rect fieldRect, UnityObject obj, bool showPredicate, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			PingField(fieldRect, obj, showPredicate, IsLMBMouseDown(), cursor);
 		}
+
 		public static void PingField(UnityObject obj, bool showPredicate, bool clickPredicate, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			PingField(GetLastRect(), obj, showPredicate, clickPredicate, cursor);
 		}
+
 		public static void PingField(UnityObject obj, bool showPredicate, MouseCursor cursor = MouseCursor.Zoom)
 		{
 			PingField(obj, showPredicate, IsLMBMouseDown(), cursor);
 		}
+
 		#endregion
 
 		/* <<< GUIStyles >>> */
@@ -106,6 +120,7 @@ namespace Vexe.Editor.Helpers
 		private static GUIStyle refreshButtonStyle;
 		private static GUIStyle selectedStyle;
 		private static GUIStyle selectionButtonStyle;
+
 		public static GUIStyle RefreshButtonStyle
 		{
 			get
@@ -123,6 +138,7 @@ namespace Vexe.Editor.Helpers
 				return refreshButtonStyle;
 			}
 		}
+
 		public static GUIStyle SelectedStyle
 		{
 			get
@@ -148,6 +164,7 @@ namespace Vexe.Editor.Helpers
 				return selectedStyle;
 			}
 		}
+
 		public static GUIStyle SelectionButtonStyle
 		{
 			get
@@ -164,10 +181,12 @@ namespace Vexe.Editor.Helpers
 				return selectionButtonStyle;
 			}
 		}
+
 		public static GUIStyle CreateLabel(int fontSize)
 		{
 			return CreateLabel(fontSize, Vector2.zero);
 		}
+
 		public static GUIStyle CreateLabel(int fontSize, Vector2 contentOffset, TextAnchor alignment = TextAnchor.MiddleLeft, FontStyle fontStyle = FontStyle.Bold)
 		{
 			return new GUIStyle(GUI.skin.label)
@@ -178,6 +197,7 @@ namespace Vexe.Editor.Helpers
 				fontStyle = fontStyle
 			};
 		}
+
 		public static GUIStyle GetStyle(MiniButtonStyle style)
 		{
 			switch (style)
@@ -190,6 +210,7 @@ namespace Vexe.Editor.Helpers
 				default: return EditorStyles.miniButtonMid;
 			}
 		}
+
 		private static GUIStyle GetModButtonStyle(string name, ref GUIStyle style)
 		{
 			if (style == null)
@@ -201,10 +222,12 @@ namespace Vexe.Editor.Helpers
 				};
 			return style;
 		}
+
 		private static GUIStyle modButtonLeft;
 		private static GUIStyle modButtonMid;
 		private static GUIStyle modButtonRight;
 		private static GUIStyle foldoutStyle;
+
 		public static GUIStyle FoldoutStyle
 		{
 			get
@@ -220,9 +243,11 @@ namespace Vexe.Editor.Helpers
 				return foldoutStyle;
 			}
 		}
+
 		public static GUIStyle ModButtonLeft { get { return GetModButtonStyle("miniButtonLeft", ref modButtonLeft); } }
 		public static GUIStyle ModButtonMid { get { return GetModButtonStyle("miniButtonMid", ref modButtonMid); } }
 		public static GUIStyle ModButtonRight { get { return GetModButtonStyle("miniButtonRight", ref modButtonRight); } }
+
 		public static void DestroyStyleTexture(GUIStyle style)
 		{
 			UnityObject.DestroyImmediate(style.normal.background);
@@ -248,11 +273,13 @@ namespace Vexe.Editor.Helpers
 		public static ColorDuo YellowColorDuo { get { return GetColorDuo(ref yellowColorDuo, "F7FF69", "FBFFAD"); } }
 		public static ColorDuo OrangeColorDuo { get { return GetColorDuo(ref orangeColorDuo, "FFCC99", "FF9933"); } }
 		public static ColorDuo PinkColorDuo { get { return GetColorDuo(ref pinkColorDuo, "FFADFA", "FFC9FB"); } }
+
 		private static ColorDuo GetColorDuo(ref ColorDuo cd, string c1, string c2)
 		{
 			if (cd == null) cd = new ColorDuo(RuntimeHelper.HexToColor(c1), RuntimeHelper.HexToColor(c2));
 			return cd;
 		}
+
 		#endregion
 
 		/* <<< StyleDuos >>> */
@@ -269,6 +296,7 @@ namespace Vexe.Editor.Helpers
 		public static StyleDuo DarkBlueStyleDuo { get { return GetStyleDuo(ref darkBlueStyleDuo, DarkBlueColorDuo); } }
 		public static StyleDuo LightGreyStyleDuo { get { return GetStyleDuo(ref lightGreyStyleDuo, LightGreyColorDuo); } }
 		public static StyleDuo DarkGreyStyleDuo { get { return GetStyleDuo(ref darkGreyStyleDuo, DarkGreyColorDuo); } }
+
 		private static StyleDuo GetStyleDuo(ref StyleDuo style, ColorDuo cd)
 		{
 			// it seems that re-creating the textures if they've been destroyed will still cause some strange leaks
@@ -276,12 +304,14 @@ namespace Vexe.Editor.Helpers
 			if (style == null || style.TexturesHaveBeenDestroyed) style = new StyleDuo(cd);
 			return style;
 		}
+
 		#endregion
 		#endregion
 
 		// Reflection
 		#region
-		private static MethodCaller<object, object>  _toolbarSearchField_GL;
+		private static MethodCaller<object, object> _toolbarSearchField_GL;
+
 		public static MethodCaller<object, object> ToolbarSearchField_GL
 		{
 			get
@@ -291,7 +321,8 @@ namespace Vexe.Editor.Helpers
 			}
 		}
 
-		private static MethodCaller<object, object>  _toolbarSearchField;
+		private static MethodCaller<object, object> _toolbarSearchField;
+
 		public static MethodCaller<object, object> ToolbarSearchField
 		{
 			get
@@ -302,6 +333,7 @@ namespace Vexe.Editor.Helpers
 		}
 
 		private static GUIStyle _selectionRect;
+
 		public static GUIStyle SelectionRect
 		{
 			get
@@ -312,12 +344,14 @@ namespace Vexe.Editor.Helpers
 		}
 
 		private static MethodInfo _getHelpIcon;
+
 		public static Texture2D GetHelpIcon(MessageType type)
 		{
-            if (_getHelpIcon == null)
-			    _getHelpIcon = typeof(EditorGUIUtility).GetMethod("GetHelpIcon", BF.Static | BF.NonPublic | BF.Public);
+			if (_getHelpIcon == null)
+				_getHelpIcon = typeof(EditorGUIUtility).GetMethod("GetHelpIcon", BF.Static | BF.NonPublic | BF.Public);
 			return _getHelpIcon.Invoke(null, new object[] { type }) as Texture2D;
 		}
+
 		#endregion
 	}
 }
@@ -348,7 +382,7 @@ namespace Vexe.Editor
 		public Color FirstColor { get { return colors[0]; } set { colors[0] = value; } }
 		public Color SecondColor { get { return colors[1]; } set { colors[1] = value; } }
 		public Color NextColor { get { Increment(); return colors[index]; } }
-		
+
 		public void Reset()
 		{
 			index = 0;
@@ -366,7 +400,9 @@ namespace Vexe.Editor
 
 		private bool texturesHaveBeenDestroyed;
 
-		public StyleDuo(ColorDuo cd) : this(cd.FirstColor, cd.SecondColor) { }
+		public StyleDuo(ColorDuo cd) : this(cd.FirstColor, cd.SecondColor)
+		{
+		}
 
 		public StyleDuo(Color c1, Color c2) : base(c1, c2)
 		{
@@ -402,4 +438,3 @@ namespace Vexe.Editor
 		}
 	}
 }
-

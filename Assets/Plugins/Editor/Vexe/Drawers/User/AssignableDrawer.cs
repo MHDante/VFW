@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +11,9 @@ namespace Vexe.Editor.Drawers
 {
 	public class AssignableDrawer : CompositeDrawer<object, AssignableAttribute>
 	{
-		private int kFoldout, kTarget, kMember, kSource;
+		//private int kFoldout;
+		private int kTarget, kMember, kSource;
+
 		private int targetIdx, memberIdx;
 		private GameObject source;
 		private Component target;
@@ -20,10 +22,10 @@ namespace Vexe.Editor.Drawers
 		protected override void Initialize()
 		{
 			var iden = RuntimeHelper.CombineHashCodes(id, attribute.GetType());
-			kSource  = RuntimeHelper.CombineHashCodes(iden, "src");
-			kFoldout = RuntimeHelper.CombineHashCodes(iden, "foldout");
-			kTarget  = RuntimeHelper.CombineHashCodes(iden, "target");
-			kMember  = RuntimeHelper.CombineHashCodes(iden, "member");
+			kSource = RuntimeHelper.CombineHashCodes(iden, "src");
+			//kFoldout = RuntimeHelper.CombineHashCodes(iden, "foldout");
+			kTarget = RuntimeHelper.CombineHashCodes(iden, "target");
+			kMember = RuntimeHelper.CombineHashCodes(iden, "member");
 
 			string srcName = prefs[kSource];
 			if (!string.IsNullOrEmpty(srcName))
@@ -39,7 +41,7 @@ namespace Vexe.Editor.Drawers
 						{
 							string memberName = prefs[kMember];
 							if (!string.IsNullOrEmpty(memberName))
-							{ 
+							{
 								var targetType = target.GetType();
 								targetMember = targetType.GetMember(memberName, Flags.InstancePublic).FirstOrDefault();
 
@@ -73,9 +75,9 @@ namespace Vexe.Editor.Drawers
 
 				if (source != null)
 				{
-					var targets     = source.GetAllComponents();
+					var targets = source.GetAllComponents();
 					var targetNames = targets.Select(x => x.GetType().Name).ToArray();
-					targetIdx       = Mathf.Min(Mathf.Max(0, targetIdx), targets.Length-1);
+					targetIdx = Mathf.Min(Mathf.Max(0, targetIdx), targets.Length - 1);
 
 					targetIdx = gui.Popup(targetIdx, targetNames);
 					{
@@ -92,8 +94,8 @@ namespace Vexe.Editor.Drawers
 						if (members.Count > 0)
 						{
 							var memberNames = getMemberNames(type);
-							memberIdx       = Mathf.Min(Mathf.Max(0, memberIdx), members.Count-1);
-							
+							memberIdx = Mathf.Min(Mathf.Max(0, memberIdx), members.Count - 1);
+
 							memberIdx = gui.Popup(memberIdx, memberNames);
 							{
 								targetMember = members[memberIdx];
@@ -119,6 +121,7 @@ namespace Vexe.Editor.Drawers
 		}
 
 		private Func<Type, string[]> _getMemberNames;
+
 		private Func<Type, string[]> getMemberNames
 		{
 			get
@@ -129,6 +132,7 @@ namespace Vexe.Editor.Drawers
 		}
 
 		private Func<Type, List<MemberInfo>> _getMembers;
+
 		private Func<Type, List<MemberInfo>> getMembers
 		{
 			get

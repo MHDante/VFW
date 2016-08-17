@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Vexe.Editor.Types
 	/// BetterUndo _undo = new BetterUndo();
 	/// BetterUndo undo { get { return BetterUndo.MakeCurrent(ref _undo); } }
 	/// From this point on, you could use 'undo.Whatever(...);' and if you press the undo/redo menu items, undo/redo will occur
-	/// 
+	///
 	/// One might ask, why not use SerializedProperties since they automatically handle undo/redo?
 	/// That's true, but a lot of the time using SerializedProperties isn't convenient.
 	/// Consider the case where you have a List of `T` where T is _not_ a UnityEngine.Object,
@@ -27,12 +27,12 @@ namespace Vexe.Editor.Types
 	/// For that you'd normally use UnityEditor.Undo which is not bad, but it fails short when you have a complex operation
 	/// Say each element in that list, had an innert list too, so when you want to change an element of your list
 	/// you'd want to clear out that inner list! - Using UE.Undo, might cut it or not - depending on the quality of its mood =))
-	/// 
+	///
 	/// UE.Undo is the reason why I couldn't provide good Undo support for uFAction in the inital release,
 	/// with BetterUndo, uFAction now has excellent undo support!
-	/// 
+	///
 	/// And not just that, BetterUndo is available for you at runtime as well, so you could use it in your games too!
-	/// 
+	///
 	/// Only down side currently is that the stacks don't serialize which mean a BetterUndo instance will only last one editor session.
 	/// </summary>
 	public class BetterUndo
@@ -266,11 +266,12 @@ namespace Vexe.Editor.Types
 		{
 			RegisterThenPerform(new SelectionOp { ToSelect = toSelect, ToGoBackTo = toGoBackTo, OnPerformed = onPerformed, OnUndone = onUndone });
 		}
-		
+
 		public void RecordSelection(UnityObject toSelect, UnityObject toGoBackTo, Action onPerformed = null, Action onUndone = null)
 		{
 			RegisterThenPerform(new SelectionOp { ToSelect = new UnityObject[] { toSelect }, ToGoBackTo = new UnityObject[] { toGoBackTo }, OnPerformed = onPerformed, OnUndone = onUndone });
 		}
+
 		#endregion
 
 		public static class MenuItems

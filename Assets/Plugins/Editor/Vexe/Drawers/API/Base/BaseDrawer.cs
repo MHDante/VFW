@@ -1,4 +1,4 @@
-﻿//#define DBG
+//#define DBG
 
 using System;
 using System.Reflection;
@@ -11,125 +11,153 @@ using UnityObject = UnityEngine.Object;
 
 namespace Vexe.Editor.Drawers
 {
-    public abstract class BaseDrawer
-    {
-        protected BaseGUI gui              { private set; get; }
-        protected EditorMember member      { private set; get; }
-        protected Attribute[] attributes   { private set; get; }
+	public abstract class BaseDrawer
+	{
+		protected BaseGUI gui { private set; get; }
 
-        protected string displayText       { get { return member.DisplayText;  } set { member.DisplayText = value; } }
-        protected object rawTarget         { get { return member.RawTarget;    } }
-        protected UnityObject unityTarget  { get { return member.UnityTarget;  } }
-        protected string memberTypeName    { get { return member.TypeNiceName; } }
-        protected int id                   { get { return member.Id;           } }
-        protected Type memberType          { get { return member.Type;         } }
-        protected Type targetType          { get { return rawTarget.GetType(); } }
+		protected EditorMember member { private set; get; }
 
-        protected EditorRecord prefs;
+		protected Attribute[] attributes { private set; get; }
 
-        private bool _hasInit;
-        private MethodCaller<object, string> _dynamicFormatter;
-        private static Attribute[] Empty = new Attribute[0];
-        private static object[] _formatArgs = new object[1];
+		protected string displayText { get { return member.DisplayText; } set { member.DisplayText = value; } }
 
-        protected bool foldout
-        {
-            get { return prefs.ValueOrDefault(id, false); }
-            set { prefs[id] = value; }
-        }
+		protected object rawTarget { get { return member.RawTarget; } }
 
-        protected GameObject gameObject
-        {
-            get
-            {
-                var component = unityTarget as Component;
-                return component == null ? null : component.gameObject;
-            }
-        }
+		protected UnityObject unityTarget { get { return member.UnityTarget; } }
 
-        public BaseDrawer Initialize(EditorMember member, Attribute[] attributes, BaseGUI gui, EditorRecord prefs)
-        {
-            if (attributes == null)
-                attributes = Empty;
+		protected string memberTypeName { get { return member.TypeNiceName; } }
 
-            if (this.prefs == null)
-                this.prefs = prefs;
+		protected int id { get { return member.Id; } }
 
-            this.member     = member;
-            this.attributes = attributes;
-            this.gui        = gui;
+		protected Type memberType { get { return member.Type; } }
 
-            if (_dynamicFormatter != null)
-            {
-                _formatArgs[0] = member.Value;
-                displayText = _dynamicFormatter(rawTarget, _formatArgs);
-            }
+		protected Type targetType { get { return rawTarget.GetType(); } }
 
-            if (_hasInit)
-            {
+		protected EditorRecord prefs;
+
+		private bool _hasInit;
+		private MethodCaller<object, string> _dynamicFormatter;
+		private static Attribute[] Empty = new Attribute[0];
+		private static object[] _formatArgs = new object[1];
+
+		protected bool foldout
+		{
+			get { return prefs.ValueOrDefault(id, false); }
+			set { prefs[id] = value; }
+		}
+
+		protected GameObject gameObject
+		{
+			get
+			{
+				var component = unityTarget as Component;
+				return component == null ? null : component.gameObject;
+			}
+		}
+
+		public BaseDrawer Initialize(EditorMember member, Attribute[] attributes, BaseGUI gui, EditorRecord prefs)
+		{
+			if (attributes == null)
+				attributes = Empty;
+
+			if (this.prefs == null)
+				this.prefs = prefs;
+
+			this.member = member;
+			this.attributes = attributes;
+			this.gui = gui;
+
+			if (_dynamicFormatter != null)
+			{
+				_formatArgs[0] = member.Value;
+				displayText = _dynamicFormatter(rawTarget, _formatArgs);
+			}
+
+			if (_hasInit)
+			{
 #if DBG
-                Log(this + " is Already initialized");
+				Log(this + " is Already initialized");
 #endif
-                return this;
-            }
+				return this;
+			}
 #if DBG
-            Log("Initializing: " + this);
+			Log("Initializing: " + this);
 #endif
-            var displayAttr = attributes.GetAttribute<DisplayAttribute>();
-            if (displayAttr != null && MemberDrawersHandler.IsApplicableAttribute(memberType, displayAttr, attributes))
-            {
-                var hasCustomFormat = !string.IsNullOrEmpty(displayAttr.FormatMethod);
-                var formatMethod = hasCustomFormat ? displayAttr.FormatMethod : ("Format" + member.Name);
-                var method = targetType.GetMemberFromAll(formatMethod, Flags.StaticInstanceAnyVisibility) as MethodInfo;
-                if (method == null)
-                {
-                    if (hasCustomFormat)
-                        Debug.Log("Couldn't find format method: " + displayAttr.FormatMethod);
-                }
-                else
-                {
-                    if (method.ReturnType != typeof(string) && method.GetParameters().Length > 0)
-                        Debug.Log("Format Method should return a string and take no parameters: " + method);
-                    else
-                    {
-                        _dynamicFormatter = method.DelegateForCall<object, string>();
-                        _formatArgs[0] = member.Value;
-                        displayText = _dynamicFormatter(rawTarget, _formatArgs);
-                    }
-                }
-            }
+			var displayAttr = attributes.GetAttribute<DisplayAttribute>();
+			if (displayAttr != null && MemberDrawersHandler.IsApplicableAttribute(memberType, displayAttr, attributes))
+			{
+				var hasCustomFormat = !string.IsNullOrEmpty(displayAttr.FormatMethod);
+				var formatMethod = hasCustomFormat ? displayAttr.FormatMethod : ("Format" + member.Name);
+				var method = targetType.GetMemberFromAll(formatMethod, Flags.StaticInstanceAnyVisibility) as MethodInfo;
+				if (method == null)
+				{
+					if (hasCustomFormat)
+						Debug.Log("Couldn't find format method: " + displayAttr.FormatMethod);
+				}
+				else
+				{
+					if (method.ReturnType != typeof(string) && method.GetParameters().Length > 0)
+						Debug.Log("Format Method should return a string and take no parameters: " + method);
+					else
+					{
+						_dynamicFormatter = method.DelegateForCall<object, string>();
+						_formatArgs[0] = member.Value;
+						displayText = _dynamicFormatter(rawTarget, _formatArgs);
+					}
+				}
+			}
 
-            _hasInit = true;
-            InternalInitialize();
-            Initialize();
-            return this;
-        }
+			_hasInit = true;
+			InternalInitialize();
+			Initialize();
+			return this;
+		}
 
-        public bool Foldout()
-        {
-            return foldout = gui.Foldout(foldout);
-        }
+		public bool Foldout()
+		{
+			return foldout = gui.Foldout(foldout);
+		}
 
-        protected virtual void InternalInitialize() { }
-        protected virtual void Initialize() { }
+		protected virtual void InternalInitialize()
+		{
+		}
 
-        public abstract void OnGUI();
-        public virtual void OnUpperGUI() { }
-        public virtual void OnLeftGUI()  { }
-        public virtual void OnRightGUI() { }
-        public virtual void OnLowerGUI() { }
-        public virtual void OnMemberDrawn(Rect rect) { }
+		protected virtual void Initialize()
+		{
+		}
 
-        public abstract bool CanHandle(Type memberType);
+		public abstract void OnGUI();
 
-        protected static void LogFormat(string msg, params object[] args)
-        {
-            Debug.Log(string.Format(msg, args));
-        }
+		public virtual void OnUpperGUI()
+		{
+		}
 
-        protected static void Log(object msg)
-        {
-            Debug.Log(msg);
-        }
-    }
+		public virtual void OnLeftGUI()
+		{
+		}
+
+		public virtual void OnRightGUI()
+		{
+		}
+
+		public virtual void OnLowerGUI()
+		{
+		}
+
+		public virtual void OnMemberDrawn(Rect rect)
+		{
+		}
+
+		public abstract bool CanHandle(Type memberType);
+
+		protected static void LogFormat(string msg, params object[] args)
+		{
+			Debug.Log(string.Format(msg, args));
+		}
+
+		protected static void Log(object msg)
+		{
+			Debug.Log(msg);
+		}
+	}
 }

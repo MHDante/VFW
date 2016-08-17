@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Linq;
 using System;
-using UnityObject = UnityEngine.Object;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace Vexe.Runtime.Extensions
 {
@@ -16,7 +16,7 @@ namespace Vexe.Runtime.Extensions
 		public static void DestroyChildren(this GameObject gameObject)
 		{
 			var children = gameObject.GetChildren().ToList();
-			for(int i = 0, cnt = children.Count; i < cnt; i++)
+			for (int i = 0, cnt = children.Count; i < cnt; i++)
 			{
 				var child = children[i];
 				child.Destroy();
@@ -237,13 +237,13 @@ namespace Vexe.Runtime.Extensions
 			foreach (Transform child in inside.transform)
 			{
 				if (child.name == wanted)
-                    return child.gameObject;
+					return child.gameObject;
 
 				if (recursive)
 				{
 					var within = GetChild(child.gameObject, wanted, true);
 					if (within != null)
-                        return within;
+						return within;
 				}
 			}
 			return null;

@@ -6,8 +6,8 @@ using System.Text;
 
 namespace System
 {
-    public static class Extensions
-    {
+	public static class Extensions
+	{
 		public static string GetString(this byte[] bytes)
 		{
 			return Convert.ToBase64String(bytes);
@@ -17,48 +17,48 @@ namespace System
 		{
 			return Convert.FromBase64String(str);
 		}
-    }
+	}
 }
 
 namespace Vexe.Runtime.Extensions
 {
 	public static class OtherExtensions
 	{
-        /// <summary>
-        /// Sets the stream's length to 0
-        /// </summary>
-        public static void Reset(this MemoryStream memory)
-        {
-            memory.SetLength(0);
-        }
+		/// <summary>
+		/// Sets the stream's length to 0
+		/// </summary>
+		public static void Reset(this MemoryStream memory)
+		{
+			memory.SetLength(0);
+		}
 
-        /// <summary>
-        /// http://stackoverflow.com/questions/4108828/generic-extension-method-to-see-if-an-enum-contains-a-flag
-        /// </summary>
-        public static bool HasFlag(this Enum variable, Enum value)
-        {
-            if (variable == null)
-                return false;
+		/// <summary>
+		/// http://stackoverflow.com/questions/4108828/generic-extension-method-to-see-if-an-enum-contains-a-flag
+		/// </summary>
+		public static bool HasFlag(this Enum variable, Enum value)
+		{
+			if (variable == null)
+				return false;
 
-            if (value == null)
-                throw new ArgumentNullException("value");
+			if (value == null)
+				throw new ArgumentNullException("value");
 
-            // Not as good as the .NET 4 version of this function, but should be good enough
-            if (!Enum.IsDefined(variable.GetType(), value))
-            {
-                throw new ArgumentException(string.Format(
-                    "Enumeration type mismatch.  The flag is of type '{0}', was expecting '{1}'.",
-                    value.GetType(), variable.GetType()));
-            }
+			// Not as good as the .NET 4 version of this function, but should be good enough
+			if (!Enum.IsDefined(variable.GetType(), value))
+			{
+				throw new ArgumentException(string.Format(
+					"Enumeration type mismatch.  The flag is of type '{0}', was expecting '{1}'.",
+					value.GetType(), variable.GetType()));
+			}
 
-            ulong num = Convert.ToUInt64(value);
-            return ((Convert.ToUInt64(variable) & num) == num);
-        }
+			ulong num = Convert.ToUInt64(value);
+			return ((Convert.ToUInt64(variable) & num) == num);
+		}
 
-        public static bool TryReadLine(this StreamReader reader, out string line)
-        {
-            line = reader.ReadLine();
-            return line != null;
+		public static bool TryReadLine(this StreamReader reader, out string line)
+		{
+			line = reader.ReadLine();
+			return line != null;
 		}
 
 		/// <summary>

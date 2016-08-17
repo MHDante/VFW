@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.Drawers
@@ -19,19 +19,19 @@ namespace Vexe.Editor.Drawers
 		}
 	}
 
-    public class vSliderDrawer : AttributeDrawer<Vector2, vSliderAttribute>
-    {
-        public override void OnGUI()
-        {
-            using(gui.Horizontal())
-            {
-                gui.Prefix(displayText);
-                float x = gui.Float(memberValue.x);
-			    float y = memberValue.y;
-                gui.MinMaxSlider(ref x, ref y, attribute.left, attribute.right);
-                y = gui.Float(y);
-                memberValue = new Vector2(x, y);
-            }
-        }
-    }
+	public class vSliderDrawer : AttributeDrawer<Vector2, vSliderAttribute>
+	{
+		public override void OnGUI()
+		{
+			using (gui.Horizontal())
+			{
+				gui.Prefix(displayText);
+				float x = gui.Float(memberValue.x);
+				float y = memberValue.y;
+				gui.MinMaxSlider(ref x, ref y, attribute.left, attribute.right);
+				y = gui.Float(y);
+				memberValue = new Vector2(x, y);
+			}
+		}
+	}
 }

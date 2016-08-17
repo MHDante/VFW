@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,17 +30,17 @@ namespace Vexe.Editor.Drawers
 					path.Substring(path.Replace('\\', '/').LastIndexOf('/') + 1);
 
 				var dictionary = new KVPList<string, string>();
-				var allScenes  = getScenes();
-				foreach(var s in allScenes)
+				var allScenes = getScenes();
+				foreach (var s in allScenes)
 					dictionary.Add(getSceneName(s), s);
 
 				Func<Func<string[]>, string, Tab<string>> sceneTab = (scenes, title) =>
 					new Tab<string>(
-						@getValues    : scenes,
-						@getCurrent   : () => dictionary.ContainsKey(memberValue) ? dictionary[memberValue] : memberValue,
-						@setTarget    : s => memberValue = getSceneName(s),
-						@getValueName : s => s,
-						@title        : title
+						@getValues: scenes,
+						@getCurrent: () => dictionary.ContainsKey(memberValue) ? dictionary[memberValue] : memberValue,
+						@setTarget: s => memberValue = getSceneName(s),
+						@getValueName: s => s,
+						@title: title
 					);
 
 				var buildScenes = EditorBuildSettings.scenes.Select(s => s.path);

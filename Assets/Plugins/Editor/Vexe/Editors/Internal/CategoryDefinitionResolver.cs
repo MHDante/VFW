@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,15 +9,15 @@ using MembersList = System.Collections.Generic.List<System.Reflection.MemberInfo
 
 namespace Vexe.Editor.Internal
 {
-    /// <summary>
-    /// Responsible for the resolution of a category definition (what members are categorized in that cateogry)
-    /// and determining how the members are combined in that category (united or intersected)
-    /// </summary>
+	/// <summary>
+	/// Responsible for the resolution of a category definition (what members are categorized in that cateogry)
+	/// and determining how the members are combined in that category (united or intersected)
+	/// </summary>
 	public class CategoryDefinitionResolver
 	{
-		readonly MembersList _excluded;
-		readonly Func<MembersList, DefineCategoryAttribute, MembersList>[] _defres;
-		readonly Func<MembersList, DefineCategoryAttribute, MembersList> _memres;
+		private readonly MembersList _excluded;
+		private readonly Func<MembersList, DefineCategoryAttribute, MembersList>[] _defres;
+		private readonly Func<MembersList, DefineCategoryAttribute, MembersList> _memres;
 
 		public CategoryDefinitionResolver()
 		{
@@ -31,8 +31,8 @@ namespace Vexe.Editor.Internal
 				{
 					var caetgory = m.GetCustomAttribute<CategoryAttribute>();
 					if (caetgory != null && caetgory.name == def.FullPath)
-                        return true;
-                    var show = m.GetCustomAttribute<ShowAttribute>();
+						return true;
+					var show = m.GetCustomAttribute<ShowAttribute>();
 					return show != null && show.Category == def.FullPath;
 				}));
 				return output;
@@ -95,6 +95,7 @@ namespace Vexe.Editor.Internal
 					case CategorySetOp.Intersection:
 						result.AddRange(defMembers.Aggregate((g1, g2) => g1.Intersect(g2)));
 						break;
+
 					case CategorySetOp.Union:
 						result.AddRange(defMembers.UnionAll());
 						break;

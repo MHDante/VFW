@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Runtime.Types
 {
@@ -8,7 +8,7 @@ namespace Vexe.Runtime.Types
 	/// is deep down, so you just attach this script to the top-most object,
 	/// and have it reference the one you're interested in
 	/// </summary>
-	
+
 	public class GOInliner : BaseBehaviour
 	{
 		[Inline]

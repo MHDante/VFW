@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor;
 using UnityEngine;
 using Vexe.Editor.Helpers;
@@ -20,30 +20,37 @@ namespace Vexe.Editor.GUIs
 			Text(field);
 			RegisterFieldForDrag(LastRect, value);
 		}
+
 		public void DraggableLabelField(string label, string field, UnityObject value, float labelWidth, GUIStyle style)
 		{
 			DraggableLabelField(label, field, value, labelWidth, style, MouseCursor.Link);
 		}
+
 		public void DraggableLabelField(string label, string field, UnityObject value, float labelWidth)
 		{
 			DraggableLabelField(label, field, value, labelWidth, null);
 		}
+
 		public void DraggableLabelField(string label, string field, UnityObject value)
 		{
 			DraggableLabelField(label, field, value, 0);
 		}
+
 		public void DraggableLabelField(string label, UnityObject value, float labelWidth)
 		{
 			DraggableLabelField(label, value == null ? "null" : value.name, value, labelWidth);
 		}
+
 		public void DraggableLabelField(string label, UnityObject value)
 		{
 			DraggableLabelField(label, value, 0);
 		}
+
 		public void DraggableLabelField(UnityObject value, float labelWidth = 0)
 		{
 			DraggableLabelField("", value, labelWidth);
 		}
+
 		public void DragDropArea<T>(
 			string label, int labelSize, GUIStyle style,
 			Predicate<UnityObject[]> canSetVisualModeToCopy, MouseCursor cursor,
@@ -105,6 +112,7 @@ namespace Vexe.Editor.GUIs
 		/// A couple of handy methods to register fields for drag-n-drop operations given what to drag/drop.
 		/// </summary>
 		#region
+
 		/// <summary>
 		/// Registers fieldRect for drag operations. dragObject is what's being dragged out of that field.
 		/// </summary>
@@ -120,17 +128,18 @@ namespace Vexe.Editor.GUIs
 				Event.current.Use();
 			}
 		}
+
 		public void RegisterFieldForDrag(UnityObject dragObject)
 		{
 			RegisterFieldForDrag(LastRect, dragObject);
 		}
 
-        static Predicate<UnityObject[]> _alwaysAcceptDrop = objs => true;
+		private static Predicate<UnityObject[]> _alwaysAcceptDrop = objs => true;
 
 		public T RegisterFieldForDrop<T>(Rect fieldRect, Func<UnityObject[], UnityObject> getDroppedObject) where T : UnityObject
-        {
-            return RegisterFieldForDrop<T>(fieldRect, getDroppedObject, _alwaysAcceptDrop);
-        }
+		{
+			return RegisterFieldForDrop<T>(fieldRect, getDroppedObject, _alwaysAcceptDrop);
+		}
 
 		/// <summary>
 		/// Registers fieldRect for drop operations.
@@ -143,23 +152,25 @@ namespace Vexe.Editor.GUIs
 			T result = null;
 			if (fieldRect.Contains(currentEvent.mousePosition) && (eventType == EventType.DragUpdated || eventType == EventType.DragPerform))
 			{
-                if (isDropAccepted(DragAndDrop.objectReferences))
-                {
-                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                    if (eventType == EventType.DragPerform)
-                    {
-                        DragAndDrop.AcceptDrag();
-                        result = getDroppedObject(DragAndDrop.objectReferences) as T;
-                        currentEvent.Use();
-                    }
-                }
+				if (isDropAccepted(DragAndDrop.objectReferences))
+				{
+					DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+					if (eventType == EventType.DragPerform)
+					{
+						DragAndDrop.AcceptDrag();
+						result = getDroppedObject(DragAndDrop.objectReferences) as T;
+						currentEvent.Use();
+					}
+				}
 			}
 			return result;
 		}
+
 		public T RegisterFieldForDrop<T>(Rect fieldRect) where T : UnityEngine.Object
 		{
 			return RegisterFieldForDrop<T>(fieldRect, objects => objects[0]);
 		}
+
 		#endregion
 	}
 }

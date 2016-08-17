@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEditor;
 using UnityEngine;
 using Vexe.Editor.Helpers;
@@ -26,11 +26,11 @@ namespace Vexe.Editor.Drawers
 				if (Event.current.control && EventsHelper.IsMMBMouseDown())
 				{
 					SelectionWindow.Show(new Tab<GameObject>(
-						@getValues   : Resources.FindObjectsOfTypeAll<GameObject>,
-						@getCurrent  : () => null,
-						@setTarget   : input => memberValue = GetPath(input),
+						@getValues: Resources.FindObjectsOfTypeAll<GameObject>,
+						@getCurrent: () => null,
+						@setTarget: input => memberValue = GetPath(input),
 						@getValueName: target => target.name,
-						@title       : "Objects"
+						@title: "Objects"
 					));
 				}
 			}

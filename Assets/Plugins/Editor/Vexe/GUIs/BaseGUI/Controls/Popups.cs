@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using Vexe.Editor.Helpers;
-using Vexe.Runtime.Extensions;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
@@ -44,7 +42,7 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public abstract string Tag(GUIContent content, string tag, GUIStyle style, Layout layout);
-        
+
 		public string TextFieldDropDown(string text, string[] displayedOptions)
 		{
 			return TextFieldDropDown(text, displayedOptions, null);

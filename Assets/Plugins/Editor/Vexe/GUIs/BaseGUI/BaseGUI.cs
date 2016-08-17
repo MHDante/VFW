@@ -6,274 +6,283 @@ using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.GUIs
 {
-    public abstract partial class BaseGUI
-    {
-        public static readonly float kHeight = EditorGUIUtility.singleLineHeight;
-        public static readonly float kMiniHeight = kHeight - 3f;
-        public static readonly float kVSpacing = 1f;
-        public static readonly float kHSpacing = 3.5f;
-        public static readonly Rect kDummyRect = new Rect(0, 0, 1, 1);
+	public abstract partial class BaseGUI
+	{
+		public static readonly float kHeight = EditorGUIUtility.singleLineHeight;
+		public static readonly float kMiniHeight = kHeight - 3f;
+		public static readonly float kVSpacing = 1f;
+		public static readonly float kHSpacing = 3.5f;
+		public static readonly Rect kDummyRect = new Rect(0, 0, 1, 1);
 
-        public static readonly Layout kMultifieldOption = Layout.sHeight(kHeight * 3f);
-        public static readonly Layout kFoldoutOption = Layout.sWidth(kFoldoutWidth);
-        public static readonly Layout kDefaultMiniOption = Layout.sWidth(kDefaultMiniWidth).Height(kDefaultMiniHeight);
+		public static readonly Layout kMultifieldOption = Layout.sHeight(kHeight * 3f);
+		public static readonly Layout kFoldoutOption = Layout.sWidth(kFoldoutWidth);
+		public static readonly Layout kDefaultMiniOption = Layout.sWidth(kDefaultMiniWidth).Height(kDefaultMiniHeight);
 
-        public const float kIndentAmount = 7.5f;
-        public const float kNumericLabelWidth = 21f;
-        public const float kDefaultMiniWidth = 20f;
-        public const float kDefaultMiniHeight = 16f;
-        public const float kFoldoutWidth = 10f;
+		public const float kIndentAmount = 7.5f;
+		public const float kNumericLabelWidth = 21f;
+		public const float kDefaultMiniWidth = 20f;
+		public const float kDefaultMiniHeight = 16f;
+		public const float kFoldoutWidth = 10f;
 
-        public const MiniButtonStyle kDefaultMiniStyle = MiniButtonStyle.Mid;
-        public const MiniButtonStyle kDefaultModStyle = MiniButtonStyle.ModMid;
+		public const MiniButtonStyle kDefaultMiniStyle = MiniButtonStyle.Mid;
+		public const MiniButtonStyle kDefaultModStyle = MiniButtonStyle.ModMid;
 
-        public abstract Rect LastRect { get; }
-        public ScrollViewBlock ScrollView { get; private set; }
+		public abstract Rect LastRect { get; }
+		public ScrollViewBlock ScrollView { get; private set; }
 
-        private IndentBlock indentBlock;
-        private StateBlock stateBlock;
-        private GUIColorBlock colorBlock;
-        private ContentColorBlock contentColorBlock;
-        private LabelWidthBlock labelWidthBlock;
+		private IndentBlock indentBlock;
+		private StateBlock stateBlock;
+		private GUIColorBlock colorBlock;
+		private ContentColorBlock contentColorBlock;
+		private LabelWidthBlock labelWidthBlock;
 
-        protected EditorRecord prefs;
+		protected EditorRecord prefs;
 
-        public BaseGUI()
-        {
-            stateBlock = new StateBlock();
-            colorBlock = new GUIColorBlock();
-            labelWidthBlock = new LabelWidthBlock();
-            contentColorBlock = new ContentColorBlock();
-            indentBlock = new IndentBlock(this);
-            ScrollView = new ScrollViewBlock(this);
-        }
+		public BaseGUI()
+		{
+			stateBlock = new StateBlock();
+			colorBlock = new GUIColorBlock();
+			labelWidthBlock = new LabelWidthBlock();
+			contentColorBlock = new ContentColorBlock();
+			indentBlock = new IndentBlock(this);
+			ScrollView = new ScrollViewBlock(this);
+		}
 
-        public void RequestResetIfRabbit()
-        {
-            var rabbit = this as RabbitGUI;
-            if (rabbit != null)
-                rabbit.RequestReset();
-        }
+		public void RequestResetIfRabbit()
+		{
+			var rabbit = this as RabbitGUI;
+			if (rabbit != null)
+				rabbit.RequestReset();
+		}
 
-        public VerticalBlock Vertical()
-        {
-            return Vertical(GUIStyle.none);
-        }
+		public VerticalBlock Vertical()
+		{
+			return Vertical(GUIStyle.none);
+		}
 
-        public VerticalBlock Vertical(GUIStyle style)
-        {
-            return BeginVertical(style);
-        }
+		public VerticalBlock Vertical(GUIStyle style)
+		{
+			return BeginVertical(style);
+		}
 
-        public HorizontalBlock Horizontal()
-        {
-            return Horizontal(GUIStyle.none);
-        }
+		public HorizontalBlock Horizontal()
+		{
+			return Horizontal(GUIStyle.none);
+		}
 
-        public HorizontalBlock Horizontal(GUIStyle style)
-        {
-            return BeginHorizontal(style);
-        }
+		public HorizontalBlock Horizontal(GUIStyle style)
+		{
+			return BeginHorizontal(style);
+		}
 
-        protected abstract HorizontalBlock BeginHorizontal(GUIStyle style);
-        protected abstract VerticalBlock BeginVertical(GUIStyle style);
-        protected abstract void EndHorizontal();
-        protected abstract void EndVertical();
-        public abstract void OnGUI(Action guiCode, Vector4 padding, int targetId);
+		protected abstract HorizontalBlock BeginHorizontal(GUIStyle style);
 
-        public virtual void OnEnable() { }
-        public virtual void OnDisable() { }
+		protected abstract VerticalBlock BeginVertical(GUIStyle style);
 
-        public abstract IDisposable If(bool condition, IDisposable body);
+		protected abstract void EndHorizontal();
 
-        public void BeginCheck()
-        {
-            EditorGUI.BeginChangeCheck();
-        }
+		protected abstract void EndVertical();
 
-        public bool HasChanged()
-        {
-            return EditorGUI.EndChangeCheck();
-        }
+		public abstract void OnGUI(Action guiCode, Vector4 padding, int targetId);
 
-        public LabelWidthBlock LabelWidth(float newWidth)
-        {
-            return labelWidthBlock.Begin(newWidth);
-        }
+		public virtual void OnEnable()
+		{
+		}
 
-        public IndentBlock Indent()
-        {
-            return Indent(GUIStyle.none);
-        }
+		public virtual void OnDisable()
+		{
+		}
 
-        public IndentBlock Indent(float amount)
-        {
-            return Indent(GUIStyle.none, amount);
-        }
+		public abstract IDisposable If(bool condition, IDisposable body);
 
-        public IndentBlock Indent(GUIStyle style, bool doIndent)
-        {
-            return Indent(style, doIndent ? kIndentAmount : 0f);
-        }
+		public void BeginCheck()
+		{
+			EditorGUI.BeginChangeCheck();
+		}
 
-        public IndentBlock Indent(GUIStyle style)
-        {
-            return Indent(style, kIndentAmount);
-        }
+		public bool HasChanged()
+		{
+			return EditorGUI.EndChangeCheck();
+		}
 
-        public IndentBlock Indent(GUIStyle style, float amount)
-        {
-            return indentBlock.Begin(style, amount);
-        }
+		public LabelWidthBlock LabelWidth(float newWidth)
+		{
+			return labelWidthBlock.Begin(newWidth);
+		}
 
-        public StateBlock State(bool newState)
-        {
-            return stateBlock.Begin(newState);
-        }
+		public IndentBlock Indent()
+		{
+			return Indent(GUIStyle.none);
+		}
 
-        public bool BeginToggleGroup(string text, bool value)
-        {
-            return BeginToggleGroup(text, value, kIndentAmount);
-        }
+		public IndentBlock Indent(float amount)
+		{
+			return Indent(GUIStyle.none, amount);
+		}
 
-        public bool BeginToggleGroup(string text, bool value, float indentAmount)
-        {
-            value = ToggleLeft(text, value);
-            State(value);
-            Indent(indentAmount);
-            return value;
-        }
+		public IndentBlock Indent(GUIStyle style, bool doIndent)
+		{
+			return Indent(style, doIndent ? kIndentAmount : 0f);
+		}
 
-        public void EndToggleGroup()
-        {
-            indentBlock.Dispose();
-            stateBlock.Dispose();
-        }
+		public IndentBlock Indent(GUIStyle style)
+		{
+			return Indent(style, kIndentAmount);
+		}
 
-        public GUIColorBlock ColorBlock(Color newColor)
-        {
-            return colorBlock.Begin(newColor);
-        }
+		public IndentBlock Indent(GUIStyle style, float amount)
+		{
+			return indentBlock.Begin(style, amount);
+		}
 
-        public GUIColorBlock ColorBlock(Color? newColor)
-        {
-            return newColor.HasValue ? ColorBlock(newColor.Value) : null;
-        }
+		public StateBlock State(bool newState)
+		{
+			return stateBlock.Begin(newState);
+		}
 
-        public ContentColorBlock ContentColor(Color color)
-        {
-            return contentColorBlock.Begin(color);
-        }
+		public bool BeginToggleGroup(string text, bool value)
+		{
+			return BeginToggleGroup(text, value, kIndentAmount);
+		}
 
-        public ContentColorBlock ContentColor(Color? color)
-        {
-            return color.HasValue ? ContentColor(color.Value) : null;
-        }
+		public bool BeginToggleGroup(string text, bool value, float indentAmount)
+		{
+			value = ToggleLeft(text, value);
+			State(value);
+			Indent(indentAmount);
+			return value;
+		}
 
-        public void Cursor(Rect rect, MouseCursor mouse)
-        {
-            EditorGUIUtility.AddCursorRect(rect, mouse);
-        }
+		public void EndToggleGroup()
+		{
+			indentBlock.Dispose();
+			stateBlock.Dispose();
+		}
 
-        public void LastCursor(MouseCursor mouse)
-        {
-            Cursor(LastRect, mouse);
-        }
+		public GUIColorBlock ColorBlock(Color newColor)
+		{
+			return colorBlock.Begin(newColor);
+		}
 
-        public static BaseGUI Create(Type guiType)
-        {
-            return guiType.Instance<BaseGUI>();
-        }
+		public GUIColorBlock ColorBlock(Color? newColor)
+		{
+			return newColor.HasValue ? ColorBlock(newColor.Value) : null;
+		}
 
-        public static GUIContent GetContent(string text)
-        {
-            return GetContent(text, string.Empty);
-        }
+		public ContentColorBlock ContentColor(Color color)
+		{
+			return contentColorBlock.Begin(color);
+		}
 
-        public static float GetHeight(ControlType control)
-        {
-            switch (control)
-            {
-                case ControlType.MiniButton: return kMiniHeight;
-                default: return kHeight;
-            }
-        }
+		public ContentColorBlock ContentColor(Color? color)
+		{
+			return color.HasValue ? ContentColor(color.Value) : null;
+		}
 
-        public static float GetHSpacing(ControlType control)
-        {
-            switch (control)
-            {
-                case ControlType.MiniButton: return 0f;
-                default: return kVSpacing;
-            }
-        }
+		public void Cursor(Rect rect, MouseCursor mouse)
+		{
+			EditorGUIUtility.AddCursorRect(rect, mouse);
+		}
 
-        public static float GetVSpacing(ControlType controlType)
-        {
-            return kVSpacing;
-        }
+		public void LastCursor(MouseCursor mouse)
+		{
+			Cursor(LastRect, mouse);
+		}
 
-        public static GUIContent GetContent(string text, string tooltip)
-        {
-            // TODO: Pool
-            return new GUIContent(text, tooltip);
-        }
+		public static BaseGUI Create(Type guiType)
+		{
+			return guiType.Instance<BaseGUI>();
+		}
 
-        public void assert(bool expression, string msg)
-        {
-            if (!expression)
-                throw new Exception(string.Format("Assertion `{0}` failed", msg));
-        }
+		public static GUIContent GetContent(string text)
+		{
+			return GetContent(text, string.Empty);
+		}
 
-        public struct ControlData
-        {
-            public GUIContent content;
-            public GUIStyle style;
-            public Layout option;
-            public ControlType type;
+		public static float GetHeight(ControlType control)
+		{
+			switch (control)
+			{
+				case ControlType.MiniButton: return kMiniHeight;
+				default: return kHeight;
+			}
+		}
 
-            public ControlData(GUIContent content, GUIStyle style, Layout option, ControlType type)
-            {
-                this.content = content;
-                this.style = style;
-                this.option = option;
-                this.type = type;
-            }
-        }
+		public static float GetHSpacing(ControlType control)
+		{
+			switch (control)
+			{
+				case ControlType.MiniButton: return 0f;
+				default: return kVSpacing;
+			}
+		}
 
-        public enum ControlType
-        {
-            Button,
-            Label,
-            PrefixLabel,
-            TextField,
-            ObjectField,
-            IntField,
-            Float,
-            Popup,
-            FlexibleSpace,
-            HorizontalBlock,
-            VerticalBlock,
-            MiniButton,
-            Vector3Field,
-            Toggle,
-            Space,
-            MaskField,
-            Slider,
-            Vector2Field,
-            HelpBox,
-            Foldout,
-            Box,
-            EnumPopup,
-            RectField,
-            Bounds,
-            TextArea,
-            ColorField,
-            CurveField,
-            GradientField,
-            TextFieldDropDown,
-            Double,
-            Long
-        }
-    }
+		public static float GetVSpacing(ControlType controlType)
+		{
+			return kVSpacing;
+		}
+
+		public static GUIContent GetContent(string text, string tooltip)
+		{
+			// TODO: Pool
+			return new GUIContent(text, tooltip);
+		}
+
+		public void assert(bool expression, string msg)
+		{
+			if (!expression)
+				throw new Exception(string.Format("Assertion `{0}` failed", msg));
+		}
+
+		public struct ControlData
+		{
+			public GUIContent content;
+			public GUIStyle style;
+			public Layout option;
+			public ControlType type;
+
+			public ControlData(GUIContent content, GUIStyle style, Layout option, ControlType type)
+			{
+				this.content = content;
+				this.style = style;
+				this.option = option;
+				this.type = type;
+			}
+		}
+
+		public enum ControlType
+		{
+			Button,
+			Label,
+			PrefixLabel,
+			TextField,
+			ObjectField,
+			IntField,
+			Float,
+			Popup,
+			FlexibleSpace,
+			HorizontalBlock,
+			VerticalBlock,
+			MiniButton,
+			Vector3Field,
+			Toggle,
+			Space,
+			MaskField,
+			Slider,
+			Vector2Field,
+			HelpBox,
+			Foldout,
+			Box,
+			EnumPopup,
+			RectField,
+			Bounds,
+			TextArea,
+			ColorField,
+			CurveField,
+			GradientField,
+			TextFieldDropDown,
+			Double,
+			Long
+		}
+	}
 }

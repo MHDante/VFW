@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Vexe.Editor.GUIs
@@ -21,18 +21,18 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public T EnumPopup<T>(T selected)
-        {
-            return EnumPopup<T>(string.Empty, selected);
-        }
+		{
+			return EnumPopup<T>(string.Empty, selected);
+		}
 
 		public T EnumPopup<T>(string content, T selected)
 		{
-			return (T)(object)EnumPopup(content, (Enum)(object)selected);
+			return (T) (object) EnumPopup(content, (Enum) (object) selected);
 		}
 
 		public Enum EnumPopup(string content, Enum selected)
 		{
-			return EnumPopup(content, selected, (Layout)null);
+			return EnumPopup(content, selected, (Layout) null);
 		}
 
 		public Enum EnumPopup(string content, Enum selected, Layout option)

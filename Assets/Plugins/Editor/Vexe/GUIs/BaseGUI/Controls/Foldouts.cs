@@ -1,6 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Vexe.Editor.Helpers;
-
 
 namespace Vexe.Editor.GUIs
 {
@@ -75,7 +74,6 @@ namespace Vexe.Editor.GUIs
 		{
 			return CustomFoldout(string.Empty, value, kFoldoutOption);
 		}
-
 
 		public abstract bool InspectorTitlebar(bool foldout, Object target);
 	}

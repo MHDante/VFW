@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+using System;
 
 namespace Vexe.Runtime.Types
 {

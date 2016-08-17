@@ -1,4 +1,4 @@
-﻿//#define PROFILE
+//#define PROFILE
 
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,8 @@ namespace Vexe.Editor.Drawers
 		private bool _populateFromTarget, _populateFromType;
 		private static string[] Empty = new string[1] { "--empty--" };
 		private const string kOwnerTypePrefix = "target";
-        private bool _showUpdateButton = true, _changed;
-        private TextFilter _filter;
+		private bool _showUpdateButton = true, _changed;
+		private TextFilter _filter;
 
 		protected override void Initialize()
 		{
@@ -28,11 +28,11 @@ namespace Vexe.Editor.Drawers
 			if (fromMember.IsNullOrEmpty())
 			{
 				_values = attribute.values;
-                _showUpdateButton = false;
+				_showUpdateButton = false;
 			}
 			else
 			{
-                _showUpdateButton = !attribute.HideUpdate;
+				_showUpdateButton = !attribute.HideUpdate;
 				Type populateFrom;
 				var split = fromMember.Split('.');
 				if (split.Length == 1)
@@ -50,7 +50,7 @@ namespace Vexe.Editor.Drawers
 					{
 						var typeName = split[0];
 						populateFrom = ReflectionHelper.CachedGetRuntimeTypes()
-											           .FirstOrDefault(x => x.Name == typeName);
+													   .FirstOrDefault(x => x.Name == typeName);
 
 						if (populateFrom == null)
 							throw new InvalidOperationException("Couldn't find type to populate the popup from " + typeName);
@@ -92,99 +92,99 @@ namespace Vexe.Editor.Drawers
 				memberValue = string.Empty;
 
 			if (_values == null)
-            {
+			{
 				UpdateValues();
-                if (attribute.Filter)
-                    _filter = new TextFilter(_values, id, false, prefs, SetValue);
-            }
+				if (attribute.Filter)
+					_filter = new TextFilter(_values, id, false, prefs, SetValue);
+			}
 
-            string newValue = null;
-            string currentValue = memberValue;
+			string newValue = null;
+			string currentValue = memberValue;
 
-            using (gui.Horizontal())
-            {
-                if (attribute.TextField)
-                {
-                    #if PROFILE
+			using (gui.Horizontal())
+			{
+				if (attribute.TextField)
+				{
+#if PROFILE
                     Profiler.BeginSample("PopupDrawer TextFieldDrop");
-                    #endif
+#endif
 
-                    newValue = gui.TextFieldDropDown(displayText, memberValue, _values);
-                    if (currentValue != newValue)
-                        _changed = true;
+					newValue = gui.TextFieldDropDown(displayText, memberValue, _values);
+					if (currentValue != newValue)
+						_changed = true;
 
-                    #if PROFILE
+#if PROFILE
                     Profiler.EndSample();
-                    #endif
-                }
-                else
-                {
-                    #if PROFILE
+#endif
+				}
+				else
+				{
+#if PROFILE
                     Profiler.BeginSample("PopupDrawer TextFieldDrop");
-                    #endif
+#endif
 
-                    if (!_currentIndex.HasValue)
-                    {
-                        if (attribute.TakeLastPathItem)
-                            _currentIndex = _values.IndexOf(x => GetActualValue(x) == currentValue);
-                        else
-                            _currentIndex = _values.IndexOf(currentValue);
-                    }
+					if (!_currentIndex.HasValue)
+					{
+						if (attribute.TakeLastPathItem)
+							_currentIndex = _values.IndexOf(x => GetActualValue(x) == currentValue);
+						else
+							_currentIndex = _values.IndexOf(currentValue);
+					}
 
-                    if (_currentIndex == -1)
-                    {
-                        _currentIndex = 0;
-                        if (_values.Length > 0)
-                            SetValue(_values[0]);
-                    }
+					if (_currentIndex == -1)
+					{
+						_currentIndex = 0;
+						if (_values.Length > 0)
+							SetValue(_values[0]);
+					}
 
-                    gui.BeginCheck();
-                    int selection = gui.Popup(displayText, _currentIndex.Value, _values);
-                    if (gui.HasChanged() && _values.Length > 0)
-                    {
-                        _currentIndex = selection;
-                        _changed = true;
-                        newValue = _values[selection];
-                    }
+					gui.BeginCheck();
+					int selection = gui.Popup(displayText, _currentIndex.Value, _values);
+					if (gui.HasChanged() && _values.Length > 0)
+					{
+						_currentIndex = selection;
+						_changed = true;
+						newValue = _values[selection];
+					}
 
-                    #if PROFILE
+#if PROFILE
                     Profiler.EndSample();
-                    #endif
-                }
+#endif
+				}
 
-                if (attribute.Filter)
-                    _filter.OnGUI(gui, 45f);
+				if (attribute.Filter)
+					_filter.OnGUI(gui, 45f);
 
-                if (_changed)
-                {
-                    _changed = false;
-                    SetValue(newValue);
-                }
+				if (_changed)
+				{
+					_changed = false;
+					SetValue(newValue);
+				}
 
-                if (_showUpdateButton && gui.MiniButton("U", "Update popup values", MiniButtonStyle.Right))
+				if (_showUpdateButton && gui.MiniButton("U", "Update popup values", MiniButtonStyle.Right))
 					UpdateValues();
 			}
 		}
 
-        private string GetActualValue(string value)
-        {
-            string result = value;
-            if (attribute.TakeLastPathItem && !string.IsNullOrEmpty(value))
-            {
-                int lastPathIdx = value.LastIndexOf('/') + 1;
-                if (lastPathIdx != -1)
-                    result = value.Substring(lastPathIdx);
-            }
-            return result;
-        }
+		private string GetActualValue(string value)
+		{
+			string result = value;
+			if (attribute.TakeLastPathItem && !string.IsNullOrEmpty(value))
+			{
+				int lastPathIdx = value.LastIndexOf('/') + 1;
+				if (lastPathIdx != -1)
+					result = value.Substring(lastPathIdx);
+			}
+			return result;
+		}
 
-        private void SetValue(string value)
-        {
-            if (!attribute.TextField && attribute.TakeLastPathItem && attribute.Filter)
-                _currentIndex = _values.IndexOf(value);
+		private void SetValue(string value)
+		{
+			if (!attribute.TextField && attribute.TakeLastPathItem && attribute.Filter)
+				_currentIndex = _values.IndexOf(value);
 
-            memberValue = GetActualValue(value);
-        }
+			memberValue = GetActualValue(value);
+		}
 
 		public void UpdateValues()
 		{
@@ -210,7 +210,7 @@ namespace Vexe.Editor.Drawers
 			else _values = Empty;
 		}
 
-		string[] ProcessPopulation(object obj)
+		private string[] ProcessPopulation(object obj)
 		{
 			var arr = obj as string[];
 			if (arr != null)
@@ -218,9 +218,9 @@ namespace Vexe.Editor.Drawers
 
 			var list = obj as List<string>;
 			if (list != null)
-			    return list.ToArray();
+				return list.ToArray();
 
-            return Empty;
+			return Empty;
 		}
 	}
 }

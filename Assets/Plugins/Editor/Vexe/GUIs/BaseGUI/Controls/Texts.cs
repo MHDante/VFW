@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
@@ -15,9 +15,9 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public string Text(string value, Layout option)
-        {
-            return Text(GUIContent.none, value, option);
-        }
+		{
+			return Text(GUIContent.none, value, option);
+		}
 
 		public string Text(string label, string value, Layout option)
 		{

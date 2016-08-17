@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,10 +7,10 @@ namespace Vexe.Runtime.Extensions
 {
 	public static class GenericEnumerableExtensions
 	{
-        public static bool AnyIs<T>(this IEnumerable<object> items) where T : class
-        {
-            return items.Any(x => x is T);
-        }
+		public static bool AnyIs<T>(this IEnumerable<object> items) where T : class
+		{
+			return items.Any(x => x is T);
+		}
 
 		public static bool IsUnique<T>(this T[] array)
 		{
@@ -46,7 +46,7 @@ namespace Vexe.Runtime.Extensions
 
 		public static IEnumerable<T> OfType<T>(this IEnumerable<T> items, Type ofType)
 		{
-			foreach(var item in items)
+			foreach (var item in items)
 			{
 				if (item != null && ofType.IsAssignableFrom(item.GetType()))
 				{
@@ -145,8 +145,8 @@ namespace Vexe.Runtime.Extensions
 		public static IEnumerable<string> Uniqify(this IList<string> list, string postfix)
 		{
 			return Uniqify(list, postfix,
-				@selector : x => x,
-				@set      : (lst, idx, value) => lst[idx] = value);
+				@selector: x => x,
+				@set: (lst, idx, value) => lst[idx] = value);
 		}
 
 		/// <summary>
@@ -595,14 +595,14 @@ namespace Vexe.Runtime.Extensions
 		{
 			if (left == null)
 				throw new ArgumentNullException("left");
-            if (right == null)
+			if (right == null)
 				throw new ArgumentNullException("right");
 
 			if (left.Count != right.Count) return false;
-            for (int i = 0; i < left.Count; i++)
-                if (!left[i].GenericEquals(right[i]))
-                    return false;
-            return true;
+			for (int i = 0; i < left.Count; i++)
+				if (!left[i].GenericEquals(right[i]))
+					return false;
+			return true;
 		}
 
 		public static void Push<T>(this IList<T> list, T value)

@@ -1,5 +1,3 @@
-﻿using UnityEngine;
-
 namespace Vexe.Runtime.Types
 {
 	/// <summary>

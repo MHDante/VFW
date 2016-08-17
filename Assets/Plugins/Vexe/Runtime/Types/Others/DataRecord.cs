@@ -1,159 +1,195 @@
-﻿using System;
+using System;
 using UnityEngine;
 using Vexe.Runtime.Helpers;
 
 namespace Vexe.Runtime.Types
 {
-    public enum RecordValueType
-    {
-        Int, Float, Bool, String
-    }
+	public enum RecordValueType
+	{
+		Int, Float, Bool, String
+	}
 
-    // TODO: Show users how to use this
-    [Serializable]
-    public class DataRecord : SerializableDictionary<string, RecordValue>
-    {
-    }
-    
-    [Serializable]
-    public struct RecordValue
-    {
-        // NOTE (Vexe): Should be readonly, but Unity wouldn't be able to serialize 'em then
-        [SerializeField] public string ValueString;
-        [SerializeField] public float ValueFloat;
-        [SerializeField] public RecordValueType Type;
+	// TODO: Show users how to use this
+	[Serializable]
+	public class DataRecord : SerializableDictionary<string, RecordValue>
+	{
+	}
 
-        const float kUnused = -9999f;
+	[Serializable]
+	public struct RecordValue
+	{
+		// NOTE (Vexe): Should be readonly, but Unity wouldn't be able to serialize 'em then
+		[SerializeField]
+		public string ValueString;
 
-        public RecordValue(string value)
-        {
-            ValueString = value;
-            ValueFloat = kUnused;
-            Type = RecordValueType.String;
-        }
+		[SerializeField]
+		public float ValueFloat;
 
-        public RecordValue(int value)
-        {
-            ValueString = null;
-            ValueFloat = value;
-            Type = RecordValueType.Int;
-        }
+		[SerializeField]
+		public RecordValueType Type;
 
-        public RecordValue(float value)
-        {
-            ValueString = null;
-            ValueFloat = value;
-            Type = RecordValueType.Float;
-        }
+		private const float kUnused = -9999f;
 
-        public RecordValue(bool value)
-        {
-            ValueString = null;
-            ValueFloat = value ? 1 : 0;
-            Type = RecordValueType.Bool;
-        }
+		public RecordValue(string value)
+		{
+			ValueString = value;
+			ValueFloat = kUnused;
+			Type = RecordValueType.String;
+		}
 
-        public static implicit operator RecordValue(int value) { return new RecordValue(value); }
-        public static implicit operator RecordValue(float value) { return new RecordValue(value); }
-        public static implicit operator RecordValue(bool value) { return new RecordValue(value); }
-        public static implicit operator RecordValue(string value) { return new RecordValue(value); }
+		public RecordValue(int value)
+		{
+			ValueString = null;
+			ValueFloat = value;
+			Type = RecordValueType.Int;
+		}
 
-        public static implicit operator string (RecordValue value) { return value.ValueString; }
-        public static implicit operator int (RecordValue value) { return (int)value.ValueFloat; }
-        public static implicit operator float (RecordValue value) { return value.ValueFloat; }
-        public static implicit operator bool (RecordValue value) { return (int)value.ValueFloat == 1; }
+		public RecordValue(float value)
+		{
+			ValueString = null;
+			ValueFloat = value;
+			Type = RecordValueType.Float;
+		}
 
-        public override string ToString()
-        {
-            if (Type == RecordValueType.String)
-                return ValueString;
-            return ValueFloat.ToString();
-        }
-    }
+		public RecordValue(bool value)
+		{
+			ValueString = null;
+			ValueFloat = value ? 1 : 0;
+			Type = RecordValueType.Bool;
+		}
+
+		public static implicit operator RecordValue(int value)
+		{
+			return new RecordValue(value);
+		}
+
+		public static implicit operator RecordValue(float value)
+		{
+			return new RecordValue(value);
+		}
+
+		public static implicit operator RecordValue(bool value)
+		{
+			return new RecordValue(value);
+		}
+
+		public static implicit operator RecordValue(string value)
+		{
+			return new RecordValue(value);
+		}
+
+		public static implicit operator string(RecordValue value)
+		{
+			return value.ValueString;
+		}
+
+		public static implicit operator int(RecordValue value)
+		{
+			return (int) value.ValueFloat;
+		}
+
+		public static implicit operator float(RecordValue value)
+		{
+			return value.ValueFloat;
+		}
+
+		public static implicit operator bool(RecordValue value)
+		{
+			return (int) value.ValueFloat == 1;
+		}
+
+		public override string ToString()
+		{
+			if (Type == RecordValueType.String)
+				return ValueString;
+			return ValueFloat.ToString();
+		}
+	}
 
 #if UNITY_EDITOR
-    [Serializable]
-    public class EditorRecord : SerializableDictionary<int, RecordValue>
-    {
-        new public RecordValue this[int key]
-        {
-            set
-            {
-                base[key] = value;
-            }
-            get
-            {
-                RecordValue result;
 
-                if (!TryGetValue(key, out result))
-                {
-                    result = 0;
-                    base[key] = 0;
-                }
+	[Serializable]
+	public class EditorRecord : SerializableDictionary<int, RecordValue>
+	{
+		new public RecordValue this[int key]
+		{
+			set
+			{
+				base[key] = value;
+			}
+			get
+			{
+				RecordValue result;
 
-                return result;
-            }
-        }
+				if (!TryGetValue(key, out result))
+				{
+					result = 0;
+					base[key] = 0;
+				}
 
-        public void SetV2(int key, Vector2 value)
-        {
-            int keyX = RuntimeHelper.CombineHashCodes(key, "x");
-            int keyY = RuntimeHelper.CombineHashCodes(key, "y");
-            this[keyX] = value.x;
-            this[keyY] = value.y;
-        }
+				return result;
+			}
+		}
 
-        public Vector2 GetV2(int key, Vector2 defaultValue = new Vector2())
-        {
-            int keyX = RuntimeHelper.CombineHashCodes(key, "x");
+		public void SetV2(int key, Vector2 value)
+		{
+			int keyX = RuntimeHelper.CombineHashCodes(key, "x");
+			int keyY = RuntimeHelper.CombineHashCodes(key, "y");
+			this[keyX] = value.x;
+			this[keyY] = value.y;
+		}
 
-            Vector2 result;
+		public Vector2 GetV2(int key, Vector2 defaultValue = new Vector2())
+		{
+			int keyX = RuntimeHelper.CombineHashCodes(key, "x");
 
-            RecordValue x;
-            if (!TryGetValue(keyX, out x))
-            {
-                result = defaultValue;
-            }
-            else
-            {
-                int keyY = RuntimeHelper.CombineHashCodes(key, "y");
-                result = new Vector2(x, this[keyY]);
-            }
+			Vector2 result;
 
-            return result;
-        }
+			RecordValue x;
+			if (!TryGetValue(keyX, out x))
+			{
+				result = defaultValue;
+			}
+			else
+			{
+				int keyY = RuntimeHelper.CombineHashCodes(key, "y");
+				result = new Vector2(x, this[keyY]);
+			}
 
-        public void SetV3(int key, Vector3 value)
-        {
-            int keyX = RuntimeHelper.CombineHashCodes(key, "x");
-            int keyY = RuntimeHelper.CombineHashCodes(key, "y");
-            int keyZ = RuntimeHelper.CombineHashCodes(key, "z");
-            this[keyX] = value.x;
-            this[keyY] = value.y;
-            this[keyZ] = value.z;
-        }
+			return result;
+		}
 
-        public Vector3 GetV3(int key, Vector3 defaultValue = new Vector3())
-        {
-            int keyX = RuntimeHelper.CombineHashCodes(key, "x");
+		public void SetV3(int key, Vector3 value)
+		{
+			int keyX = RuntimeHelper.CombineHashCodes(key, "x");
+			int keyY = RuntimeHelper.CombineHashCodes(key, "y");
+			int keyZ = RuntimeHelper.CombineHashCodes(key, "z");
+			this[keyX] = value.x;
+			this[keyY] = value.y;
+			this[keyZ] = value.z;
+		}
 
-            Vector3 result;
+		public Vector3 GetV3(int key, Vector3 defaultValue = new Vector3())
+		{
+			int keyX = RuntimeHelper.CombineHashCodes(key, "x");
 
-            RecordValue x;
-            if (!TryGetValue(keyX, out x))
-            {
-                result = defaultValue;
-            }
-            else
-            {
-                int keyY = RuntimeHelper.CombineHashCodes(key, "y");
-                int keyZ = RuntimeHelper.CombineHashCodes(key, "z");
-                result = new Vector3(x, this[keyY], this[keyZ]);
-            }
+			Vector3 result;
 
-            return result;
-        }
-    }
+			RecordValue x;
+			if (!TryGetValue(keyX, out x))
+			{
+				result = defaultValue;
+			}
+			else
+			{
+				int keyY = RuntimeHelper.CombineHashCodes(key, "y");
+				int keyZ = RuntimeHelper.CombineHashCodes(key, "z");
+				result = new Vector3(x, this[keyY], this[keyZ]);
+			}
+
+			return result;
+		}
+	}
+
 #endif
-
 }

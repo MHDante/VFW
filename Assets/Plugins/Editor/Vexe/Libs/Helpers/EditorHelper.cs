@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,12 +7,11 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Vexe.Runtime.Extensions;
-using Vexe.Runtime.Helpers;
 using UnityObject = UnityEngine.Object;
 
 namespace Vexe.Editor.Helpers
 {
-    using Editor = UnityEditor.Editor;
+	using Editor = UnityEditor.Editor;
 
 	/// <summary>
 	/// A bunch of misc editor helper methods
@@ -24,9 +23,9 @@ namespace Vexe.Editor.Helpers
 		/// </summary>
 		public static string[] GetAnimatorVariableNames(Animator animator)
 		{
-            var controller  = animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
-            var parameters = controller.parameters;
-            return parameters.Select(x => x.name).ToArray();
+			var controller = animator.runtimeAnimatorController as UnityEditor.Animations.AnimatorController;
+			var parameters = controller.parameters;
+			return parameters.Select(x => x.name).ToArray();
 		}
 
 		/// <summary>
@@ -61,22 +60,22 @@ namespace Vexe.Editor.Helpers
 		}
 
 		/// <summary>
-        /// Returns all the tags used in the project
-        /// </summary>
-        public static string[] GetTags()
-        {
-            return InternalEditorUtility.tags;
-        }
+		/// Returns all the tags used in the project
+		/// </summary>
+		public static string[] GetTags()
+		{
+			return InternalEditorUtility.tags;
+		}
 
-        /// <summary>
-        /// Returns all the layers used in the project
-        /// </summary>
-        public static string[] GetLayers()
-        {
-            return InternalEditorUtility.layers;
-        }
+		/// <summary>
+		/// Returns all the layers used in the project
+		/// </summary>
+		public static string[] GetLayers()
+		{
+			return InternalEditorUtility.layers;
+		}
 
-        /// <summary>
+		/// <summary>
 		/// Returns true if the specified Object is a scene object
 		/// </summary>
 		public static bool IsSceneObject(UnityObject obj)
@@ -84,31 +83,32 @@ namespace Vexe.Editor.Helpers
 			return !EditorUtility.IsPersistent(obj); // or return !AssetDatabase.Contains(obj);
 		}
 
-        /// <summary>
-        /// Repaints all inspectors. This is what essentially ends up getting called in EditorWindow.Repaint
-        /// </summary>
-        public static void RepaintAllInspectors()
-        {
-            var wnd = GetCachedInspectorWindowType();
-            var repaint = wnd.GetMethod("RepaintAllInspectors", BindingFlags.Static | BindingFlags.NonPublic);
-            repaint.Invoke(null, null);
-        }
+		/// <summary>
+		/// Repaints all inspectors. This is what essentially ends up getting called in EditorWindow.Repaint
+		/// </summary>
+		public static void RepaintAllInspectors()
+		{
+			var wnd = GetCachedInspectorWindowType();
+			var repaint = wnd.GetMethod("RepaintAllInspectors", BindingFlags.Static | BindingFlags.NonPublic);
+			repaint.Invoke(null, null);
+		}
 
-        private static Type _cachedInspWndType;
-        public static Type GetCachedInspectorWindowType()
-        {
-            if (_cachedInspWndType == null)
-                _cachedInspWndType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
-            return _cachedInspWndType;
-        }
+		private static Type _cachedInspWndType;
 
-        /// <summary>
-        /// Returns the full path of the "ScriptableAssets" directory
-        /// </summary>
-        public static string GetScriptableAssetsPath()
-        {
-            return DirectoryHelper.GetDirectoryPath("ScriptableAssets");
-        } 
+		public static Type GetCachedInspectorWindowType()
+		{
+			if (_cachedInspWndType == null)
+				_cachedInspWndType = typeof(Editor).Assembly.GetType("UnityEditor.InspectorWindow");
+			return _cachedInspWndType;
+		}
+
+		/// <summary>
+		/// Returns the full path of the "ScriptableAssets" directory
+		/// </summary>
+		public static string GetScriptableAssetsPath()
+		{
+			return DirectoryHelper.GetDirectoryPath("ScriptableAssets");
+		}
 
 		/// <summary>
 		/// Focuses on the specified window, and returns a reference to it

@@ -1,4 +1,4 @@
-﻿namespace Vexe.Runtime.Types
+namespace Vexe.Runtime.Types
 {
 	/// <summary>
 	/// Decorate an int with this attribute to randomize its value between min and max
@@ -18,6 +18,7 @@
 		{
 		}
 	}
+
 	/// <summary>
 	/// Decorate a float with this attribute to randomize its value between min and max
 	/// </summary>

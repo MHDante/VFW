@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using Vexe.Runtime.Extensions;
@@ -18,7 +18,7 @@ namespace Vexe.Editor.Others
 		private static Stack<SelOp> _undo = new Stack<SelOp>();
 		private static Stack<SelOp> _redo = new Stack<SelOp>();
 
-		const string MenuPath = "Tools/Vexe/SelectionMemorizer";
+		private const string MenuPath = "Tools/Vexe/SelectionMemorizer";
 
 		static SelectionMemorizer()
 		{

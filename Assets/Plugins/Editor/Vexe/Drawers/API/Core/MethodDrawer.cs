@@ -1,8 +1,8 @@
 //#define DBG
 
 using System;
-using System.Reflection;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using Vexe.Editor.GUIs;
 using Vexe.Editor.Types;
@@ -22,13 +22,13 @@ namespace Vexe.Editor.Drawers
 		private string niceName;
 		private bool initialized;
 
-        private string comment;
+		private string comment;
 
 		private object rawTarget;
-        private UnityObject unityTarget;
+		private UnityObject unityTarget;
 		private int id;
 		private BaseGUI gui;
-        private bool isCoroutine;
+		private bool isCoroutine;
 
 		private EditorRecord prefs;
 
@@ -40,32 +40,32 @@ namespace Vexe.Editor.Drawers
 
 		public void Initialize(MethodInfo method, object rawTarget, UnityObject unityTarget, int id, BaseGUI gui, EditorRecord prefs)
 		{
-            this.prefs = prefs;
+			this.prefs = prefs;
 			this.gui = gui;
 			this.rawTarget = rawTarget;
-            this.unityTarget = unityTarget;
+			this.unityTarget = unityTarget;
 			this.id = id;
 
 			if (initialized) return;
 			initialized = true;
 
-            isCoroutine = method.ReturnType == typeof(IEnumerator);
+			isCoroutine = method.ReturnType == typeof(IEnumerator);
 
-            var commentAttr = method.GetCustomAttribute<CommentAttribute>();
-            if (commentAttr != null)
-                comment = commentAttr.comment;
+			var commentAttr = method.GetCustomAttribute<CommentAttribute>();
+			if (commentAttr != null)
+				comment = commentAttr.comment;
 
 			niceName = method.GetNiceName();
 
-            if (niceName.IsPrefix("dbg") || niceName.IsPrefix("Dbg"))
-                niceName = niceName.Remove(0, 3);
+			if (niceName.IsPrefix("dbg") || niceName.IsPrefix("Dbg"))
+				niceName = niceName.Remove(0, 3);
 
-			invoke	     = method.DelegateForCall();
+			invoke = method.DelegateForCall();
 			var argInfos = method.GetParameters();
-			int len      = argInfos.Length;
-			argValues    = new object[len];
-			argKeys      = new int[len];
-			argMembers   = new EditorMember[len];
+			int len = argInfos.Length;
+			argValues = new object[len];
+			argKeys = new int[len];
+			argMembers = new EditorMember[len];
 
 			for (int iLoop = 0; iLoop < len; iLoop++)
 			{
@@ -76,16 +76,16 @@ namespace Vexe.Editor.Drawers
 
 				argValues[i] = TryLoad(argInfos[i].ParameterType, argKeys[i]);
 
-                argMembers[i] = EditorMember.WrapGetSet(
-                        @get         : () =>  argValues[i],
-                        @set         : x => argValues[i] = x,
-                        @rawTarget   : rawTarget,
-                        @unityTarget : unityTarget,
-                        @attributes  : argInfo.GetCustomAttributes(true) as Attribute[],
-                        @name        : argInfo.Name,
-                        @id          : argKeys[i],
-                        @dataType    : argInfo.ParameterType
-                    );
+				argMembers[i] = EditorMember.WrapGetSet(
+						@get: () => argValues[i],
+						@set: x => argValues[i] = x,
+						@rawTarget: rawTarget,
+						@unityTarget: unityTarget,
+						@attributes: argInfo.GetCustomAttributes(true) as Attribute[],
+						@name: argInfo.Name,
+						@id: argKeys[i],
+						@dataType: argInfo.ParameterType
+					);
 			}
 
 #if DBG
@@ -95,8 +95,8 @@ namespace Vexe.Editor.Drawers
 
 		public bool OnGUI()
 		{
-            if (comment != null)
-                gui.HelpBox(comment);
+			if (comment != null)
+				gui.HelpBox(comment);
 
 			bool changed = false;
 			if (Header() && argMembers.Length > 0)
@@ -120,13 +120,13 @@ namespace Vexe.Editor.Drawers
 			using (gui.Horizontal())
 			{
 				if (gui.Button(niceName, GUIStyles.Mini))
-                {
-                    var mb = unityTarget as MonoBehaviour;
-                    if (isCoroutine && mb != null)
-                        mb.StartCoroutine(invoke(rawTarget, argValues) as IEnumerator);
-                    else
-                        invoke(rawTarget, argValues);
-                }
+				{
+					var mb = unityTarget as MonoBehaviour;
+					if (isCoroutine && mb != null)
+						mb.StartCoroutine(invoke(rawTarget, argValues) as IEnumerator);
+					else
+						invoke(rawTarget, argValues);
+				}
 
 				gui.Space(12f);
 				if (argMembers.Length > 0)
@@ -138,30 +138,30 @@ namespace Vexe.Editor.Drawers
 			return foldout;
 		}
 
-		void TrySave(object obj, int key)
+		private void TrySave(object obj, int key)
 		{
 			if (obj == null) return;
 
 			var type = obj.GetType();
-            if (type.IsEnum || type == typeof(int))
-				 prefs[key] = (int)obj;
+			if (type.IsEnum || type == typeof(int))
+				prefs[key] = (int) obj;
 			else if (type == typeof(string))
-				 prefs[key] = (string)obj;
+				prefs[key] = (string) obj;
 			else if (type == typeof(float))
-				 prefs[key] = (float)obj;
+				prefs[key] = (float) obj;
 			else if (type == typeof(bool))
-				 prefs[key] = (bool)obj;
+				prefs[key] = (bool) obj;
 		}
 
-		object TryLoad(Type type, int key)
+		private object TryLoad(Type type, int key)
 		{
-            if (type.IsEnum)
-            {
-                int value = prefs[key];
-                object result = Enum.ToObject(type, value);
-                return result;
-            }
-            if (type == typeof(int))
+			if (type.IsEnum)
+			{
+				int value = prefs[key];
+				object result = Enum.ToObject(type, value);
+				return result;
+			}
+			if (type == typeof(int))
 				return prefs[key];
 			if (type == typeof(string))
 				return prefs[key];

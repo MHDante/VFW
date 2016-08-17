@@ -1,24 +1,20 @@
-﻿using System;
-using Vexe.Editor.Types;
+using System;
 using Vexe.Runtime.Extensions;
 using Vexe.Runtime.Types;
 
-namespace Vexe.Editor.Drawers 
+namespace Vexe.Editor.Drawers
 {
+	public abstract class AttributeDrawer<A> : BaseDrawer where A : DrawnAttribute
+	{
+		protected A attribute { private set; get; }
 
-    public abstract class AttributeDrawer<A> : BaseDrawer where A : DrawnAttribute 
-    {
-        protected A attribute { private set; get; }
+		protected sealed override void InternalInitialize()
+		{
+			attribute = attributes.GetAttribute<A>();
+		}
+	}
 
-        protected sealed override void InternalInitialize() 
-        {
-            attribute = attributes.GetAttribute<A>();
-        }
-
-    }
-
-
-    public abstract class AttributeDrawer<T, A> : ObjectDrawer<T> where A : DrawnAttribute
+	public abstract class AttributeDrawer<T, A> : ObjectDrawer<T> where A : DrawnAttribute
 	{
 		protected A attribute { private set; get; }
 
@@ -27,9 +23,9 @@ namespace Vexe.Editor.Drawers
 			attribute = attributes.GetAttribute<A>();
 		}
 
-        public override bool CanHandle(Type memberType)
-        {
-            return memberType.IsA<T>() || memberType.IsSubclassOrImplementerOfRawGeneric(typeof(T));
-        }
-    }
+		public override bool CanHandle(Type memberType)
+		{
+			return memberType.IsA<T>() || memberType.IsSubclassOrImplementerOfRawGeneric(typeof(T));
+		}
+	}
 }

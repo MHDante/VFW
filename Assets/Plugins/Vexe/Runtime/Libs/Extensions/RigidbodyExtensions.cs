@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Runtime.Extensions
 {
@@ -21,7 +21,7 @@ namespace Vexe.Runtime.Extensions
 
 		public static void FreezeAllExcept(this Rigidbody rb, RigidbodyConstraints except)
 		{
-			rb.constraints = RigidbodyConstraints.FreezeAll - (int)except;
+			rb.constraints = RigidbodyConstraints.FreezeAll - (int) except;
 		}
 	}
 }

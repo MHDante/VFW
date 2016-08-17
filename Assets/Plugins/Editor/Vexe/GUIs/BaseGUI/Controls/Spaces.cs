@@ -1,4 +1,3 @@
-﻿
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI

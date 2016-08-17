@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
@@ -11,7 +11,7 @@ namespace Vexe.Editor.GUIs
 
 		public bool Toggle(string label, bool value)
 		{
-			return Toggle(label, value, (Layout)null);
+			return Toggle(label, value, (Layout) null);
 		}
 
 		public bool Toggle(string label, bool value, Layout option)
@@ -35,7 +35,6 @@ namespace Vexe.Editor.GUIs
 		}
 
 		public abstract bool Toggle(GUIContent content, bool value, GUIStyle style, Layout option);
-
 
 		public bool ToggleLeft(string label, bool value)
 		{

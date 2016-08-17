@@ -8,10 +8,10 @@ namespace Vexe.Editor.GUIs
 		{
 			int nControls = controls.Count;
 			if (nControls == 0)
-            { 
-                width = height = 0;
+			{
+				width = height = 0;
 				return;
-            }
+			}
 
 			RectOffset blockMargin = data.style.margin;
 
@@ -23,9 +23,9 @@ namespace Vexe.Editor.GUIs
 
 			for (int i = 0; i < nControls; i++)
 			{
-				var control       = controls[i];
-				var controlData   = control.data;
-				var option        = controlData.option;
+				var control = controls[i];
+				var controlData = control.data;
+				var option = controlData.option;
 				var controlMargin = controlData.style.margin;
 
 				control.width = GetWidth(option, start);
@@ -42,14 +42,14 @@ namespace Vexe.Editor.GUIs
 				control.y = nextY;
 
 				var controlHeight = control.height.Value + controlMargin.bottom / 2f;
-				nextY		+= controlHeight;
+				nextY += controlHeight;
 				totalHeight += controlHeight;
 
 				start.y = nextY;
 			}
 
 			height = totalHeight + blockMargin.bottom;
-			width  = totalWidth + blockMargin.right;
+			width = totalWidth + blockMargin.right;
 		}
 
 		public override Layout Space(float pxl)
