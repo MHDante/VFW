@@ -19,12 +19,14 @@ namespace VFWExamples
 		[PerValue, OnChanged(Set = "localScale")]
 		public Dictionary<string, Vector3> dictionary;
 
+		[Show]
 		public Vector3 position
 		{
 			get { return transform.position; }
 			set { transform.position = value; }
 		}
 
+		[Show]
 		public Vector3 localScale
 		{
 			get { return transform.localScale; }

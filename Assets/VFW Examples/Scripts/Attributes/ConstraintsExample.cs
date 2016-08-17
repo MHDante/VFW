@@ -8,12 +8,14 @@ namespace VFWExamples
 		public string ip;
 
 		[Comment("Can't go further than 7.5"), fMax(7.5f)]
+		[Show]
 		public float MaxFloatTo7Point5 { get; set; }
 
 		[Comment("Can't go further than 100"), iMax(100)]
 		public int maxIntTo100;
 
 		[Comment("Can't go below 0"), iMin(0)]
+		[Show]
 		public int MinIntTo0 { get; set; }
 
 		[Comment("Can't go below 1.5"), fMin(1.5f)]
@@ -26,6 +28,7 @@ namespace VFWExamples
 		public float clampedFloat;
 
 		[Comment("Value must be between 3 and 10"), iClamp(3, 10)]
+		[Show]
 		public int ClampedInt { get; set; }
 
 		[Comment("Value must start with `name:`"), Regex("^name:")]

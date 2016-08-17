@@ -23,7 +23,10 @@ namespace VFWExamples
 		public int exInt2;
 		public int exInt3;
 
+		[Show]
 		public float floatProp1 { get; set; }
+
+		[Show]
 		public float floatProp2 { get; set; }
 
 		[Show]
