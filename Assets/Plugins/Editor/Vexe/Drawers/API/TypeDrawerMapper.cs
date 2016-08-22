@@ -57,10 +57,14 @@ namespace Vexe.Editor
 			// Basics
 			{
 				this.Add<string, StringDrawer>()
+					.Add<char, CharDrawer>()
 					.Add<int, IntDrawer>()
 					.Add<uint, UIntDrawer>()
+					.Add<short, ShortDrawer>()
+					.Add<ushort, UShortDrawer>()
 					.Add<float, FloatDrawer>()
-					.Add<float, ByteDrawer>()
+					.Add<byte, ByteDrawer>()
+					.Add<sbyte, SByteDrawer>()
 					.Add<double, DoubleDrawer>()
 					.Add<long, LongDrawer>()
 					.Add<bool, BoolDrawer>()
@@ -74,7 +78,6 @@ namespace Vexe.Editor
 					.Add<LayerMask, LayerMaskDrawer>()
 					.Add<Rect, RectDrawer>()
 					.Add<Bounds, BoundsDrawer>()
-					.Add<PopupAttribute, PopupDrawer>()
 					.Add<Enum, EnumDrawer>(true)
 					.Add<UnityObject, UnityObjectDrawer>(true);
 			}
@@ -140,6 +143,7 @@ namespace Vexe.Editor
 						.Add<DraggableAttribute, DraggableDrawer>()
 						.Add<InlineAttribute, InlineDrawer>()
 						.Add<OnChangedAttribute, OnChangedDrawer>()
+						.Add<OnChangedNoArgAttribute, OnChangedNoArgDrawer>()
 						.Add<PathAttribute, PathDrawer>()
 						.Add<ShowTypeAttribute, ShowTypeDrawer>()
 						.Add<fSliderAttribute, fSliderDrawer>()
@@ -151,8 +155,18 @@ namespace Vexe.Editor
 				}
 				// Popups
 				{
-					this.Add<AnimVarAttribute, AnimVarDrawer>()
-						.Add<PopupAttribute, PopupDrawer>()
+					this.Add<IntPopupAttribute, IntPopupDrawer>()
+						.Add<UIntPopupAttribute, UIntPopupDrawer>()
+						.Add<BytePopupAttribute, BytePopupDrawer>()
+						.Add<SBytePopupAttribute, SBytePopupDrawer>()
+						.Add<ShortPopupDrawer, ShortPopupDrawer>()
+						.Add<UShortPopupAttribute, UShortPopupDrawer>()
+						.Add<FloatPopupAttribute, FloatPopupDrawer>()
+						.Add<DoublePopupAttribute, DoublePopupDrawer>()
+						.Add<LongPopupAttribute, LongPopupDrawer>()
+						.Add<CharPopupAttribute, CharPopupDrawer>()
+						.Add<AnimVarAttribute, AnimVarDrawer>()
+						.Add<StringPopupAttribute, StringPopupDrawer>()
 						.Add<InputAxisAttribute, InputAxisDrawer>()
 						.Add<TagsAttribute, TagsDrawer>();
 				}

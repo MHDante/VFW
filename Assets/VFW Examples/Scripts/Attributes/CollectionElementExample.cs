@@ -24,7 +24,7 @@ namespace VFWExamples
 		public List<KeyCode> list;
 
 		// apply Popup on each key, iClamp and Comment on each value and Display on dictionary
-		[PerKey("Popup"), Popup("GetNames", TextField = true),
+		[PerKey("StringPopup"), StringPopup("GetNames", TextField = true),
 		PerValue("iClamp", "Comment"), iClamp(0, 10), Comment("0 -> 10"),
 		Display(Dict.ForceExpand)]
 		public Dictionary<string, int> dictionary;

@@ -1,4 +1,4 @@
-//#define PROFILE
+﻿//#define PROFILE
 
 using System;
 using System.Collections.Generic;
@@ -10,24 +10,171 @@ using Vexe.Runtime.Types;
 
 namespace Vexe.Editor.Drawers
 {
-	public class PopupDrawer : AttributeDrawer<string, PopupAttribute>
+	public abstract class PopupDrawer<T, A> : AttributeDrawer<T, A>
+		where A : PopupAttribute
+		where T : IComparable, IComparable<T>, IEquatable<T>
 	{
-		private string[] _values;
-		private int? _currentIndex;
+		protected int? CurrentIndex;
+
 		private MethodCaller<object, object> _populateMethod;
 		private MemberGetter<object, object> _populateMember;
 		private bool _populateFromTarget, _populateFromType;
-		private static string[] Empty = new string[1] { "--empty--" };
 		private const string kOwnerTypePrefix = "target";
 		private bool _showUpdateButton = true, _changed;
 		private TextFilter _filter;
+		private string[] _displayStrings;
+		private T[] _cacheValues;
 
-		protected override void Initialize()
+		protected T[] Values;
+
+		protected abstract T[] Empty { get; }
+
+		protected abstract T Default { get; }
+
+		protected abstract T[] GetAttributeValues();
+
+		protected abstract T Convert(string stringValue);
+
+		protected virtual T DropDown(string displayText, T currentValue, string[] displayValues)
+		{
+			var value = gui.TextFieldDropDown(displayText, currentValue.ToString(), displayValues);
+
+			return Convert(value);
+		}
+
+		protected virtual string[] GetDisplayStrings(T[] values)
+		{
+			var displayStrings = new string[values.Length];
+
+			for (var i = 0; i < values.Length; ++i)
+				displayStrings[i] = values[i].ToString();
+
+			return displayStrings;
+		}
+
+		protected virtual TextFilter GetTextFilter(T[] values, int id, EditorRecord prefs)
+		{
+			return null;
+		}
+
+		public sealed override void OnGUI()
+		{
+			if (memberValue == null)
+				memberValue = Default;
+
+			if (Values == null)
+			{
+				UpdateValues();
+
+				if (attribute.Filter)
+					_filter = GetTextFilter(Values, id, prefs);
+			}
+
+			if (TryCache())
+				_displayStrings = GetDisplayStrings(Values);
+
+			T newValue = Default;
+			T currentValue = memberValue;
+
+			using (gui.Horizontal())
+			{
+				if (attribute.TextField)
+				{
+#if PROFILE
+					Profiler.BeginSample("PopupDrawer TextFieldDrop");
+#endif
+
+					newValue = DropDown(displayText, memberValue, _displayStrings);
+
+					if (!currentValue.Equals(newValue))
+						_changed = true;
+
+#if PROFILE
+					Profiler.EndSample();
+#endif
+				}
+				else
+				{
+#if PROFILE
+					Profiler.BeginSample("PopupDrawer TextFieldDrop");
+#endif
+
+					if (!CurrentIndex.HasValue)
+					{
+						if (attribute.TakeLastPathItem)
+							CurrentIndex = Values.IndexOf(x => GetActualValue(ref x).Equals(currentValue));
+						else
+							CurrentIndex = Values.IndexOf(currentValue);
+					}
+
+					if (CurrentIndex == -1)
+					{
+						CurrentIndex = 0;
+						if (Values.Length > 0)
+							SetValue(Values[0]);
+					}
+
+					gui.BeginCheck();
+
+					int selection = gui.Popup(displayText, CurrentIndex.Value, _displayStrings);
+					if (gui.HasChanged() && Values.Length > 0)
+					{
+						CurrentIndex = selection;
+						_changed = true;
+						newValue = Values[selection];
+					}
+
+#if PROFILE
+					Profiler.EndSample();
+#endif
+				}
+
+				if (attribute.Filter && _filter != null)
+					_filter.OnGUI(gui, 45f);
+
+				if (_changed)
+				{
+					_changed = false;
+					SetValue(newValue);
+				}
+
+				if (_showUpdateButton && gui.MiniButton("U", "Update popup values", MiniButtonStyle.Right))
+					UpdateValues();
+			}
+		}
+
+		public void UpdateValues()
+		{
+			object target;
+			if (_populateFromTarget)
+				target = unityTarget;
+			else if (_populateFromType)
+				target = null;
+			else target = rawTarget;
+
+			if (_populateMember != null)
+			{
+				var pop = _populateMember(target);
+				if (pop != null)
+					Values = ProcessPopulation(pop);
+			}
+			else if (_populateMethod != null)
+			{
+				var pop = _populateMethod(target, null);
+				if (pop != null)
+					Values = ProcessPopulation(pop);
+			}
+			else Values = Empty;
+		}
+
+		protected sealed override void Initialize()
 		{
 			string fromMember = attribute.PopulateFrom;
+
 			if (fromMember.IsNullOrEmpty())
 			{
-				_values = attribute.values;
+				Values = GetAttributeValues();
+
 				_showUpdateButton = false;
 			}
 			else
@@ -84,143 +231,68 @@ namespace Vexe.Editor.Drawers
 					}
 				}
 			}
+
+			if (TryCache())
+				_displayStrings = GetDisplayStrings(Values);
+
+			if (attribute.Filter)
+				_filter = GetTextFilter(Values, id, prefs);
 		}
 
-		public override void OnGUI()
+		protected virtual T GetActualValue(ref T value)
 		{
-			if (memberValue == null)
-				memberValue = string.Empty;
-
-			if (_values == null)
-			{
-				UpdateValues();
-				if (attribute.Filter)
-					_filter = new TextFilter(_values, id, false, prefs, SetValue);
-			}
-
-			string newValue = null;
-			string currentValue = memberValue;
-
-			using (gui.Horizontal())
-			{
-				if (attribute.TextField)
-				{
-#if PROFILE
-                    Profiler.BeginSample("PopupDrawer TextFieldDrop");
-#endif
-
-					newValue = gui.TextFieldDropDown(displayText, memberValue, _values);
-					if (currentValue != newValue)
-						_changed = true;
-
-#if PROFILE
-                    Profiler.EndSample();
-#endif
-				}
-				else
-				{
-#if PROFILE
-                    Profiler.BeginSample("PopupDrawer TextFieldDrop");
-#endif
-
-					if (!_currentIndex.HasValue)
-					{
-						if (attribute.TakeLastPathItem)
-							_currentIndex = _values.IndexOf(x => GetActualValue(x) == currentValue);
-						else
-							_currentIndex = _values.IndexOf(currentValue);
-					}
-
-					if (_currentIndex == -1)
-					{
-						_currentIndex = 0;
-						if (_values.Length > 0)
-							SetValue(_values[0]);
-					}
-
-					gui.BeginCheck();
-					int selection = gui.Popup(displayText, _currentIndex.Value, _values);
-					if (gui.HasChanged() && _values.Length > 0)
-					{
-						_currentIndex = selection;
-						_changed = true;
-						newValue = _values[selection];
-					}
-
-#if PROFILE
-                    Profiler.EndSample();
-#endif
-				}
-
-				if (attribute.Filter)
-					_filter.OnGUI(gui, 45f);
-
-				if (_changed)
-				{
-					_changed = false;
-					SetValue(newValue);
-				}
-
-				if (_showUpdateButton && gui.MiniButton("U", "Update popup values", MiniButtonStyle.Right))
-					UpdateValues();
-			}
+			return value;
 		}
 
-		private string GetActualValue(string value)
-		{
-			string result = value;
-			if (attribute.TakeLastPathItem && !string.IsNullOrEmpty(value))
-			{
-				int lastPathIdx = value.LastIndexOf('/') + 1;
-				if (lastPathIdx != -1)
-					result = value.Substring(lastPathIdx);
-			}
-			return result;
-		}
-
-		private void SetValue(string value)
+		protected void SetValue(T value)
 		{
 			if (!attribute.TextField && attribute.TakeLastPathItem && attribute.Filter)
-				_currentIndex = _values.IndexOf(value);
+				CurrentIndex = Values.IndexOf(value);
 
-			memberValue = GetActualValue(value);
+			memberValue = GetActualValue(ref value);
 		}
 
-		public void UpdateValues()
+		protected T[] ProcessPopulation(object obj)
 		{
-			object target;
-			if (_populateFromTarget)
-				target = unityTarget;
-			else if (_populateFromType)
-				target = null;
-			else target = rawTarget;
-
-			if (_populateMember != null)
-			{
-				var pop = _populateMember(target);
-				if (pop != null)
-					_values = ProcessPopulation(pop);
-			}
-			else if (_populateMethod != null)
-			{
-				var pop = _populateMethod(target, null);
-				if (pop != null)
-					_values = ProcessPopulation(pop);
-			}
-			else _values = Empty;
-		}
-
-		private string[] ProcessPopulation(object obj)
-		{
-			var arr = obj as string[];
+			var arr = obj as T[];
 			if (arr != null)
 				return arr;
 
-			var list = obj as List<string>;
+			var list = obj as List<T>;
 			if (list != null)
 				return list.ToArray();
 
 			return Empty;
+		}
+
+		private bool TryCache()
+		{
+			if (Values == null)
+				return false;
+
+			if (_cacheValues == null ||
+				_cacheValues.Length != Values.Length)
+			{
+				_cacheValues = new T[Values.Length];
+
+				for (var i = 0; i < Values.Length; ++i)
+					_cacheValues[i] = Values[i];
+
+				return true;
+			}
+
+			var cached = false;
+
+			for (var i = 0; i < Values.Length; ++i)
+			{
+				if (!_cacheValues[i].Equals(Values[i]))
+				{
+					_cacheValues[i] = Values[i];
+					cached = true;
+				}
+			}
+
+			return cached;
 		}
 	}
 }

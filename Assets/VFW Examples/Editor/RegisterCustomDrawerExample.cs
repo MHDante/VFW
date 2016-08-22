@@ -95,8 +95,8 @@ namespace VFWExamples
 				new Attribute[]
 				{
 					new DisplayAttribute(Dict.HorizontalPairs), // apply horizontal display on the dictionary pairs
-					new PerKeyAttribute("Popup"), // popup per key
-					new PopupAttribute("ItemsLookup.GetValues")
+					new PerKeyAttribute("StringPopup"), // popup per key
+					new StringPopupAttribute("ItemsLookup.GetValues")
 					{
 						TextField = true, // we want a nice text field
 						TakeLastPathItem = true, // since we're using '/' in our values, we only care about the last item in the path

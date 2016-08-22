@@ -27,8 +27,8 @@ namespace VFWExamples
 			public static Attribute[] MyAttributes = new Attribute[]
 			{
 				new DisplayAttribute(Dict.HorizontalPairs | Dict.Filter),
-				new PerKeyAttribute("Popup"),
-				new PopupAttribute("MyContainer.GetValues")
+				new PerKeyAttribute("StringPopup"),
+				new StringPopupAttribute("MyContainer.GetValues")
 				{
 					TextField = true,
 					TakeLastPathItem = true,

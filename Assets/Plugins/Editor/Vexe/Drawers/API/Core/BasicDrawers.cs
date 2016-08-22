@@ -18,11 +18,11 @@ namespace Vexe.Editor.Drawers
 		{
 			memberValue = DoField(displayText, memberValue);
 #if DBG
-            var curValue = memberValue;
-            var newValue = DoField(niceName, curValue);
-            memberValue = newValue;
-            if(!newValue.Equals(curValue))
-                Debug.Log(newValue);
+			var curValue = memberValue;
+			var newValue = DoField(niceName, curValue);
+			memberValue = newValue;
+			if(!newValue.Equals(curValue))
+				Debug.Log(newValue);
 #endif
 		}
 	}
@@ -75,11 +75,43 @@ namespace Vexe.Editor.Drawers
 		}
 	}
 
+	public class SByteDrawer : BasicDrawer<sbyte>
+	{
+		protected override sbyte DoField(string text, sbyte value)
+		{
+			return (sbyte) gui.Int(text, value);
+		}
+	}
+
+	public class ShortDrawer : BasicDrawer<short>
+	{
+		protected override short DoField(string text, short value)
+		{
+			return (short) gui.Int(text, value);
+		}
+	}
+
+	public class UShortDrawer : BasicDrawer<ushort>
+	{
+		protected override ushort DoField(string text, ushort value)
+		{
+			return (ushort) gui.Int(text, value);
+		}
+	}
+
 	public class StringDrawer : BasicDrawer<string>
 	{
 		protected override string DoField(string text, string value)
 		{
 			return gui.Text(text, value);
+		}
+	}
+
+	public class CharDrawer : BasicDrawer<char>
+	{
+		protected override char DoField(string text, char value)
+		{
+			return (char) gui.Int(text, value);
 		}
 	}
 

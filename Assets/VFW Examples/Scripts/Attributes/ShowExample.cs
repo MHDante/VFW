@@ -44,7 +44,7 @@ namespace VFWExamples
 
 		[Show]
 		private void Method3(
-			[Popup("ItemNames")] string item,
+			[StringPopup("ItemNames")] string item,
 			[Tags, FilterTags] string tag,
 			[SelectEnum] KeyCode key)
 		{

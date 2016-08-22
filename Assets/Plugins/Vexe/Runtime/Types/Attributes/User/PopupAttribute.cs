@@ -1,17 +1,13 @@
-using System;
+﻿using System;
 
 namespace Vexe.Runtime.Types
 {
-	/// <summary>
-	/// Annotate a string with this attribute to have its value selected from a popup
-	/// </summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter)]
-	public class PopupAttribute : DrawnAttribute
+	public abstract class PopupAttribute : DrawnAttribute
 	{
 		/// <summary>
 		/// Use this if you want to dynamically generate the popup values instead of having to hardcode them
-		/// This could be a method with no parameters, and a return type of an array of string, float or int
-		/// or a field/property with the right return type
+		/// This could be a method with no parameters, or a field/property, with the right return type
 		/// </summary>
 		public string PopulateFrom;
 
@@ -40,19 +36,12 @@ namespace Vexe.Runtime.Types
 		/// </summary>
 		public bool Filter;
 
-		/// <summary>
-		/// The popup values
-		/// </summary>
-		public readonly string[] values;
+		protected PopupAttribute()
+		{ }
 
-		public PopupAttribute(string populateFrom)
+		protected PopupAttribute(string populateFrom)
 		{
 			PopulateFrom = populateFrom;
-		}
-
-		public PopupAttribute(params string[] strings)
-		{
-			values = strings;
 		}
 	}
 }
