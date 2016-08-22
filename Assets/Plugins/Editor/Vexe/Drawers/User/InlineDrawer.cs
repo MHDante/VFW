@@ -76,9 +76,9 @@ namespace Vexe.Editor.Drawers
 							"rect", "depth", "renderingPath", "targetTexture", "useOcclusionCulling", "hdr",
 							"isOrthoGraphic");
 
-                        // TODO: improve cullingMask drawing. right now it's a float, gui.Layer doesn't cut it too
+						// TODO: improve cullingMask drawing. right now it's a float, gui.Layer doesn't cut it too
 
-                        using (gui.Indent())
+						using (gui.Indent())
 						{
 							var c = target as Camera;
 							if (c.orthographic)
@@ -140,7 +140,7 @@ namespace Vexe.Editor.Drawers
 			expandValues = new List<bool>();
 			GuiBox = attribute.GuiBox;
 #if DBG
-            Log("Initialized InlineDrawer " + niceName);
+			Log("Initialized InlineDrawer " + niceName);
 #endif
 		}
 

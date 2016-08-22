@@ -76,14 +76,14 @@ namespace Vexe.Editor.GUIs
 				composites = MemberDrawersHandler.GetCompositeDrawers(member, attributes);
 
 #if DBG
-            Label(member.Id);
-            Debug.Log("Got drawer " + memberDrawer.GetType().Name + " for member " + member.Name + " Key: " + handlerKey);
+			Label(member.Id);
+			Debug.Log("Got drawer " + memberDrawer.GetType().Name + " for member " + member.Name + " Key: " + handlerKey);
 #endif
 
 			if (composites == null || composites.Count == 0)
 			{
 #if PROFILE
-                Profiler.BeginSample(memberDrawer.GetType().Name + " OnGUI (C)");
+				Profiler.BeginSample(memberDrawer.GetType().Name + " OnGUI (C)");
 #endif
 
 				BeginCheck();
@@ -91,7 +91,7 @@ namespace Vexe.Editor.GUIs
 					memberDrawer.OnGUI();
 				}
 #if PROFILE
-                Profiler.EndSample();
+				Profiler.EndSample();
 #endif
 				return HasChanged();
 			}
@@ -102,64 +102,64 @@ namespace Vexe.Editor.GUIs
 			bool changed = false;
 
 #if PROFILE
-            Profiler.BeginSample("OnUpperGUI " + member.Name);
+			Profiler.BeginSample("OnUpperGUI " + member.Name);
 #endif
 			for (int i = 0; i < composites.Count; i++)
 				composites[i].OnUpperGUI();
 #if PROFILE
-            Profiler.EndSample();
+			Profiler.EndSample();
 #endif
 			using (Horizontal())
 			{
 #if PROFILE
-                Profiler.BeginSample("OnLeftGUI " + member.Name);
+				Profiler.BeginSample("OnLeftGUI " + member.Name);
 #endif
 				for (int i = 0; i < composites.Count; i++)
 					composites[i].OnLeftGUI();
 #if PROFILE
-                Profiler.EndSample();
+				Profiler.EndSample();
 #endif
 				using (Vertical())
 				{
 #if PROFILE
-                    Profiler.BeginSample(memberDrawer.GetType().Name + " OnGUI");
+					Profiler.BeginSample(memberDrawer.GetType().Name + " OnGUI");
 #endif
 					BeginCheck();
 					{
 						memberDrawer.OnGUI();
 					}
 #if PROFILE
-                    Profiler.EndSample();
+					Profiler.EndSample();
 #endif
 					changed = HasChanged();
 
 #if PROFILE
-                    Profiler.BeginSample("OnMemberDrawn" + member.Name);
+					Profiler.BeginSample("OnMemberDrawn" + member.Name);
 #endif
 					for (int i = 0; i < composites.Count; i++)
 						composites[i].OnMemberDrawn(LastRect);
 #if PROFILE
-                    Profiler.EndSample();
+					Profiler.EndSample();
 #endif
 				}
 
 #if PROFILE
-                Profiler.BeginSample("OnRightGUI " + member.Name);
+				Profiler.BeginSample("OnRightGUI " + member.Name);
 #endif
 				for (int i = 0; i < composites.Count; i++)
 					composites[i].OnRightGUI();
 #if PROFILE
-                Profiler.EndSample();
+				Profiler.EndSample();
 #endif
 			}
 
 #if PROFILE
-            Profiler.BeginSample("OnLowerGUI " + member.Name);
+			Profiler.BeginSample("OnLowerGUI " + member.Name);
 #endif
 			for (int i = 0; i < composites.Count; i++)
 				composites[i].OnLowerGUI();
 #if PROFILE
-            Profiler.EndSample();
+			Profiler.EndSample();
 #endif
 			return changed;
 		}

@@ -35,7 +35,7 @@ namespace Vexe.Editor.GUIs
 				if (_nextControlIdx - 1 >= _controls.Count)
 				{
 #if dbg_level_1
-                    Debug.Log("Last rect out of range. Returning dummy rect. If that's causing problems, maybe request a seek instead. nextControlIdx {0}. controls.Count {1}".FormatWith(_nextControlIdx, _controls.Count));
+					Debug.Log("Last rect out of range. Returning dummy rect. If that's causing problems, maybe request a seek instead. nextControlIdx {0}. controls.Count {1}".FormatWith(_nextControlIdx, _controls.Count));
 #endif
 					return kDummyRect; // or maybe request reset?
 				}
@@ -66,26 +66,26 @@ namespace Vexe.Editor.GUIs
 		private static MethodCaller<object, Gradient> _gradientField;
 
 #if dbg_level_1
-        private int dbgMaxDepth;
-        public static void LogCallStack()
-        {
-            string stack = RuntimeHelper.GetCallStack();
-            Debug.Log("Call stack: " + stack);
-        }
+		private int dbgMaxDepth;
+		public static void LogCallStack()
+		{
+			string stack = RuntimeHelper.GetCallStack();
+			Debug.Log("Call stack: " + stack);
+		}
 #endif
 
 #if dbg_level_2
-        private bool m_pendingReset;
-        private bool _pendingReset
-        {
-            get { return m_pendingReset; }
-            set
-            {
-                if (value)
-                    Debug.Log("Setting Reset Request to True! Came from: " + RuntimeHelper.GetCallStack());
-                m_pendingReset = value;
-            }
-        }
+		private bool m_pendingReset;
+		private bool _pendingReset
+		{
+			get { return m_pendingReset; }
+			set
+			{
+				if (value)
+					Debug.Log("Setting Reset Request to True! Came from: " + RuntimeHelper.GetCallStack());
+				m_pendingReset = value;
+			}
+		}
 #else
 		private bool _pendingReset;
 #endif
@@ -99,7 +99,7 @@ namespace Vexe.Editor.GUIs
 			this.prefs = prefs;
 
 #if dbg_level_1
-                Debug.Log("Instantiated Rabbit");
+				Debug.Log("Instantiated Rabbit");
 #endif
 		}
 
@@ -203,7 +203,7 @@ namespace Vexe.Editor.GUIs
 			if (_currentPhase == GUIPhase.Layout)
 			{
 #if dbg_level_1
-                    Debug.Log("Layout phase. Was pending layout: {0}. Was pending reset: {1}".FormatWith(_pendingLayout, _pendingReset));
+					Debug.Log("Layout phase. Was pending layout: {0}. Was pending reset: {1}".FormatWith(_pendingLayout, _pendingReset));
 #endif
 				Width = start.width;
 				Height = 0f;
@@ -252,8 +252,8 @@ namespace Vexe.Editor.GUIs
 				}
 
 #if dbg_level_1
-                    Debug.Log("Done layout. Deepest Block depth: {0}. Total number of blocks created: {1}. Total number of controls {2}"
-                                .FormatWith(dbgMaxDepth, _blocks.Count, _controls.Count));
+					Debug.Log("Done layout. Deepest Block depth: {0}. Total number of blocks created: {1}. Total number of controls {2}"
+								.FormatWith(dbgMaxDepth, _blocks.Count, _controls.Count));
 #endif
 			}
 			else
@@ -261,9 +261,9 @@ namespace Vexe.Editor.GUIs
 				if (_pendingReset || _nextControlIdx != _controls.Count || _nextBlockIdx != _blocks.Count)
 				{
 #if dbg_level_1
-                    if (_pendingReset)
-                        Debug.Log("Resetting - Theres a reset request pending");
-                    else Debug.Log("Resetting -  The number of controls/blocks drawn doesn't match the total number of controls/blocks");
+					if (_pendingReset)
+						Debug.Log("Resetting - Theres a reset request pending");
+					else Debug.Log("Resetting -  The number of controls/blocks drawn doesn't match the total number of controls/blocks");
 #endif
 					_controls.Clear();
 					_blocks.Clear();
@@ -274,7 +274,7 @@ namespace Vexe.Editor.GUIs
 				else if (_pendingLayout)
 				{
 #if dbg_level_1
-                        Debug.Log("Pending layout request. Doing layout in next phase");
+						Debug.Log("Pending layout request. Doing layout in next phase");
 #endif
 					_currentPhase = GUIPhase.Layout;
 					EditorHelper.RepaintAllInspectors();
@@ -285,7 +285,7 @@ namespace Vexe.Editor.GUIs
 					if (resized)
 					{
 #if dbg_level_1
-                            Debug.Log("Resized inspector. Doing layout in next phase");
+							Debug.Log("Resized inspector. Doing layout in next phase");
 #endif
 						_prevInspectorWidth = EditorGUIUtility.currentViewWidth + _widthCorrection;
 						_currentPhase = GUIPhase.Layout;
@@ -299,7 +299,7 @@ namespace Vexe.Editor.GUIs
 			if (_pendingReset)
 			{
 #if dbg_level_1
-                    Debug.Log("Pending reset. Can't begin block of type: " + typeof(T).Name);
+					Debug.Log("Pending reset. Can't begin block of type: " + typeof(T).Name);
 #endif
 				return null;
 			}
@@ -307,8 +307,8 @@ namespace Vexe.Editor.GUIs
 			if (_allocatedMemory && _nextBlockIdx >= _blocks.Count)
 			{
 #if dbg_level_1
-                    Debug.Log("Requesting Reset. Can't begin block {0}. We seem to have created controls yet nextBlockIdx {1} > blocks.Count {2}"
-                                .FormatWith(typeof(T).Name, _nextBlockIdx, _blocks.Count));
+					Debug.Log("Requesting Reset. Can't begin block {0}. We seem to have created controls yet nextBlockIdx {1} > blocks.Count {2}"
+								.FormatWith(typeof(T).Name, _nextBlockIdx, _blocks.Count));
 #endif
 				_pendingReset = true;
 				return null;
@@ -334,7 +334,7 @@ namespace Vexe.Editor.GUIs
 				}
 
 #if dbg_level_1
-                    Debug.Log("Created new block of type {0}. Blocks count {1}. Is pending reset? {2}".FormatWith(typeof(T).Name, _blocks.Count, _pendingReset));
+					Debug.Log("Created new block of type {0}. Blocks count {1}. Is pending reset? {2}".FormatWith(typeof(T).Name, _blocks.Count, _pendingReset));
 #endif
 			}
 			else
@@ -352,24 +352,24 @@ namespace Vexe.Editor.GUIs
 					if (requestedType != resultType)
 					{
 #if dbg_level_1
-                            Debug.Log("Requested block result is null. " +
-                                         "The type of block requested {0} doesn't match the block type {1} at index {2}. " +
-                                         "This is probably due to the occurance of new blocks revealed by a foldout for ex. " +
-                                         "Requesting Reset".FormatWith(requestedType.Name, resultType.Name, _nextBlockIdx));
+							Debug.Log("Requested block result is null. " +
+										 "The type of block requested {0} doesn't match the block type {1} at index {2}. " +
+										 "This is probably due to the occurance of new blocks revealed by a foldout for ex. " +
+										 "Requesting Reset".FormatWith(requestedType.Name, resultType.Name, _nextBlockIdx));
 #endif
 						_pendingReset = true;
 						return null;
 					}
 
 #if dbg_level_1
-                        Debug.Log("Result block is null. Count {0}, Idx {1}, Request type {2}".FormatWith(_blocks.Count, _nextBlockIdx, typeof(T).Name));
-                        for (int i = 0; i < _blocks.Count; i++)
-                            Debug.Log("Block {0} at {1} has {2} controls".FormatWith(_blocks[i].data.type.ToString(), i, _blocks[i].controls.Count));
+						Debug.Log("Result block is null. Count {0}, Idx {1}, Request type {2}".FormatWith(_blocks.Count, _nextBlockIdx, typeof(T).Name));
+						for (int i = 0; i < _blocks.Count; i++)
+							Debug.Log("Block {0} at {1} has {2} controls".FormatWith(_blocks[i].data.type.ToString(), i, _blocks[i].controls.Count));
 
-                        Debug.Log("Block Stack count " + _blockStack.Count);
-                        var array = _blockStack.ToArray();
-                        for (int i = 0; i < array.Length; i++)
-                            Debug.Log("Block {0} at {1} has {2} controls".FormatWith(array[i].data.type.ToString(), i, array[i].controls.Count));
+						Debug.Log("Block Stack count " + _blockStack.Count);
+						var array = _blockStack.ToArray();
+						for (int i = 0; i < array.Length; i++)
+							Debug.Log("Block {0} at {1} has {2} controls".FormatWith(array[i].data.type.ToString(), i, array[i].controls.Count));
 #endif
 
 					throw new NullReferenceException("result");
@@ -380,12 +380,12 @@ namespace Vexe.Editor.GUIs
 			_blockStack.Push(result);
 
 #if dbg_level_2
-                Debug.Log("Pushed {0}. Stack {1}. Total {2}. Next {3}".FormatWith(result.GetType().Name, _blockStack.Count, _blocks.Count, _nextBlockIdx));
+				Debug.Log("Pushed {0}. Stack {1}. Total {2}. Next {3}".FormatWith(result.GetType().Name, _blockStack.Count, _blocks.Count, _nextBlockIdx));
 #endif
 
 #if dbg_level_1
-            if (_blockStack.Count > dbgMaxDepth)
-                dbgMaxDepth = _blockStack.Count;
+			if (_blockStack.Count > dbgMaxDepth)
+				dbgMaxDepth = _blockStack.Count;
 #endif
 
 			return result;
@@ -404,7 +404,7 @@ namespace Vexe.Editor.GUIs
 			if (_pendingReset)
 			{
 #if dbg_level_1
-                    Debug.Log("Can't draw control of type " + data.type + " There's a Reset pending.");
+					Debug.Log("Can't draw control of type " + data.type + " There's a Reset pending.");
 #endif
 				return false;
 			}
@@ -412,8 +412,8 @@ namespace Vexe.Editor.GUIs
 			if (_nextControlIdx >= _controls.Count && _currentPhase == GUIPhase.Draw)
 			{
 #if dbg_level_1
-                    Debug.Log("Can't draw control of type {0} nextControlIdx {1} is >= controls.Count {2}. Requesting reset".FormatWith(data.type, _nextControlIdx, _controls.Count));
-                    LogCallStack();
+					Debug.Log("Can't draw control of type {0} nextControlIdx {1} is >= controls.Count {2}. Requesting reset".FormatWith(data.type, _nextControlIdx, _controls.Count));
+					LogCallStack();
 #endif
 				_pendingReset = true;
 				return false;
@@ -436,7 +436,7 @@ namespace Vexe.Editor.GUIs
 			parent.controls.Add(control);
 			_controls.Add(control);
 #if dbg_level_2
-                Debug.Log("Created control {0}. Count {1}".FormatWith(data.type, _controls.Count));
+				Debug.Log("Created control {0}. Count {1}".FormatWith(data.type, _controls.Count));
 #endif
 			return control;
 		}
@@ -562,7 +562,7 @@ namespace Vexe.Editor.GUIs
 				return true;
 			return false;
 #else
-            return GUI.Button(position, content, style);
+			return GUI.Button(position, content, style);
 #endif
 		}
 
