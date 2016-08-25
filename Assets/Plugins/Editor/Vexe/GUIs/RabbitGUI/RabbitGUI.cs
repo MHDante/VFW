@@ -466,7 +466,7 @@ namespace Vexe.Editor.GUIs
 
 		public override Bounds BoundsField(GUIContent content, Bounds value, Layout option)
 		{
-			var bounds = new ControlData(content, GUIStyles.None, option, ControlType.Bounds);
+			var bounds = new ControlData(content, GUIStyles.None, option, ControlType.BoundsField);
 
 			Rect position;
 			if (CanDrawControl(out position, bounds))
@@ -594,7 +594,7 @@ namespace Vexe.Editor.GUIs
 
 		public override float Float(GUIContent content, float value, Layout option)
 		{
-			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.Float);
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.FloatField);
 
 			Rect position;
 			if (CanDrawControl(out position, data))
@@ -618,6 +618,106 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
+		public override sbyte SByte(GUIContent content, sbyte value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				int tempVal = value;
+				tempVal = EditorGUI.IntField(position, content, tempVal);
+
+				if (tempVal < sbyte.MinValue)
+					return sbyte.MinValue;
+
+				if (tempVal > sbyte.MaxValue)
+					return sbyte.MaxValue;
+
+				unchecked
+				{
+					return (sbyte) tempVal;
+				}
+			}
+
+			return value;
+		}
+
+		public override byte Byte(GUIContent content, byte value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				int tempVal = value;
+				tempVal = EditorGUI.IntField(position, content, tempVal);
+
+				if (tempVal < byte.MinValue)
+					return byte.MinValue;
+
+				if (tempVal > byte.MaxValue)
+					return byte.MaxValue;
+
+				unchecked
+				{
+					return (byte) tempVal;
+				}
+			}
+
+			return value;
+		}
+
+		public override short Short(GUIContent content, short value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				int tempVal = value;
+				tempVal = EditorGUI.IntField(position, content, tempVal);
+
+				if (tempVal < short.MinValue)
+					return short.MinValue;
+
+				if (tempVal > short.MaxValue)
+					return short.MaxValue;
+
+				unchecked
+				{
+					return (short) tempVal;
+				}
+			}
+
+			return value;
+		}
+
+		public override ushort UShort(GUIContent content, ushort value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				int tempVal = value;
+				tempVal = EditorGUI.IntField(position, content, tempVal);
+
+				if (tempVal < ushort.MinValue)
+					return ushort.MinValue;
+
+				if (tempVal > ushort.MaxValue)
+					return ushort.MaxValue;
+
+				unchecked
+				{
+					return (ushort) tempVal;
+				}
+			}
+
+			return value;
+		}
+
 		public override int Int(GUIContent content, int value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
@@ -626,6 +726,50 @@ namespace Vexe.Editor.GUIs
 			if (CanDrawControl(out position, data))
 			{
 				return EditorGUI.IntField(position, content, value);
+			}
+
+			return value;
+		}
+
+		public override uint UInt(GUIContent content, uint value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.LongField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				long tempVal = value;
+				tempVal = EditorGUI.LongField(position, content, tempVal);
+
+				if (tempVal < uint.MinValue)
+					return uint.MinValue;
+
+				if (tempVal > uint.MaxValue)
+					return uint.MaxValue;
+
+				unchecked
+				{
+					return (uint) tempVal;
+				}
+			}
+
+			return value;
+		}
+
+		public override char Char(GUIContent content, char value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.TextField, option, ControlType.TextField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				string tempVal = value.ToString();
+				tempVal = EditorGUI.TextField(position, content, tempVal);
+
+				if (string.IsNullOrEmpty(tempVal))
+					return char.MinValue;
+
+				return tempVal[0];
 			}
 
 			return value;
@@ -946,7 +1090,7 @@ namespace Vexe.Editor.GUIs
 
 		public override double Double(GUIContent content, double value, Layout option)
 		{
-			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.Double);
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.DoubleField);
 
 			Rect position;
 			if (CanDrawControl(out position, data))
@@ -956,7 +1100,7 @@ namespace Vexe.Editor.GUIs
 
 		public override long Long(GUIContent content, long value, Layout option)
 		{
-			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.Long);
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.LongField);
 
 			Rect position;
 			if (CanDrawControl(out position, data))

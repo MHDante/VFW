@@ -234,6 +234,102 @@ namespace Vexe.Editor.GUIs
 				throw new Exception(string.Format("Assertion `{0}` failed", msg));
 		}
 
+		public static sbyte SByteField(GUIContent content, ref sbyte value, Layout option)
+		{
+			int intValue = value;
+			intValue = EditorGUILayout.IntField(content, intValue, option);
+
+			if (intValue < sbyte.MinValue)
+				return sbyte.MinValue;
+
+			if (intValue > sbyte.MaxValue)
+				return sbyte.MaxValue;
+
+			unchecked
+			{
+				return (sbyte) intValue;
+			}
+		}
+
+		public static byte ByteField(GUIContent content, ref byte value, Layout option)
+		{
+			int intValue = value;
+			intValue = EditorGUILayout.IntField(content, intValue, option);
+
+			if (intValue < byte.MinValue)
+				return byte.MinValue;
+
+			if (intValue > byte.MaxValue)
+				return byte.MaxValue;
+
+			unchecked
+			{
+				return (byte) intValue;
+			}
+		}
+
+		public static short ShortField(GUIContent content, ref short value, Layout option)
+		{
+			int intValue = value;
+			intValue = EditorGUILayout.IntField(content, intValue, option);
+
+			if (intValue < short.MinValue)
+				return short.MinValue;
+
+			if (intValue > short.MaxValue)
+				return short.MaxValue;
+
+			unchecked
+			{
+				return (short) intValue;
+			}
+		}
+
+		public static ushort UShortField(GUIContent content, ref ushort value, Layout option)
+		{
+			int intValue = value;
+			intValue = EditorGUILayout.IntField(content, intValue, option);
+
+			if (intValue < ushort.MinValue)
+				return ushort.MinValue;
+
+			if (intValue > ushort.MaxValue)
+				return ushort.MaxValue;
+
+			unchecked
+			{
+				return (ushort) intValue;
+			}
+		}
+
+		public static uint UIntField(GUIContent content, ref uint value, Layout option)
+		{
+			long longValue = value;
+			longValue = EditorGUILayout.LongField(content, longValue, option);
+
+			if (longValue < uint.MinValue)
+				return uint.MinValue;
+
+			if (longValue > uint.MaxValue)
+				return uint.MaxValue;
+
+			unchecked
+			{
+				return (uint) longValue;
+			}
+		}
+
+		public static char CharField(GUIContent content, ref char value, Layout option)
+		{
+			string stringValue = value.ToString();
+			stringValue = EditorGUILayout.TextField(content, stringValue, option);
+
+			if (stringValue.Length < 1)
+				return char.MinValue;
+
+			return stringValue[0];
+		}
+
 		public struct ControlData
 		{
 			public GUIContent content;
@@ -258,7 +354,7 @@ namespace Vexe.Editor.GUIs
 			TextField,
 			ObjectField,
 			IntField,
-			Float,
+			FloatField,
 			Popup,
 			FlexibleSpace,
 			HorizontalBlock,
@@ -275,14 +371,14 @@ namespace Vexe.Editor.GUIs
 			Box,
 			EnumPopup,
 			RectField,
-			Bounds,
+			BoundsField,
 			TextArea,
 			ColorField,
 			CurveField,
 			GradientField,
 			TextFieldDropDown,
-			Double,
-			Long
+			DoubleField,
+			LongField
 		}
 	}
 }

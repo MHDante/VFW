@@ -59,9 +59,39 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.FloatField(content, value, option);
 		}
 
+		public override char Char(GUIContent content, char value, Layout option)
+		{
+			return CharField(content, ref value, option);
+		}
+
+		public override sbyte SByte(GUIContent content, sbyte value, Layout option)
+		{
+			return SByteField(content, ref value, option);
+		}
+
+		public override byte Byte(GUIContent content, byte value, Layout option)
+		{
+			return ByteField(content, ref value, option);
+		}
+
+		public override short Short(GUIContent content, short value, Layout option)
+		{
+			return ShortField(content, ref value, option);
+		}
+
+		public override ushort UShort(GUIContent content, ushort value, Layout option)
+		{
+			return UShortField(content, ref value, option);
+		}
+
 		public override int Int(GUIContent content, int value, Layout option)
 		{
 			return EditorGUILayout.IntField(content, value, option);
+		}
+
+		public override uint UInt(GUIContent content, uint value, Layout option)
+		{
+			return UIntField(content, ref value, option);
 		}
 
 		public override bool Foldout(GUIContent content, bool value, GUIStyle style, Layout option)
