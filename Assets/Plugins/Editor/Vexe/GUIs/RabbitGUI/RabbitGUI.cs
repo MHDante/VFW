@@ -1,5 +1,3 @@
-//#define dbg_level_1
-//#define dbg_level_2
 #define dbg_controls
 
 using System;
@@ -16,6 +14,9 @@ namespace Vexe.Editor.GUIs
 {
 	public class RabbitGUI : BaseGUI, IDisposable
 	{
+		private static bool hoveringOnPopup;
+		private static readonly string[] emptyStringArray = new string[0];
+
 		public Action OnFinishedLayoutReserve, OnRepaint;
 
 		public float Height { private set; get; }
@@ -210,6 +211,9 @@ namespace Vexe.Editor.GUIs
 				_startRect = start;
 				_pendingLayout = false;
 				_pendingReset = false;
+
+				if (OnBeginLayout != null)
+					OnBeginLayout();
 			}
 
 			_nextControlIdx = 0;
@@ -288,6 +292,7 @@ namespace Vexe.Editor.GUIs
 							Debug.Log("Resized inspector. Doing layout in next phase");
 #endif
 						_prevInspectorWidth = EditorGUIUtility.currentViewWidth + _widthCorrection;
+						this.hasReachedMinScreenWidth = EditorGUIUtility.currentViewWidth + _widthCorrection < kMinScreenWidth;
 						_currentPhase = GUIPhase.Layout;
 					}
 				}
@@ -477,7 +482,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override Rect Rect(GUIContent content, Rect value, Layout option)
+		public override Rect RectField(GUIContent content, Rect value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.None, option, ControlType.RectField);
 
@@ -490,7 +495,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override AnimationCurve Curve(GUIContent content, AnimationCurve value, Layout option)
+		public override AnimationCurve CurveField(GUIContent content, AnimationCurve value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.None, option, ControlType.CurveField);
 
@@ -534,7 +539,7 @@ namespace Vexe.Editor.GUIs
 		public override void HelpBox(string message, MessageType type)
 		{
 			var content = GetContent(message);
-			var height = GUIStyles.HelpBox.CalcHeight(content, Width);
+			var height = GUIStyles.HelpBox.CalcHeight(content, Width) * 1.25f;
 			var layout = Layout.sHeight(height);
 			var data = new ControlData(content, GUIStyles.HelpBox, layout, ControlType.HelpBox);
 
@@ -566,7 +571,7 @@ namespace Vexe.Editor.GUIs
 #endif
 		}
 
-		public override Color Color(GUIContent content, Color value, Layout option)
+		public override Color ColorField(GUIContent content, Color value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.ColorField, option, ControlType.ColorField);
 
@@ -592,7 +597,7 @@ namespace Vexe.Editor.GUIs
 			return selected;
 		}
 
-		public override float Float(GUIContent content, float value, Layout option)
+		public override float FloatField(GUIContent content, float value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.FloatField);
 
@@ -618,7 +623,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override sbyte SByte(GUIContent content, sbyte value, Layout option)
+		public override sbyte SByteField(GUIContent content, sbyte value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
 
@@ -643,7 +648,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override byte Byte(GUIContent content, byte value, Layout option)
+		public override byte ByteField(GUIContent content, byte value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
 
@@ -668,7 +673,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override short Short(GUIContent content, short value, Layout option)
+		public override short ShortField(GUIContent content, short value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
 
@@ -693,7 +698,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override ushort UShort(GUIContent content, ushort value, Layout option)
+		public override ushort UShortField(GUIContent content, ushort value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
 
@@ -718,7 +723,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override int Int(GUIContent content, int value, Layout option)
+		public override int IntField(GUIContent content, int value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.IntField);
 
@@ -731,7 +736,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override uint UInt(GUIContent content, uint value, Layout option)
+		public override uint UIntField(GUIContent content, uint value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.LongField);
 
@@ -756,7 +761,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override char Char(GUIContent content, char value, Layout option)
+		public override char CharField(GUIContent content, char value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.TextField, option, ControlType.TextField);
 
@@ -799,7 +804,7 @@ namespace Vexe.Editor.GUIs
 			return mask;
 		}
 
-		public override UnityObject Object(GUIContent content, UnityObject value, Type type, bool allowSceneObjects, Layout option)
+		public override UnityObject ObjectField(GUIContent content, UnityObject value, Type type, bool allowSceneObjects, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.ObjectField, option, ControlType.ObjectField);
 
@@ -816,11 +821,81 @@ namespace Vexe.Editor.GUIs
 		{
 			var content = GetContent(text);
 			var popup = new ControlData(content, style, option, ControlType.Popup);
-
 			Rect position;
-			if (CanDrawControl(out position, popup))
+
+			if (!CanDrawControl(out position, popup))
+				return selectedIndex;
+
+			if (position.Contains(Event.current.mousePosition))
+				hoveringOnPopup = true;
+
+			if (!hoveringOnPopup)
 			{
-				return EditorGUI.Popup(position, content.text, selectedIndex, displayedOptions, style);
+				var displayText = kNoneText;
+
+				if (displayedOptions.Length > 0)
+					displayText = displayedOptions[selectedIndex];
+
+				EditorGUI.LabelField(position, displayText, style);
+			}
+			else
+			{
+				if (displayedOptions.Length <= 0)
+				{
+					EditorGUI.LabelField(position, kNoneText, style);
+				}
+				else
+				{
+					var newIndex = EditorGUI.Popup(position, text, selectedIndex, displayedOptions, style);
+
+					if (newIndex != selectedIndex && displayedOptions.Length > 0)
+					{
+						selectedIndex = newIndex;
+						hoveringOnPopup = false;
+					}
+				}
+			}
+
+			return selectedIndex;
+		}
+
+		public override int Popup(string text, int selectedIndex, GUIContent[] displayedOptions, GUIStyle style, Layout option)
+		{
+			var content = GetContent(text);
+			var popup = new ControlData(content, style, option, ControlType.Popup);
+			Rect position;
+
+			if (!CanDrawControl(out position, popup))
+				return selectedIndex;
+
+			if (position.Contains(Event.current.mousePosition))
+				hoveringOnPopup = true;
+
+			if (!hoveringOnPopup)
+			{
+				var displayText = kNoneText;
+
+				if (displayedOptions.Length > 0)
+					displayText = displayedOptions[selectedIndex].text;
+
+				EditorGUI.LabelField(position, displayText, style);
+			}
+			else
+			{
+				if (displayedOptions.Length <= 0)
+				{
+					EditorGUI.LabelField(position, kNoneText, style);
+				}
+				else
+				{
+					var newIndex = EditorGUI.Popup(position, content, selectedIndex, displayedOptions, style);
+
+					if (newIndex != selectedIndex && displayedOptions.Length > 0)
+					{
+						selectedIndex = newIndex;
+						hoveringOnPopup = false;
+					}
+				}
 			}
 
 			return selectedIndex;
@@ -877,7 +952,7 @@ namespace Vexe.Editor.GUIs
 			}
 		}
 
-		public override string Text(GUIContent content, string value, GUIStyle style, Layout option)
+		public override string TextField(GUIContent content, string value, GUIStyle style, Layout option)
 		{
 			var data = new ControlData(content, style, option, ControlType.TextField);
 
@@ -1008,9 +1083,26 @@ namespace Vexe.Editor.GUIs
 			return layer;
 		}
 
+		public override void Prefix(GUIContent content)
+		{
+			if (content == null || string.IsNullOrEmpty(content.text))
+				return;
+
+			var style = EditorStyles.label;
+			var data = new ControlData(content, style, Layout.sWidth(EditorGUIUtility.labelWidth), ControlType.PrefixLabel);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				EditorGUI.HandlePrefixLabel(position, position, content, 0, style);
+			}
+		}
+
 		public override void Prefix(string label)
 		{
-			if (string.IsNullOrEmpty(label)) return;
+			if (string.IsNullOrEmpty(label))
+				return;
+
 			var content = GetContent(label);
 			var style = EditorStyles.label;
 			var data = new ControlData(content, style, Layout.sWidth(EditorGUIUtility.labelWidth), ControlType.PrefixLabel);
@@ -1045,50 +1137,49 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		private static bool hoveringOnPopup;
-		private static readonly string[] emptyStringArray = new string[0];
-
 		public override string TextFieldDropDown(GUIContent label, string value, string[] dropDownElements, Layout option)
 		{
 			var data = new ControlData(label, GUIStyles.TextFieldDropDown, option, ControlType.TextFieldDropDown);
 
 			Rect totalRect;
-			if (CanDrawControl(out totalRect, data))
+			if (!CanDrawControl(out totalRect, data))
+				return value;
+
+			Rect textRect = new Rect(totalRect.x, totalRect.y, totalRect.width - GUIStyles.TextFieldDropDown.fixedWidth, totalRect.height);
+			Rect popupRect = new Rect(textRect.xMax, textRect.y, GUIStyles.TextFieldDropDown.fixedWidth, totalRect.height);
+
+			value = EditorGUI.TextField(textRect, "", value, GUIStyles.TextFieldDropDownText);
+
+			string[] displayedOptions;
+			if (dropDownElements.Length > 0)
+				displayedOptions = dropDownElements;
+			else
+				(displayedOptions = new string[1])[0] = "--empty--";
+
+			if (popupRect.Contains(Event.current.mousePosition))
+				hoveringOnPopup = true;
+
+			// if there were a lot of options to be displayed, we don't need to always invoke
+			// Popup cause Unity does a lot of allocation inside and it would have a huge negative impact
+			// on editor performance so we only display the options when we're hoving over it
+			if (!hoveringOnPopup)
+				EditorGUI.Popup(popupRect, string.Empty, -1, emptyStringArray, GUIStyles.TextFieldDropDown);
+			else
 			{
-				Rect textRect = new Rect(totalRect.x, totalRect.y, totalRect.width - GUIStyles.TextFieldDropDown.fixedWidth, totalRect.height);
-				Rect popupRect = new Rect(textRect.xMax, textRect.y, GUIStyles.TextFieldDropDown.fixedWidth, totalRect.height);
+				EditorGUI.BeginChangeCheck();
+				int selection = EditorGUI.Popup(popupRect, string.Empty, -1, displayedOptions, GUIStyles.TextFieldDropDown);
 
-				value = EditorGUI.TextField(textRect, "", value, GUIStyles.TextFieldDropDownText);
-
-				string[] displayedOptions;
-				if (dropDownElements.Length > 0)
-					displayedOptions = dropDownElements;
-				else
-					(displayedOptions = new string[1])[0] = "--empty--";
-
-				if (popupRect.Contains(Event.current.mousePosition))
-					hoveringOnPopup = true;
-
-				// if there were a lot of options to be displayed, we don't need to always invoke
-				// Popup cause Unity does a lot of allocation inside and it would have a huge negative impact
-				// on editor performance so we only display the options when we're hoving over it
-				if (!hoveringOnPopup)
-					EditorGUI.Popup(popupRect, string.Empty, -1, emptyStringArray, GUIStyles.TextFieldDropDown);
-				else
+				if (EditorGUI.EndChangeCheck() && displayedOptions.Length > 0)
 				{
-					EditorGUI.BeginChangeCheck();
-					int selection = EditorGUI.Popup(popupRect, string.Empty, -1, displayedOptions, GUIStyles.TextFieldDropDown);
-					if (EditorGUI.EndChangeCheck() && displayedOptions.Length > 0)
-					{
-						hoveringOnPopup = false;
-						value = displayedOptions[selection];
-					}
+					hoveringOnPopup = false;
+					value = displayedOptions[selection];
 				}
 			}
+
 			return value;
 		}
 
-		public override double Double(GUIContent content, double value, Layout option)
+		public override double DoubleField(GUIContent content, double value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.DoubleField);
 
@@ -1098,7 +1189,7 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
-		public override long Long(GUIContent content, long value, Layout option)
+		public override long LongField(GUIContent content, long value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.LongField);
 
@@ -1114,7 +1205,13 @@ namespace Vexe.Editor.GUIs
 
 			Rect position;
 			if (CanDrawControl(out position, data))
+			{
+#if UNITY_5_4
 				EditorGUI.MinMaxSlider(label, position, ref minValue, ref maxValue, minLimit, maxLimit);
+#elif UNITY_5_5_OR_NEWER
+				EditorGUI.MinMaxSlider(position, label, ref minValue, ref maxValue, minLimit, maxLimit);
+#endif
+			}
 		}
 	}
 }
