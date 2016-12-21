@@ -1,34 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public int Int(int value)
+		public int IntField(int value)
 		{
-			return Int(string.Empty, value);
+			return IntField(string.Empty, value);
 		}
 
-		public int Int(string label, int value)
+		public int IntField(string label, int value)
 		{
-			return Int(label, value, null);
+			return IntField(label, value, null);
 		}
 
-		public int Int(string label, string tooltip, int value)
+		public int IntField(string label, string tooltip, int value)
 		{
-			return Int(label, tooltip, value, null);
+			return IntField(label, tooltip, value, null);
 		}
 
-		public int Int(string label, int value, Layout option)
+		public int IntField(string label, int value, Layout option)
 		{
-			return Int(label, string.Empty, value, option);
+			return IntField(label, string.Empty, value, option);
 		}
 
-		public int Int(string label, string tooltip, int value, Layout option)
+		public int IntField(string label, string tooltip, int value, Layout option)
 		{
-			return Int(GetContent(label, tooltip), value, option);
+			return IntField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract int Int(GUIContent content, int value, Layout option);
+		public abstract int IntField(GUIContent content, int value, Layout option);
 	}
 }
