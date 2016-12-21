@@ -1,37 +1,73 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public Quaternion Quaternion(Quaternion value)
+		public Quaternion QuaternionField(Quaternion value)
 		{
-			return Quaternion(string.Empty, value);
+			return QuaternionField(string.Empty, value);
 		}
 
-		public Quaternion Quaternion(string label, Quaternion value)
+		public Quaternion QuaternionField(string label, Quaternion value)
 		{
-			return Quaternion(label, value, null);
+			return QuaternionField(label, value, null);
 		}
 
-		public Quaternion Quaternion(string label, string tooltip, Quaternion value)
+		public Quaternion QuaternionField(string label, string tooltip, Quaternion value)
 		{
-			return Quaternion(label, tooltip, value, null);
+			return QuaternionField(label, tooltip, value, null);
 		}
 
-		public Quaternion Quaternion(string label, Quaternion value, Layout option)
+		public Quaternion QuaternionField(string label, Quaternion value, Layout option)
 		{
-			return Quaternion(label, string.Empty, value, option);
+			return QuaternionField(label, string.Empty, value, option);
 		}
 
-		public Quaternion Quaternion(string label, string tooltip, Quaternion value, Layout option)
+		public Quaternion QuaternionField(string label, string tooltip, Quaternion value, Layout option)
 		{
-			return Quaternion(GetContent(label, tooltip), value, option);
+			return QuaternionField(GetContent(label, tooltip), value, option);
 		}
 
-		public Quaternion Quaternion(GUIContent content, Quaternion value, Layout option)
+		public Quaternion QuaternionField(GUIContent content, Quaternion value, Layout option)
 		{
-			return UnityEngine.Quaternion.Euler(Vector3(content, value.eulerAngles, option));
+			if (hasReachedMinScreenWidth &&
+				content != null && !string.IsNullOrEmpty(content.text))
+			{
+				using (Vertical())
+				{
+					Prefix(content);
+					using (Horizontal())
+					{
+						Space(15f);
+						INTERNAL_Quaternion(ref value);
+					}
+				}
+			}
+			else
+			{
+				using (Horizontal())
+				{
+					Prefix(content);
+					INTERNAL_Quaternion(ref value);
+				}
+			}
+
+			return value;
+		}
+
+		private void INTERNAL_Quaternion(ref Quaternion value)
+		{
+			using (LabelWidth(15f))
+			{
+				value.x = FloatField("X", value.x);
+				Space(2f);
+				value.y = FloatField("Y", value.y);
+				Space(2f);
+				value.z = FloatField("Z", value.z);
+				Space(2f);
+				value.w = FloatField("W", value.w);
+			}
 		}
 	}
 }
