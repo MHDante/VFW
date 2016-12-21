@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public ushort UShort(ushort value)
+		public ushort UShortField(ushort value)
 		{
-			return UShort(string.Empty, value);
+			return UShortField(string.Empty, value);
 		}
 
-		public ushort UShort(string label, ushort value)
+		public ushort UShortField(string label, ushort value)
 		{
-			return UShort(label, value, null);
+			return UShortField(label, value, null);
 		}
 
-		public ushort UShort(string label, string tooltip, ushort value)
+		public ushort UShortField(string label, string tooltip, ushort value)
 		{
-			return UShort(label, tooltip, value, null);
+			return UShortField(label, tooltip, value, null);
 		}
 
-		public ushort UShort(string label, ushort value, Layout option)
+		public ushort UShortField(string label, ushort value, Layout option)
 		{
-			return UShort(label, string.Empty, value, option);
+			return UShortField(label, string.Empty, value, option);
 		}
 
-		public ushort UShort(string label, string tooltip, ushort value, Layout option)
+		public ushort UShortField(string label, string tooltip, ushort value, Layout option)
 		{
-			return UShort(GetContent(label, tooltip), value, option);
+			return UShortField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract ushort UShort(GUIContent content, ushort value, Layout option);
+		public abstract ushort UShortField(GUIContent content, ushort value, Layout option);
 	}
 }
