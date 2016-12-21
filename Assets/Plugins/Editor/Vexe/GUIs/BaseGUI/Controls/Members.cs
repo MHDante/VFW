@@ -1,6 +1,3 @@
-//#define PROFILE
-//#define DBG
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -17,13 +14,13 @@ namespace Vexe.Editor.GUIs
 	{
 		private static readonly Attribute[] Empty = new Attribute[0];
 
-		public bool Member(MemberInfo info, object rawTarget, UnityObject unityTarget, int id, bool ignoreComposition)
+		public bool MemberField(MemberInfo info, object rawTarget, UnityObject unityTarget, int id, bool ignoreComposition)
 		{
 			EditorMember member;
-			return Member(info, rawTarget, unityTarget, id, ignoreComposition, out member);
+			return MemberField(info, rawTarget, unityTarget, id, ignoreComposition, out member);
 		}
 
-		public bool Member(MemberInfo member, object rawTarget, UnityObject unityTarget, int id, bool ignoreComposition, out EditorMember wrappedMember)
+		public bool MemberField(MemberInfo member, object rawTarget, UnityObject unityTarget, int id, bool ignoreComposition, out EditorMember wrappedMember)
 		{
 			if (member.MemberType == MemberTypes.Method)
 			{
@@ -41,34 +38,34 @@ namespace Vexe.Editor.GUIs
 				cachedMember.UnityTarget = unityTarget;
 				wrappedMember = cachedMember;
 
-				return Member(cachedMember, ignoreComposition);
+				return MemberField(cachedMember, ignoreComposition);
 			}
 		}
 
-		public bool Member(EditorMember member)
+		public bool MemberField(EditorMember member)
 		{
-			return Member(member, false);
+			return MemberField(member, false);
 		}
 
-		public bool Member(EditorMember member, bool ignoreComposition)
+		public bool MemberField(EditorMember member, bool ignoreComposition)
 		{
-			return Member(member, member.Attributes, ignoreComposition);
+			return MemberField(member, member.Attributes, ignoreComposition);
 		}
 
-		public bool Member(EditorMember member, BaseDrawer memberDrawer)
+		public bool MemberField(EditorMember member, BaseDrawer memberDrawer)
 		{
-			return Member(member, member.Attributes, memberDrawer, false);
+			return MemberField(member, member.Attributes, memberDrawer, false);
 		}
 
-		public bool Member(EditorMember member, Attribute[] attributes, bool ignoreComposition)
+		public bool MemberField(EditorMember member, Attribute[] attributes, bool ignoreComposition)
 		{
 			attributes = attributes ?? Empty;
 			var memberDrawer = MemberDrawersHandler.GetMemberDrawer(member, attributes, ignoreComposition);
 			memberDrawer.Initialize(member, attributes, this, prefs);
-			return Member(member, attributes, memberDrawer, ignoreComposition);
+			return MemberField(member, attributes, memberDrawer, ignoreComposition);
 		}
 
-		public bool Member(EditorMember member, Attribute[] attributes, BaseDrawer memberDrawer, bool ignoreComposition)
+		public bool MemberField(EditorMember member, Attribute[] attributes, BaseDrawer memberDrawer, bool ignoreComposition)
 		{
 			List<BaseDrawer> composites = null;
 
