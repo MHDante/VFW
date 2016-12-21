@@ -42,6 +42,8 @@ If you update to this branch, you must manually fix all the errors that surely w
 1. New `ReadOnlyAttribute`, `OnChangeNoArgAttribute`.
 1. Other minor changes and improvements...
 
+***
+
 ### What:
   - VFW is an editor extension that offers much more advance editor extensibility features than what comes out of the box with Unity. A better drawing API, a faster GUI layout system for editor drawing, tons of attributes/drawers, helper types and more.
 
