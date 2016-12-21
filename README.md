@@ -4,6 +4,8 @@ Custom Serialization is no longer supported: https://github.com/vexe/VFW/issues/
 
 ### Contents
 
+- [Breaking changes warning](#breaking-changes-warning)
+  - [Improved features](#improved-features)
 - [What](#what)
 - [Usage](#usage)
 - [Features](#heres-a-birds-eye-view-for-some-of-the-features)
@@ -28,9 +30,21 @@ Custom Serialization is no longer supported: https://github.com/vexe/VFW/issues/
   - [How to view the serialize state of a BetterBehaviour?](#faq-view-state)
   - [How do you serialize a BetterBehaviour to file?](#faq-how-to-serialize)
 
+### Breaking changes warning:
+The `improved` branch has received a lot of changes from small to big, from cleaning up to renaming things, therefore it's **NOT** compatible with previous versions.
+If you update to this branch, you must manually fix all the errors that surely will emerge.
+
+#### <a name="feature-drawing-api">Improved features</a>:
+1. Controls in `Editor\Vexe\GUIs\BaseGUI\Controls` have been renamed to `*Field`(s) if possible. For example: `IntField`, `CharField`, `ObjectField`, `TextField`, etc.
+1. More field types have been added to `BaseGUI`.
+1. `SequenceDrawer` and `IDictionaryDrawer` (old: `DictionaryDrawer`) are improved to handle `UnityEditor.Undo` properly. Their styles are also changed to imitate Unity's `ReorderableList` (not 100%).
+1. More specialized classes derive from `PopupAttribute` and `PopupDrawer`.
+1. New `ReadOnlyAttribute`, `OnChangeNoArgAttribute`.
+1. Other minor changes and improvements...
+
 ### What:
-  - VFW is an editor extension that offers much more advance editor extensibility features than what comes out of the box with Unity. A better drawing API, a faster GUI layout system for editor drawing, tons of attributes/drawers, helper types and more. 
- 
+  - VFW is an editor extension that offers much more advance editor extensibility features than what comes out of the box with Unity. A better drawing API, a faster GUI layout system for editor drawing, tons of attributes/drawers, helper types and more.
+
 ### Usage:
   - Download and extract the .Zip from github. You will see 3 folders: Plugins, VFW Examples and VFW Deprecated, all you need is the Plugins folder.
   - Inherit BaseBehaviour instead of MonoBehaviour and BaseScriptableObject instead of ScriptableObject, and don't forget to add your using statement. See the examples that come with the packagefor more details.
@@ -42,10 +56,10 @@ public class TestBehaviour : BaseBehaviour
 {
     [PerItem, Tags, OnChanged("Log")]
 		public string[] enemyTags;
-		
+
 		[Inline]
 		public GameObject go;
-		
+
 		[Display(Seq.LineNumbers | Seq.Filter), PerItem("Whitespace"), Whitespace(Left = 5f)]
     public ItemsLookup[] ComplexArray;
 }
@@ -115,7 +129,7 @@ public class TestBehaviour : BaseBehaviour
 1. Not everything is documented yet
 1. No multi-object editing support yet
 
-### Acknowledgments: 
+### Acknowledgments:
 1. Please understand that this is a one-man job, I try my best to make everything work, but I can't make everything perfect. I try to do my best isolating my code and writing unit tests for it to make everything's working OK, but a bug or two could easily slip in... If you want to write a program without bugs, then don't write it.
 1. Apologies in advance if you come across a frustrating bug or any inconvenience due to using this framework, if you do, make sure you let met know.
 1. For help, improvements/suggestions, bug reports: you could post here, pm me or email me at askvexe@gmail.com. I will try to reply ASAP and help as best as I can.
@@ -126,16 +140,16 @@ public class TestBehaviour : BaseBehaviour
   - [Read post No. 441](http://forum.unity3d.com/threads/open-source-vfw-134-drawers-save-system-serialize-interfaces-generics-autoprops-delegates.266165/page-9#post-2478086).
 1. <a name="faq-license">**License?**</a>
   - [MIT](http://choosealicense.com/licenses/mit/).
-1. <a name="faq-needs-pro">**Does this require Unity Pro?** 
+1. <a name="faq-needs-pro">**Does this require Unity Pro?**
   - No
 1. <a name="faq-support-aot">**Does this support AOT platforms?**</a>
   - Yes. It has been verified to work on iOS. While not manually verified on Android, but it should work.
 1. <a name="faq-free">**Why free?**</a>
-  1. Because I believe I can build a base "standard" framework that anyone could use in his own personal projects to benefit from and build upon. The current state in almost all asset developers is that they all come up with 'their' own solutions to the same problems over and over again. This makes it difficult for assets from different publishers to play nice with each other because their backbone is different. For ex say you purchased a property drawers asset that you'd like to use in say, Node Canvas. Well you can't because NC and the drawers asset use a different base for their codes thus making them incompatible. 
-  2. This stuff should be available to us out-of-the-box let alone free... don't let me start uRanting. 
+  1. Because I believe I can build a base "standard" framework that anyone could use in his own personal projects to benefit from and build upon. The current state in almost all asset developers is that they all come up with 'their' own solutions to the same problems over and over again. This makes it difficult for assets from different publishers to play nice with each other because their backbone is different. For ex say you purchased a property drawers asset that you'd like to use in say, Node Canvas. Well you can't because NC and the drawers asset use a different base for their codes thus making them incompatible.
+  2. This stuff should be available to us out-of-the-box let alone free... don't let me start uRanting.
   3. Open source is beautiful. Everyone could contribute to the improvement of the software, fixing bugs, etc.
 1. <a name="faq-drawing-system">**How does the drawing system work? And how do I write custom drawers?**</a>
-  - There are 3 types of drawers: ObjectDrawer<T>, AttributeDrawer<T, A> and CompositeDrawer<T, A>. 
+  - There are 3 types of drawers: ObjectDrawer<T>, AttributeDrawer<T, A> and CompositeDrawer<T, A>.
   1. ObjectDrawers define how a member looks like in the inspector. Use an ObjectDrawer when you want your drawer to be applied on your type wherever it occurs. Examples of that are IntDrawer, StringDrawer, ListDrawer<T>, ArrayDrawer<T> etc. So whenever an int, string, List<T>, T[] occur, the corresponding drawer will be used to draw them. In your ObjectDrawer you override OnGUI and do all your gui stuff. You will get a strongly-typed 'memberValue' that you could use to modify the value of the member the drawer is targetting. Use the 'gui' property to do all your drawings. You will also get a strongly typed property 'attribute' referencing the attribute your drawer targets.
   2. AttributeDrawer<T, A> where A is a DrawnAttribute. Just like ObjectDrawers, AttributeDrawers also define how a member looks like. Use an AttributeDrawer<T, A> if you want your drawer to only be used when you annotate your members with a certain Attribute. Examples of that are PopupDrawer, AnimVarDrawer and ShowTypeDrawer. PoupDrawer is only used on string if they're annotated with PopupAttribute. So PopupDrawer is a AttributeDrawer<string, PopupAttribute>. Again, you get OnGUI and a memberValue property. It does not make sense to annotate with multiple AttributeDrawers, ex annotate a string with both AnimVar and Popup as there will be a conflict and only one of them will be used.
   3. CompsoiteDrawer<T, A> where A : CompsoiteAttribute. CompositeDrawers are a bit different. They're not used to define a how a member should look like, instead they 'decorate' areas around the member. You don't get OnGUI, but OnLeftGUI, OnRightGUI, OnUpperGUI, OnLowerGUI and OnMemberDrawn(Rect) callbacks. The last callback gets called when a member is drawn, the rectangle of where the member is drawn gets passed. The rest of the callbacks are called in this order: OnUpperGUI, OnLeftGUI, OnRightGUI, OnBottomGUI. You could override any of those callbacks to decorate certain areas of your member. See WhiteSpaceDrawer as an example, it uses those callbacks to add space to the left/right/top/bottom of a member. See PathDrawer as an example using OnMemberDrawn callback. Just like AttributeDrawer, you also get 'memberValue', 'attribute' and 'gui'. Examples of Composites are CommentDrawer, WhiteSpaceDrawer, InlineDrawer, PathDrawer and many more. Unlike AttributeDrawer, you can apply multiple composite drawers on a member. You can define the order of which those drawers are applied/drawn via the 'id' property in CompositeAttribute. Lower comes first.
