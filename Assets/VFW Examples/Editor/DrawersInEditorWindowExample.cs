@@ -56,7 +56,7 @@ namespace VFWExamples
 		private void GUICode()
 		{
 			foreach (var member in members)
-				gui.Member(
+				gui.MemberField(
 					member, // the member that we're drawing
 					this,   // the unity target object, used for undo
 					this,   // the object that the members belong to, in this case its the same object

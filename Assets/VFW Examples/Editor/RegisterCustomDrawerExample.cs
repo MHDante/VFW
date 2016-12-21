@@ -32,7 +32,7 @@ namespace VFWExamples
 				memberValue = new CustomObject();
 
 			gui.HelpBox("Hey yo check me out I'm all customly drawn n' stuff");
-			memberValue.str = gui.Text("Monster name", memberValue.str);
+			memberValue.str = gui.TextField("Monster name", memberValue.str);
 		}
 	}
 
@@ -44,7 +44,7 @@ namespace VFWExamples
 				memberValue = new CustomObject();
 
 			gui.HelpBox("I'm overridden :(");
-			memberValue.str = gui.Text("Override", memberValue.str);
+			memberValue.str = gui.TextField("Override", memberValue.str);
 		}
 	}
 
@@ -72,8 +72,8 @@ namespace VFWExamples
 				{
 					// gui.Member will take into consideration attributes applied on 'i' and 'j'
 					// as well as handling undo
-					gui.Member(i);
-					gui.Member(j);
+					gui.MemberField(i);
+					gui.MemberField(j);
 				}
 			}
 		}
