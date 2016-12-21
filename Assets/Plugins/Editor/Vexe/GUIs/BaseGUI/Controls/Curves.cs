@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public AnimationCurve Curve(AnimationCurve value)
+		public AnimationCurve CurveField(AnimationCurve value)
 		{
-			return Curve(string.Empty, value);
+			return CurveField(string.Empty, value);
 		}
 
-		public AnimationCurve Curve(string label, AnimationCurve value)
+		public AnimationCurve CurveField(string label, AnimationCurve value)
 		{
-			return Curve(label, value, null);
+			return CurveField(label, value, null);
 		}
 
-		public AnimationCurve Curve(string label, string tooltip, AnimationCurve value)
+		public AnimationCurve CurveField(string label, string tooltip, AnimationCurve value)
 		{
-			return Curve(label, tooltip, value, null);
+			return CurveField(label, tooltip, value, null);
 		}
 
-		public AnimationCurve Curve(string label, AnimationCurve value, Layout option)
+		public AnimationCurve CurveField(string label, AnimationCurve value, Layout option)
 		{
-			return Curve(label, string.Empty, value, option);
+			return CurveField(label, string.Empty, value, option);
 		}
 
-		public AnimationCurve Curve(string label, string tooltip, AnimationCurve value, Layout option)
+		public AnimationCurve CurveField(string label, string tooltip, AnimationCurve value, Layout option)
 		{
-			return Curve(GetContent(label, tooltip), value, option);
+			return CurveField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract AnimationCurve Curve(GUIContent content, AnimationCurve value, Layout option);
+		public abstract AnimationCurve CurveField(GUIContent content, AnimationCurve value, Layout option);
 	}
 }
