@@ -1,5 +1,3 @@
-//#define PROFILE
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +15,13 @@ namespace Vexe.Editor.Drawers
 {
 	public abstract class SequenceDrawer<TSequence, TElement> : ObjectDrawer<TSequence> where TSequence : IList<TElement>
 	{
+		private static readonly GUIStyle _bodyStyle = new GUIStyle(GUIStyles.HelpBox);
+		private static readonly GUIStyle _headerStyle = new GUIStyle(GUIStyles.ToolbarButton);
+		private static readonly GUIStyle _footerStyle = new GUIStyle(GUIStyles.ToolbarButton);
+
 		private readonly Type _elementType;
-		private List<EditorMember> _elements;
+		private readonly List<EditorMember> _elements;
+
 		private SequenceOptions _options;
 		private bool _shouldDrawAddingArea;
 		private int _newSize;
@@ -44,10 +47,71 @@ namespace Vexe.Editor.Drawers
 			_elements = new List<EditorMember>();
 		}
 
+		public override void OnGUI()
+		{
+			this.gui.Space(2f);
+
+			if (memberValue == null)
+				memberValue = GetNew();
+
+			member.CollectionCount = memberValue.Count;
+			var showAdvanced = _options.Advanced && !_options.Readonly;
+
+			if (UpdateCount && _lastUpdatedCount != memberValue.Count)
+			{
+				_lastUpdatedCount = memberValue.Count;
+				displayText = Regex.Replace(_originalDisplay, @"\$count", _lastUpdatedCount.ToString());
+			}
+
+			using (gui.Vertical(_bodyStyle))
+			{
+				this.gui.BeginCheck();
+
+				using (gui.Horizontal(_headerStyle))
+				{
+					gui.Space(10f);
+					DrawHeader(showAdvanced);
+					gui.Space(-4f);
+				}
+
+				if (foldout)
+				{
+					if (memberValue.IsEmpty())
+					{
+						gui.Space(4f);
+
+						using (gui.Indent())
+							gui.HelpBox("Sequence is empty");
+					}
+					else
+					{
+						DrawElements(showAdvanced);
+					}
+
+					DrawFooter();
+				}
+
+				this.gui.HasChanged();
+			}
+		}
+
 		protected override void Initialize()
 		{
+			_headerStyle.fixedHeight = 15f;
+			_headerStyle.margin.top = -1;
+			_footerStyle.stretchWidth = true;
+
+			var readOnlyAttr = attributes.GetAttribute<ReadOnlyAttribute>();
 			var displayAttr = attributes.GetAttribute<DisplayAttribute>();
-			_options = new SequenceOptions(displayAttr != null ? displayAttr.SeqOpt : Seq.None);
+			var displayOption = Seq.None;
+
+			if (displayAttr != null)
+				displayOption = displayAttr.SeqOpt;
+
+			if (readOnlyAttr != null)
+				displayOption |= Seq.Readonly;
+
+			_options = new SequenceOptions(displayOption);
 
 			if (_options.Readonly)
 				displayText += " (Readonly)";
@@ -56,6 +120,7 @@ namespace Vexe.Editor.Drawers
 			_shouldDrawAddingArea = !_options.Readonly && _elementType.IsA<UnityObject>();
 
 			var perItem = attributes.GetAttribute<PerItemAttribute>();
+
 			if (perItem != null)
 			{
 				if (perItem.ExplicitAttributes == null)
@@ -74,256 +139,276 @@ namespace Vexe.Editor.Drawers
 			member.CollectionCount = memberValue.Count;
 		}
 
-		public override void OnGUI()
+		private void DrawHeader(bool showAdvanced)
 		{
-			if (memberValue == null)
-				memberValue = GetNew();
+			foldout = gui.Foldout(displayText, foldout, Layout.Auto);
 
-			member.CollectionCount = memberValue.Count;
+			if (_options.Filter)
+				_filter.Field(gui, 70f);
 
-			if (UpdateCount && _lastUpdatedCount != memberValue.Count)
+			gui.FlexibleSpace();
+
+			if (showAdvanced)
+				isAdvancedChecked = gui.CheckButton(isAdvancedChecked, "advanced mode");
+
+			if (_options.Readonly)
+				return;
+
+			using (gui.State(memberValue.Count > 0))
 			{
-				_lastUpdatedCount = memberValue.Count;
-				displayText = Regex.Replace(_originalDisplay, @"\$count", _lastUpdatedCount.ToString());
-			}
-
-			bool showAdvanced = _options.Advanced && !_options.Readonly;
-
-			// header
-			using (gui.Horizontal())
-			{
-				foldout = gui.Foldout(displayText, foldout, Layout.Auto);
-
-				if (_options.Filter)
-					_filter.Field(gui, 70f);
-
-				gui.FlexibleSpace();
-
-				if (showAdvanced)
-					isAdvancedChecked = gui.CheckButton(isAdvancedChecked, "advanced mode");
-
-				if (!_options.Readonly)
+				if (gui.ClearButton("list"))
 				{
-					using (gui.State(memberValue.Count > 0))
-					{
-						if (gui.ClearButton("elements"))
-						{
-							Clear();
-						}
-						if (gui.RemoveButton("last element"))
-						{
-							RemoveLast();
-						}
-					}
-					if (gui.AddButton("element", MiniButtonStyle.ModRight))
-					{
-						AddValue();
-					}
+					RecordUndo("Clear");
+					Clear();
+				}
+
+				if (gui.RemoveButton("last element"))
+				{
+					RecordUndo("Remove Last");
+					RemoveLast();
 				}
 			}
 
-			if (!foldout)
-				return;
-
-			if (memberValue.IsEmpty())
+			if (gui.AddButton("element", MiniButtonStyle.Right))
 			{
-				using (gui.Indent())
-					gui.HelpBox("Sequence is empty");
+				RecordUndo("Add");
+				AddValue();
 			}
-			else
+		}
+
+		private void DrawElements(bool showAdvanced)
+		{
+			// body
+			using (gui.Vertical(_options.GuiBox ? GUI.skin.box : GUIStyle.none))
 			{
-				// body
-				using (gui.Vertical(_options.GuiBox ? GUI.skin.box : GUIStyle.none))
+				// advanced area
+				if (isAdvancedChecked)
 				{
-					// advanced area
-					if (isAdvancedChecked)
+					gui.Space(-2f);
+
+					using (gui.Indent((GUI.skin.box)))
 					{
-						using (gui.Indent((GUI.skin.box)))
+						gui.Space(4f);
+						using (gui.Horizontal())
 						{
-							using (gui.Horizontal())
+							_newSize = gui.IntField("New size", _newSize);
+							if (gui.MiniButton("c", "Commit", MiniButtonStyle.ModRight))
 							{
-								_newSize = gui.Int("New size", _newSize);
-								if (gui.MiniButton("c", "Commit", MiniButtonStyle.ModRight))
+								if (_newSize != memberValue.Count)
 								{
-									if (_newSize != memberValue.Count)
-										memberValue.AdjustSize(_newSize, RemoveAt, AddValue);
+									RecordUndo("Adjust Size");
+									memberValue.AdjustSize(_newSize, RemoveAt, AddValue);
 								}
 							}
+						}
 
-							using (gui.Horizontal())
+						using (gui.Horizontal())
+						{
+							gui.Label("Commands");
+
+							if (gui.MiniButton("Shuffle", "Shuffle list (randomize the order of the list's elements", (Layout) null))
 							{
-								gui.Label("Commands");
+								RecordUndo("Shuffle");
+								Shuffle();
+							}
 
-								if (gui.MiniButton("Shuffle", "Shuffle list (randomize the order of the list's elements", (Layout) null))
-									Shuffle();
+							if (gui.MoveDownButton())
+							{
+								RecordUndo("Shift Down");
+								memberValue.Shift(true);
+							}
 
-								if (gui.MoveDownButton())
-									memberValue.Shift(true);
+							if (gui.MoveUpButton(_elementType.IsValueType ? MiniButtonStyle.Right : MiniButtonStyle.Mid))
+							{
+								RecordUndo("Shift Up");
+								memberValue.Shift(false);
+							}
 
-								if (gui.MoveUpButton())
-									memberValue.Shift(false);
-
-								if (!_elementType.IsValueType && gui.MiniButton("N", "Filter nulls"))
+							if (!_elementType.IsValueType && gui.MiniButton("N", "Filter null values", MiniButtonStyle.Right))
+							{
+								for (int i = memberValue.Count - 1; i > -1; i--)
 								{
-									for (int i = memberValue.Count - 1; i > -1; i--)
-										if (memberValue[i] == null)
-											RemoveAt(i);
+									if (memberValue[i] == null)
+									{
+										RecordUndo("Remove At");
+										RemoveAt(i);
+									}
 								}
 							}
 						}
 					}
+				}
 
-					using (gui.Indent(_options.GuiBox ? GUI.skin.box : GUIStyle.none))
-					{
+				gui.Space(4f);
+
+				using (gui.Indent(_options.GuiBox ? GUI.skin.box : GUIStyle.none))
+				{
 #if PROFILE
 					Profiler.BeginSample("Sequence Elements");
 #endif
-						for (int iLoop = 0; iLoop < memberValue.Count; iLoop++)
-						{
-							var i = iLoop;
-							var elementValue = memberValue[i];
 
-							if (_filter != null && elementValue != null)
+					for (int i = 0; i < memberValue.Count; i++)
+					{
+						var elementValue = memberValue[i];
+
+						if (_filter != null && elementValue != null)
+						{
+							string elemStr = elementValue.ToString();
+
+							if (!_filter.IsMatch(elemStr))
+								continue;
+						}
+
+						using (gui.Horizontal())
+						{
+							if (_options.LineNumbers)
+								gui.NumericLabel(i);
+							else
+								gui.MiniLabel("=");
+
+							var previous = elementValue;
+							var changed = false;
+
+							var element = GetElement(i);
+
+							using (gui.If(!_options.Readonly && _elementType.IsNumeric(), gui.LabelWidth(15f)))
 							{
-								string elemStr = elementValue.ToString();
-								if (!_filter.IsMatch(elemStr))
-									continue;
+								changed = gui.Member(element, @ignoreComposition: _perItemAttributes == null);
 							}
 
-							using (gui.Horizontal())
+							if (changed)
 							{
-								if (_options.LineNumbers)
-									gui.NumericLabel(i);
-
-								var previous = elementValue;
-
-								gui.BeginCheck();
+								if (_options.Readonly)
 								{
-									using (gui.Vertical())
-									{
-										var element = GetElement(i);
-										using (gui.If(!_options.Readonly && _elementType.IsNumeric(), gui.LabelWidth(15f)))
-											gui.Member(element, @ignoreComposition: _perItemAttributes == null);
-									}
+									memberValue[i] = previous;
 								}
-
-								if (gui.HasChanged())
+								else if (_options.UniqueItems)
 								{
-									if (_options.Readonly)
+									int occurances = 0;
+
+									for (int k = 0; k < memberValue.Count; k++)
 									{
-										memberValue[i] = previous;
-									}
-									else if (_options.UniqueItems)
-									{
-										int occurances = 0;
-										for (int k = 0; k < memberValue.Count; k++)
+										if (memberValue[i].GenericEquals(memberValue[k]))
 										{
-											if (memberValue[i].GenericEquals(memberValue[k]))
+											occurances++;
+
+											if (occurances > 1)
 											{
-												occurances++;
-												if (occurances > 1)
-												{
-													memberValue[i] = previous;
-													break;
-												}
+												memberValue[i] = previous;
+												break;
 											}
 										}
 									}
 								}
+							}
 
-								if (isAdvancedChecked)
+							var midStyle = !_options.Readonly && ( _options.PerItemRemove || _options.PerItemDuplicate);
+
+							if (isAdvancedChecked)
+							{
+								var c = elementValue as Component;
+								var go = c == null ? elementValue as GameObject : c.gameObject;
+								if (go != null)
+									gui.InspectButton(go);
+
+								if (showAdvanced)
 								{
-									var c = elementValue as Component;
-									var go = c == null ? elementValue as GameObject : c.gameObject;
-									if (go != null)
-										gui.InspectButton(go);
-
-									if (showAdvanced)
+									if (gui.MoveDownButton())
 									{
-										if (gui.MoveDownButton())
-										{
-											MoveElementDown(i);
-										}
-										if (gui.MoveUpButton())
-										{
-											MoveElementUp(i);
-										}
+										RecordUndo("Move Down");
+										MoveElementDown(i);
+									}
+
+									if (gui.MoveUpButton(midStyle ? MiniButtonStyle.Mid : MiniButtonStyle.Right))
+									{
+										RecordUndo("Move Up");
+										MoveElementUp(i);
 									}
 								}
+							}
 
-								if (!_options.Readonly && _options.PerItemRemove && gui.RemoveButton("element", MiniButtonStyle.ModRight))
-								{
-									RemoveAt(i);
-								}
+							if (!_options.Readonly && _options.PerItemRemove && gui.RemoveButton("element", MiniButtonStyle.ModRight))
+							{
+								RecordUndo("Remove At");
+								RemoveAt(i);
+							}
 
-								///Only valid for Classes implementing ICloneable
-								if (typeof(ICloneable).IsAssignableFrom(_elementType) && elementValue != null)
+							// Only valid for Classes implementing ICloneable
+							if (typeof(ICloneable).IsAssignableFrom(_elementType) && elementValue != null)
+							{
+								if (!_options.Readonly && _options.PerItemDuplicate && gui.AddButton("element", MiniButtonStyle.ModRight))
 								{
-									if (!_options.Readonly && _options.PerItemDuplicate && gui.AddButton("element", MiniButtonStyle.ModRight))
-									{
-										ICloneable _elementToClone = (ICloneable) elementValue;
-										TElement cloned = (TElement) _elementToClone.Clone();
-										AddValue(cloned);
-									}
+									ICloneable _elementToClone = (ICloneable) elementValue;
+									TElement cloned = (TElement) _elementToClone.Clone();
+									RecordUndo("Add");
+									AddValue(cloned);
 								}
 							}
 						}
-#if PROFILE
-					Profiler.EndSample();
-#endif
-					}
-				}
-			}
 
-			// footer
-			if (_shouldDrawAddingArea)
-			{
-				Action<UnityObject> addOnDrop = obj =>
-				{
-					var go = obj as GameObject;
-					object value;
-					if (go != null)
-					{
-						value = _elementType == typeof(GameObject) ? (UnityObject) go : go.GetComponent(_elementType);
-					}
-					else value = obj;
-					AddValue((TElement) value);
-				};
-
-				using (gui.Indent())
-				{
-					gui.DragDropArea<UnityObject>(
-						@label: "+Drag-Drop+",
-						@labelSize: 14,
-						@style: EditorStyles.toolbarButton,
-						@canSetVisualModeToCopy: dragObjects => dragObjects.All(obj =>
+						if (i < memberValue.Count - 1)
 						{
-							var go = obj as GameObject;
-							var isGo = go != null;
-							if (_elementType == typeof(GameObject))
-							{
-								return isGo;
-							}
-							return isGo ? go.GetComponent(_elementType) != null : obj.GetType().IsA(_elementType);
-						}),
-						@cursor: MouseCursor.Link,
-						@onDrop: addOnDrop,
-						@onMouseUp: () => SelectionWindow.Show(new Tab<UnityObject>(
-							@getValues: () => UnityObject.FindObjectsOfType(_elementType),
-							@getCurrent: () => null,
-							@setTarget: item =>
-							{
-								AddValue((TElement) (object) item);
-							},
-							@getValueName: value => value.name,
-							@title: _elementType.Name + "s")),
-						@preSpace: 2f,
-						@postSpace: 35f,
-						@height: 15f
-					);
+							this.gui.Space(6f);
+						}
+					}
+#if PROFILE
+						Profiler.EndSample();
+#endif
 				}
-				gui.Space(3f);
 			}
+		}
+
+		private void DrawFooter()
+		{
+			if (!_shouldDrawAddingArea)
+				return;
+
+			Action<UnityObject> addOnDrop = obj => {
+				var go = obj as GameObject;
+				object value;
+
+				if (go == null)
+					value = obj;
+				else
+					value = _elementType == typeof(GameObject) ? (UnityObject) go : go.GetComponent(_elementType);
+
+				RecordUndo("Add");
+				AddValue((TElement) value);
+			};
+
+			using (gui.Indent())
+			{
+				gui.Space(4f);
+				gui.DragDropArea<UnityObject>(
+					@label: "+Drag-Drop+",
+					@labelSize: 14,
+					@style: _footerStyle,
+					@canSetVisualModeToCopy: dragObjects => dragObjects.All(obj => {
+						var go = obj as GameObject;
+						var isGo = go != null;
+						if (_elementType == typeof(GameObject))
+							return isGo;
+
+						return isGo ? go.GetComponent(_elementType) != null : obj.GetType().IsA(_elementType);
+					}),
+					@cursor: MouseCursor.Link,
+					@onDrop: addOnDrop,
+					@onMouseUp: () => SelectionWindow.Show(new Tab<UnityObject>(
+						@getValues: () => UnityObject.FindObjectsOfType(_elementType),
+						@getCurrent: () => null,
+						@setTarget: item => {
+							RecordUndo("Add");
+							AddValue((TElement) (object) item);
+						},
+						@getValueName: value => value.name,
+						@title: _elementType.Name + "s")),
+					@preSpace: 0f,
+					@postSpace: 6f,
+					@height: 15f
+				);
+			}
+
+			gui.Space(4f);
 		}
 
 		private EditorMember GetElement(int index)
@@ -332,8 +417,8 @@ namespace Vexe.Editor.Drawers
 			{
 				var element = EditorMember.WrapIListElement(
 					@attributes: _perItemAttributes,
-					@elementName: _elementType.IsNumeric() && !_options.Readonly ? "~" : string.Empty,
-					@elementType: typeof(TElement),
+					@elementName: string.Empty,
+					@elementType: _elementType,
 					@elementId: RuntimeHelper.CombineHashCodes(id, index)
 				);
 
@@ -347,8 +432,7 @@ namespace Vexe.Editor.Drawers
 			return e;
 		}
 
-		// List ops
-		#region
+		#region List ops
 
 		protected abstract void Clear();
 
@@ -386,7 +470,7 @@ namespace Vexe.Editor.Drawers
 			AddValue((TElement) _elementType.GetDefaultValueEmptyIfString());
 		}
 
-		#endregion
+		#endregion List ops
 
 		private struct SequenceOptions
 		{
