@@ -72,6 +72,8 @@ namespace Vexe.Editor
 					.Add<Color32, Color32Drawer>()
 					.Add<Vector2, Vector2Drawer>()
 					.Add<Vector3, Vector3Drawer>()
+					.Add<Vector4, Vector4Drawer>()
+					.Add<Matrix4x4, Drawers.Matrix4x4Drawer>()
 					.Add<Quaternion, QuaternionDrawer>()
 					.Add<Gradient, GradientDrawer>()
 					.Add<AnimationCurve, AnimationCurveDrawer>()
@@ -85,8 +87,7 @@ namespace Vexe.Editor
 			{
 				this.Add(typeof(List<>), typeof(ListDrawer<>), true, BakeTypeArgsInDrawer)
 					.Add(typeof(Array), typeof(ArrayDrawer<>), true, (a, d) => d.MakeGenericType(a.GetElementType()))
-					.Add(typeof(IDictionary<,>), typeof(IDictionaryDrawer<,>), true, (a, d) =>
-					{
+					.Add(typeof(IDictionary<,>), typeof(IDictionaryDrawer<,>), true, (a, d) => {
 						if (a.IsAbstract)
 						{
 							Debug.LogError("Mapping error: IDictionary type {0} is abstract thus the drawer can't instantiate an instance of it. " +
@@ -126,7 +127,9 @@ namespace Vexe.Editor
 				// Decorates
 				{
 					this.Add<CommentAttribute, CommentDrawer>()
-						.Add<WhitespaceAttribute, WhiteSpaceDrawer>();
+						.Add<WhitespaceAttribute, WhiteSpaceDrawer>()
+						.Add<ReadOnlyAttribute, ReadOnlyDrawer>();
+					;
 				}
 				// Enums
 				{
