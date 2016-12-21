@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public sbyte SByte(sbyte value)
+		public sbyte SByteField(sbyte value)
 		{
-			return SByte(string.Empty, value);
+			return SByteField(string.Empty, value);
 		}
 
-		public sbyte SByte(string label, sbyte value)
+		public sbyte SByteField(string label, sbyte value)
 		{
-			return SByte(label, value, null);
+			return SByteField(label, value, null);
 		}
 
-		public sbyte SByte(string label, string tooltip, sbyte value)
+		public sbyte SByteField(string label, string tooltip, sbyte value)
 		{
-			return SByte(label, tooltip, value, null);
+			return SByteField(label, tooltip, value, null);
 		}
 
-		public sbyte SByte(string label, sbyte value, Layout option)
+		public sbyte SByteField(string label, sbyte value, Layout option)
 		{
-			return SByte(label, string.Empty, value, option);
+			return SByteField(label, string.Empty, value, option);
 		}
 
-		public sbyte SByte(string label, string tooltip, sbyte value, Layout option)
+		public sbyte SByteField(string label, string tooltip, sbyte value, Layout option)
 		{
-			return SByte(GetContent(label, tooltip), value, option);
+			return SByteField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract sbyte SByte(GUIContent content, sbyte value, Layout option);
+		public abstract sbyte SByteField(GUIContent content, sbyte value, Layout option);
 	}
 }
