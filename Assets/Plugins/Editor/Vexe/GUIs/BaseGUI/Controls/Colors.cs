@@ -1,34 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public Color Color(Color value)
+		public Color ColorField(Color value)
 		{
-			return Color(string.Empty, value);
+			return ColorField(string.Empty, value);
 		}
 
-		public Color Color(string label, Color value)
+		public Color ColorField(string label, Color value)
 		{
-			return Color(label, value, null);
+			return ColorField(label, value, null);
 		}
 
-		public Color Color(string label, string tooltip, Color value)
+		public Color ColorField(string label, string tooltip, Color value)
 		{
-			return Color(label, tooltip, value, null);
+			return ColorField(label, tooltip, value, null);
 		}
 
-		public Color Color(string label, Color value, Layout option)
+		public Color ColorField(string label, Color value, Layout option)
 		{
-			return Color(label, string.Empty, value, option);
+			return ColorField(label, string.Empty, value, option);
 		}
 
-		public Color Color(string label, string tooltip, Color value, Layout option)
+		public Color ColorField(string label, string tooltip, Color value, Layout option)
 		{
-			return Color(GetContent(label, tooltip), value, option);
+			return ColorField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract Color Color(GUIContent content, Color value, Layout option);
+		public abstract Color ColorField(GUIContent content, Color value, Layout option);
 	}
 }
