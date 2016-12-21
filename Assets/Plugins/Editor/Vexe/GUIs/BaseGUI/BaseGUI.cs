@@ -17,9 +17,11 @@ namespace Vexe.Editor.GUIs
 		public static readonly Layout kMultifieldOption = Layout.sHeight(kHeight * 3f);
 		public static readonly Layout kFoldoutOption = Layout.sWidth(kFoldoutWidth);
 		public static readonly Layout kDefaultMiniOption = Layout.sWidth(kDefaultMiniWidth).Height(kDefaultMiniHeight);
+		public static readonly Layout kNumericLabel = new Layout { width = kNumericLabelWidth };
 
+		public const int kMinScreenWidth = 352;
 		public const float kIndentAmount = 7.5f;
-		public const float kNumericLabelWidth = 21f;
+		public const float kNumericLabelWidth = 20f;
 		public const float kDefaultMiniWidth = 20f;
 		public const float kDefaultMiniHeight = 16f;
 		public const float kFoldoutWidth = 10f;
@@ -27,8 +29,7 @@ namespace Vexe.Editor.GUIs
 		public const MiniButtonStyle kDefaultMiniStyle = MiniButtonStyle.Mid;
 		public const MiniButtonStyle kDefaultModStyle = MiniButtonStyle.ModMid;
 
-		public abstract Rect LastRect { get; }
-		public ScrollViewBlock ScrollView { get; private set; }
+		public const string kNoneText = "None";
 
 		private IndentBlock indentBlock;
 		private StateBlock stateBlock;
@@ -37,6 +38,13 @@ namespace Vexe.Editor.GUIs
 		private LabelWidthBlock labelWidthBlock;
 
 		protected EditorRecord prefs;
+		protected bool hasReachedMinScreenWidth;
+
+		public Action OnBeginLayout;
+
+		public abstract Rect LastRect { get; }
+
+		public ScrollViewBlock ScrollView { get; private set; }
 
 		public BaseGUI()
 		{
