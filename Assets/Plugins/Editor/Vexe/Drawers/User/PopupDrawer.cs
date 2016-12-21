@@ -7,6 +7,7 @@ using System.Reflection;
 using Vexe.Runtime.Extensions;
 using Vexe.Runtime.Helpers;
 using Vexe.Runtime.Types;
+using UnityEditor;
 
 namespace Vexe.Editor.Drawers
 {
@@ -75,9 +76,15 @@ namespace Vexe.Editor.Drawers
 
 			T newValue = Default;
 			T currentValue = memberValue;
+			var currentIndex = Values.IndexOf(memberValue);
+
+			if (currentIndex >= 0)
+				CurrentIndex = currentIndex;
 
 			using (gui.Horizontal())
 			{
+				EditorGUI.BeginChangeCheck();
+
 				if (attribute.TextField)
 				{
 #if PROFILE
@@ -110,14 +117,14 @@ namespace Vexe.Editor.Drawers
 					if (CurrentIndex == -1)
 					{
 						CurrentIndex = 0;
+
 						if (Values.Length > 0)
 							SetValue(Values[0]);
 					}
 
-					gui.BeginCheck();
-
 					int selection = gui.Popup(displayText, CurrentIndex.Value, _displayStrings);
-					if (gui.HasChanged() && Values.Length > 0)
+
+					if (CurrentIndex != selection && Values.Length > 0)
 					{
 						CurrentIndex = selection;
 						_changed = true;
@@ -134,12 +141,18 @@ namespace Vexe.Editor.Drawers
 
 				if (_changed)
 				{
+					RecordUndo("SetValue");
 					_changed = false;
 					SetValue(newValue);
 				}
 
 				if (_showUpdateButton && gui.MiniButton("U", "Update popup values", MiniButtonStyle.Right))
+				{
+					RecordUndo("UpdateValues");
 					UpdateValues();
+				}
+
+				EditorGUI.EndChangeCheck();
 			}
 		}
 
