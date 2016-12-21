@@ -408,7 +408,7 @@ namespace Vexe.Editor.Editors
 						{
 							gui.Space(3f);
 
-							gui.Member(_debug);
+							gui.MemberField(_debug);
 
 							var mask = gui.BunnyMask("Display", _display);
 							{
@@ -470,7 +470,7 @@ namespace Vexe.Editor.Editors
 			_script = serializedObject.FindProperty("m_Script");
 
 			EditorGUI.BeginChangeCheck();
-			_script.objectReferenceValue = gui.Object("Script", _script.objectReferenceValue, typeof(MonoScript), false);
+			_script.objectReferenceValue = gui.ObjectField("Script", _script.objectReferenceValue, typeof(MonoScript), false);
 			gui.Space(5f);
 			if (EditorGUI.EndChangeCheck())
 			{

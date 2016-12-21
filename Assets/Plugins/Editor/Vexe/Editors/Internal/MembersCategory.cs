@@ -110,7 +110,7 @@ namespace Vexe.Editor.Internal
 					{
 						gui.Space(Spacing);
 						using (gui.Vertical())
-							gui.Member(member, target, target, _id, false);
+							gui.MemberField(member, target, target, _id, false);
 					}
 
 					if (memberSplitter && i != imax - 1)

@@ -202,7 +202,7 @@ namespace Vexe.Editor.Drawers
 			if (!Ready)
 			{
 				if (memberType.IsA<string>())
-					member.Value = gui.Text(displayText, (string) member.Value);
+					member.Value = gui.TextField(displayText, (string) member.Value);
 				else
 				{
 					using (gui.Horizontal())

@@ -24,7 +24,7 @@ namespace Vexe.Editor.Drawers
 			{
 				using (gui.Horizontal())
 				{
-					target = gui.Object(displayText, target, resourceType, false);
+					target = gui.ObjectField(displayText, target, resourceType, false);
 
 					if (gui.ClearButton("Resource"))
 					{

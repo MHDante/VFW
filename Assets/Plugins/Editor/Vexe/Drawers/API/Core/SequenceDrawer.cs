@@ -273,7 +273,7 @@ namespace Vexe.Editor.Drawers
 
 							using (gui.If(!_options.Readonly && _elementType.IsNumeric(), gui.LabelWidth(15f)))
 							{
-								changed = gui.Member(element, @ignoreComposition: _perItemAttributes == null);
+								changed = gui.MemberField(element, @ignoreComposition: _perItemAttributes == null);
 							}
 
 							if (changed)

@@ -105,7 +105,7 @@ namespace Vexe.Editor.Drawers
 				{
 					for (int i = 0; i < argMembers.Length; i++)
 					{
-						bool argChange = gui.Member(argMembers[i], false);
+						bool argChange = gui.MemberField(argMembers[i], false);
 						changed |= argChange;
 						if (argChange)
 							TrySave(argValues[i], argKeys[i]);

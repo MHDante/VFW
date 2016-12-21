@@ -32,7 +32,7 @@ namespace Vexe.Editor.Drawers
 
 		public void MemberField(EditorMember member)
 		{
-			gui.Member(member, false);
+			gui.MemberField(member, false);
 		}
 
 		public override bool CanHandle(Type memberType)

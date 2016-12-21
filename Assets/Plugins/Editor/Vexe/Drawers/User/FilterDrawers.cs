@@ -48,7 +48,7 @@ namespace Vexe.Editor.Drawers
 			if (_toggle)
 			{
 				gui.BeginCheck();
-				var text = gui.Text(_pattern, Layout.sWidth(width));
+				var text = gui.TextField(_pattern, Layout.sWidth(width));
 				if (gui.HasChanged())
 				{
 					changed = true;
@@ -56,7 +56,7 @@ namespace Vexe.Editor.Drawers
 					_prefs[_id] = _pattern;
 				}
 			}
-			else gui.Text("", Layout.sWidth(5f));
+			else gui.TextField("", Layout.sWidth(5f));
 
 			var buttonStr = _toggle ? "<" : ">";
 			if (gui.Button(buttonStr, GUIStyles.None, Layout.sWidth(13f)))

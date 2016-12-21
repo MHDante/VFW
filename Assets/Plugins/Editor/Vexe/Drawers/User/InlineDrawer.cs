@@ -82,7 +82,7 @@ namespace Vexe.Editor.Drawers
 						{
 							var c = target as Camera;
 							if (c.orthographic)
-								c.orthographicSize = gui.Float("Size", c.orthographicSize);
+								c.orthographicSize = gui.FloatField("Size", c.orthographicSize);
 							else c.fieldOfView = gui.FloatSlider("FOV", c.fieldOfView, 1, 179);
 						}
 					}
@@ -181,7 +181,7 @@ namespace Vexe.Editor.Drawers
 					using (gui.Horizontal())
 					{
 						go.SetActive(gui.Toggle(string.Empty, go.activeSelf, Layout.sWidth(20f)));
-						go.name = gui.Text(go.name);
+						go.name = gui.TextField(go.name);
 					}
 
 					using (gui.LabelWidth(45f))

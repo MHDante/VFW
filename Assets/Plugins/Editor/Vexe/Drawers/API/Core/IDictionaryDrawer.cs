@@ -277,7 +277,7 @@ namespace Vexe.Editor.Drawers
 			{
 				gui.Space(8f);
 
-				gui.Member(_tempKeyMember);
+				gui.MemberField(_tempKeyMember);
 				var e = Event.current;
 
 				var controlName = "TempAddButton";
@@ -355,7 +355,7 @@ namespace Vexe.Editor.Drawers
 
 			using (gui.If(!_options.Readonly && _keyType.IsNumeric(), gui.LabelWidth(15f)))
 			{
-				if (gui.Member(keyMember, @ignoreComposition: _perKeyAttributes == null) && !_options.Readonly)
+				if (gui.MemberField(keyMember, @ignoreComposition: _perKeyAttributes == null) && !_options.Readonly)
 				{
 					keys[index] = (TKey) keyMember.Value;
 					Write(keys, values);
@@ -369,7 +369,7 @@ namespace Vexe.Editor.Drawers
 
 			using (gui.If(!_options.Readonly && _valueType.IsNumeric(), gui.LabelWidth(15f)))
 			{
-				if (gui.Member(valueMember, @ignoreComposition: _perValueAttributes == null) && _options.Readonly)
+				if (gui.MemberField(valueMember, @ignoreComposition: _perValueAttributes == null) && _options.Readonly)
 				{
 					values[index] = (TValue) valueMember.Value;
 					Write(keys, values);

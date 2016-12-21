@@ -44,7 +44,7 @@ namespace Vexe.Editor.GUIs
 			return GUILayout.Button(content, style, option);
 		}
 
-		public override Color Color(GUIContent content, Color value, Layout option)
+		public override Color ColorField(GUIContent content, Color value, Layout option)
 		{
 			return EditorGUILayout.ColorField(content, value, option);
 		}
@@ -54,42 +54,42 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.EnumPopup(content, selected, style, option);
 		}
 
-		public override float Float(GUIContent content, float value, Layout option)
+		public override float FloatField(GUIContent content, float value, Layout option)
 		{
 			return EditorGUILayout.FloatField(content, value, option);
 		}
 
-		public override char Char(GUIContent content, char value, Layout option)
+		public override char CharField(GUIContent content, char value, Layout option)
 		{
 			return CharField(content, ref value, option);
 		}
 
-		public override sbyte SByte(GUIContent content, sbyte value, Layout option)
+		public override sbyte SByteField(GUIContent content, sbyte value, Layout option)
 		{
 			return SByteField(content, ref value, option);
 		}
 
-		public override byte Byte(GUIContent content, byte value, Layout option)
+		public override byte ByteField(GUIContent content, byte value, Layout option)
 		{
 			return ByteField(content, ref value, option);
 		}
 
-		public override short Short(GUIContent content, short value, Layout option)
+		public override short ShortField(GUIContent content, short value, Layout option)
 		{
 			return ShortField(content, ref value, option);
 		}
 
-		public override ushort UShort(GUIContent content, ushort value, Layout option)
+		public override ushort UShortField(GUIContent content, ushort value, Layout option)
 		{
 			return UShortField(content, ref value, option);
 		}
 
-		public override int Int(GUIContent content, int value, Layout option)
+		public override int IntField(GUIContent content, int value, Layout option)
 		{
 			return EditorGUILayout.IntField(content, value, option);
 		}
 
-		public override uint UInt(GUIContent content, uint value, Layout option)
+		public override uint UIntField(GUIContent content, uint value, Layout option)
 		{
 			return UIntField(content, ref value, option);
 		}
@@ -110,7 +110,7 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.MaskField(content, mask, displayedOptions, style, option);
 		}
 
-		public override UnityObject Object(GUIContent content, UnityObject value, System.Type type, bool allowSceneObjects, Layout option)
+		public override UnityObject ObjectField(GUIContent content, UnityObject value, System.Type type, bool allowSceneObjects, Layout option)
 		{
 			// If we pass an empty content, ObjectField will still reserve space for an empty label ~__~
 			return string.IsNullOrEmpty(content.text) ?
@@ -123,12 +123,18 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.Popup(text, selectedIndex, displayedOptions, style, option);
 		}
 
-		public override Rect Rect(GUIContent content, Rect value, Layout option)
+		public override int Popup(string text, int selectedIndex, GUIContent[] displayedOptions, GUIStyle style, Layout option)
+		{
+			var content = GetContent(text);
+			return EditorGUILayout.Popup(content, selectedIndex, displayedOptions, style, option);
+		}
+
+		public override Rect RectField(GUIContent content, Rect value, Layout option)
 		{
 			return EditorGUILayout.RectField(content, value, option);
 		}
 
-		public override AnimationCurve Curve(GUIContent content, AnimationCurve value, Layout option)
+		public override AnimationCurve CurveField(GUIContent content, AnimationCurve value, Layout option)
 		{
 			return EditorGUILayout.CurveField(content, value, option);
 		}
@@ -165,7 +171,7 @@ namespace Vexe.Editor.GUIs
 			GUILayout.FlexibleSpace();
 		}
 
-		public override string Text(GUIContent content, string value, GUIStyle style, Layout option)
+		public override string TextField(GUIContent content, string value, GUIStyle style, Layout option)
 		{
 			return EditorGUILayout.TextField(content, value, style, option);
 		}
@@ -241,6 +247,11 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.LayerField(label, layer, style, layout);
 		}
 
+		public override void Prefix(GUIContent content)
+		{
+			EditorGUILayout.PrefixLabel(content);
+		}
+
 		public override void Prefix(string label)
 		{
 			EditorGUILayout.PrefixLabel(label);
@@ -256,12 +267,12 @@ namespace Vexe.Editor.GUIs
 			throw new NotImplementedException();
 		}
 
-		public override double Double(GUIContent content, double value, Layout option)
+		public override double DoubleField(GUIContent content, double value, Layout option)
 		{
 			return EditorGUILayout.DoubleField(content, value, option);
 		}
 
-		public override long Long(GUIContent content, long value, Layout option)
+		public override long LongField(GUIContent content, long value, Layout option)
 		{
 			return EditorGUILayout.LongField(content, value, option);
 		}

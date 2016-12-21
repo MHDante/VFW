@@ -26,10 +26,10 @@ namespace Vexe.Editor.Drawers
 			using (gui.Horizontal())
 			{
 				gui.Prefix(displayText);
-				float x = gui.Float(memberValue.x);
+				float x = gui.FloatField(memberValue.x);
 				float y = memberValue.y;
 				gui.MinMaxSlider(ref x, ref y, attribute.left, attribute.right);
-				y = gui.Float(y);
+				y = gui.FloatField(y);
 				memberValue = new Vector2(x, y);
 			}
 		}

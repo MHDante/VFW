@@ -265,7 +265,7 @@ namespace Vexe.Editor.Drawers
 				else
 				{
 					drawer.Initialize(member, attributes, gui, prefs);
-					gui.Member(member, attributes, drawer, false);
+					gui.MemberField(member, attributes, drawer, false);
 				}
 			}
 		}
@@ -321,7 +321,7 @@ namespace Vexe.Editor.Drawers
 						continue;
 
 					EditorMember em;
-					changed |= gui.Member(member, target, unityTarget, id, false, out em);
+					changed |= gui.MemberField(member, target, unityTarget, id, false, out em);
 					if (em != null)
 						target = em.RawTarget;
 				}

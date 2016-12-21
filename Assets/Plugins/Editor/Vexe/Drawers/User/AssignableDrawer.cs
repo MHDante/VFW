@@ -68,7 +68,7 @@ namespace Vexe.Editor.Drawers
 			using (gui.Indent())
 			using (gui.Horizontal())
 			{
-				source = gui.Object<GameObject>(source == null ? "Source" : string.Empty, source);
+				source = gui.ObjectField<GameObject>(source == null ? "Source" : string.Empty, source);
 
 				if (source != null)
 					prefs[kSource] = source.name;

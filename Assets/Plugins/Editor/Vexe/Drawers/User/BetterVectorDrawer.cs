@@ -111,7 +111,7 @@ namespace Vexe.Editor.Drawers
 
 		protected override Func<string, Vector2, Vector2> GetField()
 		{
-			return gui.Vector2;
+			return gui.Vector2Field;
 		}
 
 		protected override bool VectorEquals(Vector2 left, Vector2 right)
@@ -151,7 +151,7 @@ namespace Vexe.Editor.Drawers
 
 		protected override Func<string, Vector3, Vector3> GetField()
 		{
-			return gui.Vector3;
+			return gui.Vector3Field;
 		}
 
 		protected override bool VectorEquals(Vector3 left, Vector3 right)

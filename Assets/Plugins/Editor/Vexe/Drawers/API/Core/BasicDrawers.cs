@@ -31,7 +31,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override int DoField(string text, int value)
 		{
-			return gui.Int(text, value);
+			return gui.IntField(text, value);
 		}
 	}
 
@@ -39,7 +39,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override uint DoField(string text, uint value)
 		{
-			return (uint) Math.Max(0, gui.Int(text, (int) value));
+			return (uint) Math.Max(0, gui.IntField(text, (int) value));
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override long DoField(string text, long value)
 		{
-			return gui.Long(text, value);
+			return gui.LongField(text, value);
 		}
 	}
 
@@ -55,7 +55,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override double DoField(string text, double value)
 		{
-			return gui.Double(text, value);
+			return gui.DoubleField(text, value);
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override float DoField(string text, float value)
 		{
-			return gui.Float(text, value);
+			return gui.FloatField(text, value);
 		}
 	}
 
@@ -71,7 +71,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override byte DoField(string text, byte value)
 		{
-			return (byte) gui.Int(text, value);
+			return (byte) gui.IntField(text, value);
 		}
 	}
 
@@ -79,7 +79,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override sbyte DoField(string text, sbyte value)
 		{
-			return (sbyte) gui.Int(text, value);
+			return (sbyte) gui.IntField(text, value);
 		}
 	}
 
@@ -87,7 +87,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override short DoField(string text, short value)
 		{
-			return (short) gui.Int(text, value);
+			return (short) gui.IntField(text, value);
 		}
 	}
 
@@ -95,7 +95,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override ushort DoField(string text, ushort value)
 		{
-			return (ushort) gui.Int(text, value);
+			return (ushort) gui.IntField(text, value);
 		}
 	}
 
@@ -103,7 +103,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override string DoField(string text, string value)
 		{
-			return gui.Text(text, value);
+			return gui.TextField(text, value);
 		}
 	}
 
@@ -111,7 +111,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override char DoField(string text, char value)
 		{
-			return (char) gui.Int(text, value);
+			return (char) gui.IntField(text, value);
 		}
 	}
 
@@ -119,7 +119,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Vector2 DoField(string text, Vector2 value)
 		{
-			return gui.Vector2(text, value);
+			return gui.Vector2Field(text, value);
 		}
 	}
 
@@ -127,7 +127,23 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Vector3 DoField(string text, Vector3 value)
 		{
-			return gui.Vector3(text, value);
+			return gui.Vector3Field(text, value);
+		}
+	}
+
+	public class Vector4Drawer : BasicDrawer<Vector4>
+	{
+		protected override Vector4 DoField(string text, Vector4 value)
+		{
+			return gui.Vector4Field(text, value);
+		}
+	}
+
+	public class Matrix4x4Drawer : BasicDrawer<Matrix4x4>
+	{
+		protected override Matrix4x4 DoField(string text, Matrix4x4 value)
+		{
+			return gui.Matrix4x4Field(text, value);
 		}
 	}
 
@@ -143,7 +159,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Color DoField(string text, Color value)
 		{
-			return gui.Color(text, value);
+			return gui.ColorField(text, value);
 		}
 	}
 
@@ -151,7 +167,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Color32 DoField(string text, Color32 value)
 		{
-			return gui.Color(text, value);
+			return gui.ColorField(text, value);
 		}
 	}
 
@@ -167,7 +183,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Rect DoField(string text, Rect value)
 		{
-			return gui.Rect(text, value);
+			return gui.RectField(text, value);
 		}
 	}
 
@@ -175,7 +191,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override Quaternion DoField(string text, Quaternion value)
 		{
-			return gui.Quaternion(text, value);
+			return gui.QuaternionField(text, value);
 		}
 	}
 
@@ -183,7 +199,7 @@ namespace Vexe.Editor.Drawers
 	{
 		protected override AnimationCurve DoField(string text, AnimationCurve value)
 		{
-			return gui.Curve(text, value);
+			return gui.CurveField(text, value);
 		}
 	}
 
@@ -199,7 +215,7 @@ namespace Vexe.Editor.Drawers
 	{
 		public override void OnGUI()
 		{
-			memberValue = gui.Object(displayText, memberValue, memberType, !AssetDatabase.Contains(unityTarget));
+			memberValue = gui.ObjectField(displayText, memberValue, memberType, !AssetDatabase.Contains(unityTarget));
 		}
 	}
 
