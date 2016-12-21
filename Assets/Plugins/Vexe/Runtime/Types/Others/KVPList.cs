@@ -52,28 +52,34 @@ namespace Vexe.Runtime.Types
 			get
 			{
 				int index;
+
 				if (!TryGetIndex(key, out index))
 				{
 					throw new KeyNotFoundException(key.ToString());
 				}
+
 				return values[index];
 			}
 			set
 			{
 				int index;
+
 				if (!TryGetIndex(key, out index))
 				{
 					Add(key, value);
 				}
-				else values[index] = value;
+				else
+					values[index] = value;
 			}
 		}
 
 		public void SetKeyAt(int i, TKey value)
 		{
 			AssertIndexInBounds(i);
+
 			if (value != null && !value.Equals(keys[i]))
 				AssertUniqueKey(value);
+
 			keys[i] = value;
 		}
 
@@ -122,8 +128,10 @@ namespace Vexe.Runtime.Types
 		{
 			if (assertUniqueKey)
 				AssertUniqueKey(key);
+
 			if (key == null)
-				throw new ArgumentNullException("Dictionary key cannot be null");
+				throw new ArgumentNullException("Key cannot be null");
+
 			keys.Insert(i, key);
 			values.Insert(i, value);
 		}
@@ -152,12 +160,14 @@ namespace Vexe.Runtime.Types
 		public bool Remove(TKey key)
 		{
 			int index;
+
 			if (TryGetIndex(key, out index))
 			{
 				keys.RemoveAt(index);
 				values.RemoveAt(index);
 				return true;
 			}
+
 			return false;
 		}
 
@@ -181,11 +191,13 @@ namespace Vexe.Runtime.Types
 		public bool TryGetValue(TKey key, out TValue result)
 		{
 			int index;
+
 			if (!TryGetIndex(key, out index))
 			{
 				result = default(TValue);
 				return false;
 			}
+
 			result = values[index];
 			return true;
 		}
@@ -242,7 +254,7 @@ namespace Vexe.Runtime.Types
 
 			public DictionaryEntry Entry
 			{
-				get { throw new NotImplementedException(); }
+				get { return new DictionaryEntry(Key, Value); }
 			}
 
 			public object Key
@@ -296,11 +308,20 @@ namespace Vexe.Runtime.Types
 			return ContainsKey(item.Key);
 		}
 
-		public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+		public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
 		{
-			for (int i = arrayIndex; i < array.Length; i++)
+			if (array == null)
+				throw new ArgumentNullException("array");
+
+			if (index < 0 || index > array.Length)
+				throw new ArgumentOutOfRangeException(string.Format("index = {0}, array.Length = {1}", index, array.Length));
+
+			if (array.Length - index < Count)
+				throw new ArgumentException(string.Format("The number of elements in the dictionary ({0}) is greater than the available space from index to the end of the destination array {1}.", Count, array.Length));
+
+			for (int i = 0; i < Count; i++)
 			{
-				array[i] = new KeyValuePair<TKey, TValue>(keys[i], values[i]);
+				array[index++] = new KeyValuePair<TKey, TValue>(keys[i], values[i]);
 			}
 		}
 
@@ -362,7 +383,7 @@ namespace Vexe.Runtime.Types
 
 		public void CopyTo(Array array, int index)
 		{
-			throw new NotImplementedException("CopyTo");
+			CopyTo((KeyValuePair<TKey, TValue>[]) array, index);
 		}
 
 		public bool IsSynchronized
