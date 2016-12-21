@@ -9,7 +9,17 @@ namespace Vexe.Editor.GUIs
 			return Popup(selectedIndex, displayedOptions, null);
 		}
 
+		public int Popup(int selectedIndex, GUIContent[] displayedOptions)
+		{
+			return Popup(selectedIndex, displayedOptions, null);
+		}
+
 		public int Popup(int selectedIndex, string[] displayedOptions, Layout option)
+		{
+			return Popup(string.Empty, selectedIndex, displayedOptions, option);
+		}
+
+		public int Popup(int selectedIndex, GUIContent[] displayedOptions, Layout option)
 		{
 			return Popup(string.Empty, selectedIndex, displayedOptions, option);
 		}
@@ -19,12 +29,24 @@ namespace Vexe.Editor.GUIs
 			return Popup(text, selectedIndex, displayedOptions, null);
 		}
 
+		public int Popup(string text, int selectedIndex, GUIContent[] displayedOptions)
+		{
+			return Popup(text, selectedIndex, displayedOptions, null);
+		}
+
 		public int Popup(string text, int selectedIndex, string[] displayedOptions, Layout option)
 		{
 			return Popup(text, selectedIndex, displayedOptions, GUIStyles.Popup, option);
 		}
 
+		public int Popup(string text, int selectedIndex, GUIContent[] displayedOptions, Layout option)
+		{
+			return Popup(text, selectedIndex, displayedOptions, GUIStyles.Popup, option);
+		}
+
 		public abstract int Popup(string text, int selectedIndex, string[] displayedOptions, GUIStyle style, Layout option);
+
+		public abstract int Popup(string text, int selectedIndex, GUIContent[] displayedOptions, GUIStyle style, Layout option);
 
 		public string Tag(string tag)
 		{
