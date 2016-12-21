@@ -1,5 +1,3 @@
-//#define dbg_level_1
-
 using UnityEngine;
 
 namespace Vexe.Editor.GUIs

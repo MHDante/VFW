@@ -62,8 +62,8 @@ namespace Vexe.Editor.Types
 						var lowerResultInitial = char.ToLower(result[0]);
 						var nicetype = x.TypeNiceName;
 
-                        // check for n as well, eg nSize
-                        if ((nicetype == "int" && lowerResultInitial == 'i' || lowerResultInitial == 'n')
+						// check for n as well, eg nSize
+						if ((nicetype == "int" && lowerResultInitial == 'i' || lowerResultInitial == 'n')
 							|| char.ToLower(nicetype[0]) == lowerResultInitial)
 							return result.Remove(0, 1).SplitPascalCase();
 					}

@@ -38,15 +38,16 @@ namespace Vexe.Runtime.Extensions
 		public static CtorInvoker<T> DelegateForCtor<T>(this Type type, params Type[] paramTypes)
 		{
 			int key = kCtorInvokerName.GetHashCode() ^ type.GetHashCode();
+
 			for (int i = 0; i < paramTypes.Length; i++)
 				key ^= paramTypes[i].GetHashCode();
 
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (CtorInvoker<T>) result;
 
-			var dynMethod = new DynamicMethod(kCtorInvokerName,
-				typeof(T), new Type[] { typeof(object[]) });
+			var dynMethod = new DynamicMethod(kCtorInvokerName, typeof(T), new Type[] { typeof(object[]) });
 
 			emit.il = dynMethod.GetILGenerator();
 			GenCtor<T>(type, paramTypes);
@@ -74,6 +75,7 @@ namespace Vexe.Runtime.Extensions
 
 			int key = GetKey<TTarget, TReturn>(property, kPropertyGetterName);
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (MemberGetter<TTarget, TReturn>) result;
 
@@ -100,6 +102,7 @@ namespace Vexe.Runtime.Extensions
 
 			int key = GetKey<TTarget, TValue>(property, kPropertySetterName);
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (MemberSetter<TTarget, TValue>) result;
 
@@ -123,6 +126,7 @@ namespace Vexe.Runtime.Extensions
 		{
 			int key = GetKey<TTarget, TReturn>(field, kFieldGetterName);
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (MemberGetter<TTarget, TReturn>) result;
 
@@ -146,6 +150,7 @@ namespace Vexe.Runtime.Extensions
 		{
 			int key = GetKey<TTarget, TValue>(field, kFieldSetterName);
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (MemberSetter<TTarget, TValue>) result;
 
@@ -169,6 +174,7 @@ namespace Vexe.Runtime.Extensions
 		{
 			int key = GetKey<TTarget, TReturn>(method, kMethodCallerName);
 			Delegate result;
+
 			if (cache.TryGetValue(key, out result))
 				return (MethodCaller<TTarget, TReturn>) result;
 
@@ -321,6 +327,7 @@ namespace Vexe.Runtime.Extensions
 			else
 			{
 				var ctor = targetType.GetConstructor(paramTypes);
+
 				if (ctor == null)
 					throw new Exception("Generating constructor for type: " + targetType +
 						(paramTypes.Length == 0 ? "No empty constructor found!" :
@@ -363,6 +370,7 @@ namespace Vexe.Runtime.Extensions
 
 			// push arguments in order to call method
 			var prams = method.GetParameters();
+
 			for (int i = 0, imax = prams.Length; i < imax; i++)
 			{
 				emit.ldarg1()       // push array
@@ -387,6 +395,7 @@ namespace Vexe.Runtime.Extensions
 			// if method wasn't static that means we declared a temp local to load the target
 			// that means our local variables index for the arguments start from 1
 			int localVarStart = method.IsStatic ? 0 : 1;
+
 			for (int i = 0; i < prams.Length; i++)
 			{
 				var paramType = prams[i].ParameterType;
@@ -413,16 +422,13 @@ namespace Vexe.Runtime.Extensions
 		private static void GenFieldGetter<TTarget>(FieldInfo field)
 		{
 			GenMemberGetter<TTarget>(field, field.FieldType, field.IsStatic,
-				(e, f) => e.lodfld((FieldInfo) f)
-			);
+				(e, f) => e.lodfld((FieldInfo) f));
 		}
 
 		private static void GenPropertyGetter<TTarget>(PropertyInfo property)
 		{
-			GenMemberGetter<TTarget>(property, property.PropertyType,
-				property.GetGetMethod(true).IsStatic,
-				(e, p) => e.callorvirt(((PropertyInfo) p).GetGetMethod(true))
-			);
+			GenMemberGetter<TTarget>(property, property.PropertyType, property.GetGetMethod(true).IsStatic,
+				(e, p) => e.callorvirt(((PropertyInfo) p).GetGetMethod(true)));
 		}
 
 		private static void GenMemberGetter<TTarget>(MemberInfo member, Type memberType, bool isStatic, Action<ILEmitter, MemberInfo> get)
@@ -435,6 +441,7 @@ namespace Vexe.Runtime.Extensions
 				if (!isStatic)
 					emit.ldarg0()
 						.unboxorcast(member.DeclaringType);
+
 				emit.perform(get, member)
 					.ifvaluetype_box(memberType);
 			}
@@ -454,16 +461,13 @@ namespace Vexe.Runtime.Extensions
 		private static void GenFieldSetter<TTarget>(FieldInfo field)
 		{
 			GenMemberSetter<TTarget>(field, field.FieldType, field.IsStatic,
-				(e, f) => e.setfld((FieldInfo) f)
-			);
+				(e, f) => e.setfld((FieldInfo) f));
 		}
 
 		private static void GenPropertySetter<TTarget>(PropertyInfo property)
 		{
-			GenMemberSetter<TTarget>(property, property.PropertyType,
-				property.GetSetMethod(true).IsStatic, (e, p) =>
-				e.callorvirt(((PropertyInfo) p).GetSetMethod(true))
-			);
+			GenMemberSetter<TTarget>(property, property.PropertyType, property.GetSetMethod(true).IsStatic,
+				(e, p) => e.callorvirt(((PropertyInfo) p).GetSetMethod(true)));
 		}
 
 		private static void GenMemberSetter<TTarget>(MemberInfo member, Type memberType, bool isStatic, Action<ILEmitter, MemberInfo> set)
