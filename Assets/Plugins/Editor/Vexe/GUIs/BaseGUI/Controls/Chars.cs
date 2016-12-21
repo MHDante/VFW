@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public char Char(char value)
+		public char CharField(char value)
 		{
-			return Char(string.Empty, value);
+			return CharField(string.Empty, value);
 		}
 
-		public char Char(string label, char value)
+		public char CharField(string label, char value)
 		{
-			return Char(label, value, null);
+			return CharField(label, value, null);
 		}
 
-		public char Char(string label, string tooltip, char value)
+		public char CharField(string label, string tooltip, char value)
 		{
-			return Char(label, tooltip, value, null);
+			return CharField(label, tooltip, value, null);
 		}
 
-		public char Char(string label, char value, Layout option)
+		public char CharField(string label, char value, Layout option)
 		{
-			return Char(label, string.Empty, value, option);
+			return CharField(label, string.Empty, value, option);
 		}
 
-		public char Char(string label, string tooltip, char value, Layout option)
+		public char CharField(string label, string tooltip, char value, Layout option)
 		{
-			return Char(GetContent(label, tooltip), value, option);
+			return CharField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract char Char(GUIContent content, char value, Layout option);
+		public abstract char CharField(GUIContent content, char value, Layout option);
 	}
 }
