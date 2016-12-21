@@ -1,34 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public double Double(double value)
+		public double DoubleField(double value)
 		{
-			return Double(string.Empty, value);
+			return DoubleField(string.Empty, value);
 		}
 
-		public double Double(string label, double value)
+		public double DoubleField(string label, double value)
 		{
-			return Double(label, value, null);
+			return DoubleField(label, value, null);
 		}
 
-		public double Double(string label, string tooltip, double value)
+		public double DoubleField(string label, string tooltip, double value)
 		{
-			return Double(label, tooltip, value, null);
+			return DoubleField(label, tooltip, value, null);
 		}
 
-		public double Double(string label, double value, Layout option)
+		public double DoubleField(string label, double value, Layout option)
 		{
-			return Double(label, string.Empty, value, option);
+			return DoubleField(label, string.Empty, value, option);
 		}
 
-		public double Double(string label, string tooltip, double value, Layout option)
+		public double DoubleField(string label, string tooltip, double value, Layout option)
 		{
-			return Double(GetContent(label, tooltip), value, option);
+			return DoubleField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract double Double(GUIContent content, double value, Layout option);
+		public abstract double DoubleField(GUIContent content, double value, Layout option);
 	}
 }
