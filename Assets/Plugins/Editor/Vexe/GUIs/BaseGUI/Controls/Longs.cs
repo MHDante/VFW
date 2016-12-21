@@ -1,34 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public long Long(long value)
+		public long LongField(long value)
 		{
-			return Long(string.Empty, value);
+			return LongField(string.Empty, value);
 		}
 
-		public long Long(string label, long value)
+		public long LongField(string label, long value)
 		{
-			return Long(label, value, null);
+			return LongField(label, value, null);
 		}
 
-		public long Long(string label, string tooltip, long value)
+		public long LongField(string label, string tooltip, long value)
 		{
-			return Long(label, tooltip, value, null);
+			return LongField(label, tooltip, value, null);
 		}
 
-		public long Long(string label, long value, Layout option)
+		public long LongField(string label, long value, Layout option)
 		{
-			return Long(label, string.Empty, value, option);
+			return LongField(label, string.Empty, value, option);
 		}
 
-		public long Long(string label, string tooltip, long value, Layout option)
+		public long LongField(string label, string tooltip, long value, Layout option)
 		{
-			return Long(GetContent(label, tooltip), value, option);
+			return LongField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract long Long(GUIContent content, long value, Layout option);
+		public abstract long LongField(GUIContent content, long value, Layout option);
 	}
 }
