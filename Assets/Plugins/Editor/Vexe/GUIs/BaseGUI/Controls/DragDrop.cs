@@ -17,7 +17,7 @@ namespace Vexe.Editor.GUIs
 		public void DraggableLabelField(string label, string field, UnityObject value, float labelWidth, GUIStyle style, MouseCursor cursor)
 		{
 			Label(label, labelWidth == 0 ? null : Layout.sWidth(labelWidth - 3.5f));
-			Text(field);
+			TextField(field);
 			RegisterFieldForDrag(LastRect, value);
 		}
 
