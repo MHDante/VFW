@@ -1,6 +1,3 @@
-//#define PROFILE
-//#define DBG
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,6 +93,10 @@ namespace Vexe.Editor.Editors
 		private Vector4 _padding = Vector4.zero;
 
 		private static Dictionary<int, BaseGUI> _guiCache = new Dictionary<int, BaseGUI>();
+		private static GUIStyle _bodyStyle;
+		private static GUIStyle _headerStyle;
+		private static GUIStyle _innerBodyStyle;
+		private static bool _isInitializedStyles = false;
 
 		/// <summary>
 		/// Members of these types will be drawn by Unity's Layout system
@@ -363,51 +364,77 @@ namespace Vexe.Editor.Editors
 
 		protected virtual void OnGUI()
 		{
+			if (!_isInitializedStyles)
+			{
+				_bodyStyle = new GUIStyle(GUIStyles.HelpBox);
+				_headerStyle = new GUIStyle(GUIStyles.ToolbarButton);
+				_innerBodyStyle = new GUIStyle(GUIStyles.ScrollView);
+
+				_bodyStyle.margin.right = 1;
+				_headerStyle.normal.background = GUIStyles.Box.normal.background;
+				_headerStyle.border = new RectOffset(1, 1, 1, 1);
+				_headerStyle.margin.top = 1;
+				_innerBodyStyle.margin.right = 10;
+
+				_isInitializedStyles = true;
+			}
+
 			if (ShowScriptHeader)
 			{
 				var scriptKey = RuntimeHelper.CombineHashCodes(id, "script");
 				gui.Space(3f);
-				using (gui.Horizontal(EditorStyles.toolbarButton))
+
+				using (gui.Vertical(_bodyStyle))
 				{
-					gui.Space(10f);
-					prefs[scriptKey] = gui.Foldout(prefs.ValueOrDefault(scriptKey, false));
-					gui.Space(-12f);
-
-					if (ScriptField()) // script changed? exit!
-						return;
-				}
-
-				if (prefs[scriptKey])
-				{
-					gui.Space(2f);
-
-					using (gui.Indent(GUI.skin.textField))
+					using (gui.Horizontal(_headerStyle))
 					{
-						gui.Space(3f);
+						gui.Space(10f);
+						prefs[scriptKey] = gui.Foldout(prefs.ValueOrDefault(scriptKey, false));
+						gui.Space(-12f);
 
-						gui.Member(_debug);
+						if (ScriptField()) // script changed? exit!
+							return;
+					}
 
-						var mask = gui.BunnyMask("Display", _display);
+					if (!prefs[scriptKey])
+					{
+						_bodyStyle.margin.bottom = -2;
+					}
+					else
+					{
+						_bodyStyle.margin.bottom = 4;
+
+						using (gui.Indent(_innerBodyStyle))
 						{
-							var newValue = (CategoryDisplay) mask;
-							if (_display != newValue)
+							gui.Space(3f);
+
+							gui.Member(_debug);
+
+							var mask = gui.BunnyMask("Display", _display);
 							{
-								_display = newValue;
-								var displayKey = RuntimeHelper.CombineHashCodes(id, "display");
-								prefs[displayKey] = mask;
+								var newValue = (CategoryDisplay) mask;
+								if (_display != newValue)
+								{
+									_display = newValue;
+									var displayKey = RuntimeHelper.CombineHashCodes(id, "display");
+									prefs[displayKey] = mask;
+								}
 							}
-						}
 
-						var spacing = Mathf.Clamp(gui.Int("Spacing", _spacing), -13, (int) EditorGUIUtility.currentViewWidth / 4);
-						if (_spacing != spacing)
-						{
-							_spacing = spacing;
-							int spacingKey = RuntimeHelper.CombineHashCodes(id, "spacing");
-							prefs[spacingKey] = _spacing;
-							gui.RequestResetIfRabbit();
+							var spacing = Mathf.Clamp(gui.IntField("Spacing", _spacing), -13, (int) EditorGUIUtility.currentViewWidth / 4);
+							if (_spacing != spacing)
+							{
+								_spacing = spacing;
+								int spacingKey = RuntimeHelper.CombineHashCodes(id, "spacing");
+								prefs[spacingKey] = _spacing;
+								gui.RequestResetIfRabbit();
+							}
 						}
 					}
 				}
+
+				if (!prefs[scriptKey])
+					this.gui.Space(6f);
 			}
 
 			gui.BeginCheck();
@@ -419,8 +446,10 @@ namespace Vexe.Editor.Editors
 				cat.Spacing = _spacing;
 				cat.gui = gui;
 				cat.HideHeader = (_display & CategoryDisplay.Headers) == 0;
+
 				if ((_display & CategoryDisplay.CategorySplitter) != 0)
 					gui.Splitter();
+
 				cat.Draw(target);
 			}
 
