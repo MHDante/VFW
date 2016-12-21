@@ -1,7 +1,7 @@
-//#define DBG
-
 using System;
 using System.Reflection;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using Vexe.Editor.GUIs;
 using Vexe.Editor.Types;
@@ -107,6 +107,9 @@ namespace Vexe.Editor.Drawers
 				}
 			}
 
+			Undo.undoRedoPerformed += OnAfterUndoRedo;
+			this.gui.OnBeginLayout += OnBeginGUI;
+
 			_hasInit = true;
 			InternalInitialize();
 			Initialize();
@@ -116,6 +119,14 @@ namespace Vexe.Editor.Drawers
 		public bool Foldout()
 		{
 			return foldout = gui.Foldout(foldout);
+		}
+
+		protected virtual void OnBeginGUI()
+		{
+		}
+
+		protected virtual void OnAfterUndoRedo()
+		{
 		}
 
 		protected virtual void InternalInitialize()
@@ -158,6 +169,26 @@ namespace Vexe.Editor.Drawers
 		protected static void Log(object msg)
 		{
 			Debug.Log(msg);
+		}
+
+		protected void RecordUndo(string methodName)
+		{
+			Undo.RecordObject(this.unityTarget, string.Format("{0} {1} {2}", this.memberType.Name, this.unityTarget.name, methodName));
+		}
+
+		protected void ClearUndo()
+		{
+			Undo.ClearUndo(this.unityTarget);
+		}
+
+		protected void SaveScene()
+		{
+			EditorSceneManager.SaveScene(this.gameObject.scene, this.gameObject.scene.path, false);
+		}
+
+		protected void MarkSceneDirty()
+		{
+			EditorSceneManager.MarkSceneDirty(this.gameObject.scene);
 		}
 	}
 }
