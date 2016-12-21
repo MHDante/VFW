@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public uint UInt(uint value)
+		public uint UIntField(uint value)
 		{
-			return UInt(string.Empty, value);
+			return UIntField(string.Empty, value);
 		}
 
-		public uint UInt(string label, uint value)
+		public uint UIntField(string label, uint value)
 		{
-			return UInt(label, value, null);
+			return UIntField(label, value, null);
 		}
 
-		public uint UInt(string label, string tooltip, uint value)
+		public uint UIntField(string label, string tooltip, uint value)
 		{
-			return UInt(label, tooltip, value, null);
+			return UIntField(label, tooltip, value, null);
 		}
 
-		public uint UInt(string label, uint value, Layout option)
+		public uint UIntField(string label, uint value, Layout option)
 		{
-			return UInt(label, string.Empty, value, option);
+			return UIntField(label, string.Empty, value, option);
 		}
 
-		public uint UInt(string label, string tooltip, uint value, Layout option)
+		public uint UIntField(string label, string tooltip, uint value, Layout option)
 		{
-			return UInt(GetContent(label, tooltip), value, option);
+			return UIntField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract uint UInt(GUIContent content, uint value, Layout option);
+		public abstract uint UIntField(GUIContent content, uint value, Layout option);
 	}
 }
