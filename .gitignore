@@ -8,6 +8,7 @@ Obj/
 UnityGenerated/
 /Library/
 Assets/AssetStoreTools*
+.vs/
 
 ExportedObj/
 *.svd
