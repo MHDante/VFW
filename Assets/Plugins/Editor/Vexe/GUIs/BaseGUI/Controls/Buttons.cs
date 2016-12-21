@@ -131,6 +131,16 @@ namespace Vexe.Editor.GUIs
 			return Button(content, style, option, ControlType.MiniButton);
 		}
 
+		public bool MiniFullButton(string text)
+		{
+			return MiniFullButton(text, string.Empty);
+		}
+
+		public bool MiniFullButton(string text, string tooltip)
+		{
+			return Button(text, tooltip, kDefaultMiniOption);
+		}
+
 		public bool AddButton(string target)
 		{
 			return AddButton(target, kDefaultModStyle);
