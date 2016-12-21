@@ -4,42 +4,42 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public string Text(string value)
+		public string TextField(string value)
 		{
-			return Text(string.Empty, value);
+			return TextField(string.Empty, value);
 		}
 
-		public string Text(string label, string value)
+		public string TextField(string label, string value)
 		{
-			return Text(label, value, Layout.Auto);
+			return TextField(label, value, Layout.Auto);
 		}
 
-		public string Text(string value, Layout option)
+		public string TextField(string value, Layout option)
 		{
-			return Text(GUIContent.none, value, option);
+			return TextField(GUIContent.none, value, option);
 		}
 
-		public string Text(string label, string value, Layout option)
+		public string TextField(string label, string value, Layout option)
 		{
-			return Text(label, value, string.Empty, option);
+			return TextField(label, value, string.Empty, option);
 		}
 
-		public string Text(string label, string value, string tooltip)
+		public string TextField(string label, string value, string tooltip)
 		{
-			return Text(label, value, tooltip, Layout.Auto);
+			return TextField(label, value, tooltip, Layout.Auto);
 		}
 
-		public string Text(string label, string value, string tooltip, Layout option)
+		public string TextField(string label, string value, string tooltip, Layout option)
 		{
-			return Text(GetContent(label, tooltip), value, option);
+			return TextField(GetContent(label, tooltip), value, option);
 		}
 
-		public string Text(GUIContent content, string value, Layout option)
+		public string TextField(GUIContent content, string value, Layout option)
 		{
-			return Text(content, value, GUIStyles.TextField, option);
+			return TextField(content, value, GUIStyles.TextField, option);
 		}
 
-		public abstract string Text(GUIContent content, string value, GUIStyle style, Layout option);
+		public abstract string TextField(GUIContent content, string value, GUIStyle style, Layout option);
 
 		public string ToolbarSearch(string value)
 		{
