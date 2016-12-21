@@ -4,31 +4,31 @@ namespace Vexe.Editor.GUIs
 {
 	public abstract partial class BaseGUI
 	{
-		public byte Byte(byte value)
+		public byte ByteField(byte value)
 		{
-			return Byte(string.Empty, value);
+			return ByteField(string.Empty, value);
 		}
 
-		public byte Byte(string label, byte value)
+		public byte ByteField(string label, byte value)
 		{
-			return Byte(label, value, null);
+			return ByteField(label, value, null);
 		}
 
-		public byte Byte(string label, string tooltip, byte value)
+		public byte ByteField(string label, string tooltip, byte value)
 		{
-			return Byte(label, tooltip, value, null);
+			return ByteField(label, tooltip, value, null);
 		}
 
-		public byte Byte(string label, byte value, Layout option)
+		public byte ByteField(string label, byte value, Layout option)
 		{
-			return Byte(label, string.Empty, value, option);
+			return ByteField(label, string.Empty, value, option);
 		}
 
-		public byte Byte(string label, string tooltip, byte value, Layout option)
+		public byte ByteField(string label, string tooltip, byte value, Layout option)
 		{
-			return Byte(GetContent(label, tooltip), value, option);
+			return ByteField(GetContent(label, tooltip), value, option);
 		}
 
-		public abstract byte Byte(GUIContent content, byte value, Layout option);
+		public abstract byte ByteField(GUIContent content, byte value, Layout option);
 	}
 }
