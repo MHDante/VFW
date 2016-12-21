@@ -7,7 +7,7 @@ namespace Vexe.Editor.GUIs
 	{
 		public void NumericLabel(int n, GUIStyle style)
 		{
-			Label(n + "- ", style, new Layout { width = kNumericLabelWidth });
+			Label(n + " ", style, kNumericLabel);
 		}
 
 		public void NumericLabel(int n)
@@ -24,10 +24,22 @@ namespace Vexe.Editor.GUIs
 			}
 		}
 
+		public void MiniLabel(string text, GUIStyle style)
+		{
+			Label(text, style, kNumericLabel);
+		}
+
+		public void MiniLabel(string text)
+		{
+			MiniLabel(text, EditorStyles.miniLabel);
+		}
+
 		public void Prefix()
 		{
 			Prefix(string.Empty);
 		}
+
+		public abstract void Prefix(GUIContent content);
 
 		public abstract void Prefix(string label);
 
