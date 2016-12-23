@@ -330,11 +330,11 @@ namespace Vexe.Editor.GUIs
 		public static ulong ULongField(GUIContent content, ref ulong value, Layout option)
 		{
 			var ulongStr = value.ToString();
-			ulong ulongValue;
+			decimal ulongValue;
 
 			try
 			{
-				if (!ulong.TryParse(EditorGUILayout.TextField(content, ulongStr), out ulongValue))
+				if (!decimal.TryParse(EditorGUILayout.DelayedTextField(content, ulongStr), out ulongValue))
 				{
 					ulongValue = value;
 				}
@@ -344,7 +344,16 @@ namespace Vexe.Editor.GUIs
 				ulongValue = value;
 			}
 
-			return ulongValue;
+			if (ulongValue < ulong.MinValue)
+				return ulong.MinValue;
+
+			if (ulongValue > ulong.MaxValue)
+				return ulong.MaxValue;
+
+			unchecked
+			{
+				return (ulong) ulongValue;
+			}
 		}
 
 		public static char CharField(GUIContent content, ref char value, Layout option)

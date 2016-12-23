@@ -53,9 +53,40 @@ namespace Vexe.Editor.Drawers
 
 	public class ULongDrawer : BasicDrawer<ulong>
 	{
+		private System.Collections.Generic.Stack<ulong> undoStack = new System.Collections.Generic.Stack<ulong>();
+
+		private Types.BetterUndo _undo = new Types.BetterUndo();
+
+		private Types.BetterUndo undo { get { return Types.BetterUndo.MakeCurrent(ref _undo); } }
+
+		protected override void Initialize()
+		{
+			base.Initialize();
+		}
+
+		public override void OnGUI()
+		{
+			var tempValue = memberValue;
+			tempValue = DoField(displayText, tempValue);
+
+			if (tempValue != memberValue)
+			{
+				undoStack.Push(memberValue);
+				undo.RecordSetVariable(memberValue, x => memberValue = x, tempValue);
+			}
+		}
+
 		protected override ulong DoField(string text, ulong value)
 		{
 			return gui.ULongField(text, value);
+		}
+
+		protected override void OnAfterUndoRedo()
+		{
+			if (undoStack.Count > 0)
+			{
+				memberValue = undoStack.Pop();
+			}
 		}
 	}
 

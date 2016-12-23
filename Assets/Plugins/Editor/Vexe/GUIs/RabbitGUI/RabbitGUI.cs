@@ -769,11 +769,11 @@ namespace Vexe.Editor.GUIs
 			if (CanDrawControl(out position, data))
 			{
 				var tempStr = value.ToString();
-				ulong tempVal;
+				decimal tempVal;
 
 				try
 				{
-					if (!ulong.TryParse(EditorGUI.TextField(position, content, tempStr), out tempVal))
+					if (!decimal.TryParse(EditorGUI.DelayedTextField(position, content, tempStr), out tempVal))
 					{
 						tempVal = value;
 					}
@@ -783,7 +783,16 @@ namespace Vexe.Editor.GUIs
 					tempVal = value;
 				}
 
-				return tempVal;
+				if (tempVal < ulong.MinValue)
+					return ulong.MinValue;
+
+				if (tempVal > ulong.MaxValue)
+					return ulong.MaxValue;
+
+				unchecked
+				{
+					return (ulong) tempVal;
+				}
 			}
 
 			return value;
