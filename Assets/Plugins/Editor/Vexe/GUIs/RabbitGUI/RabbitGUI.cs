@@ -761,6 +761,34 @@ namespace Vexe.Editor.GUIs
 			return value;
 		}
 
+		public override ulong ULongField(GUIContent content, ulong value, Layout option)
+		{
+			var data = new ControlData(content, GUIStyles.NumberField, option, ControlType.LongField);
+
+			Rect position;
+			if (CanDrawControl(out position, data))
+			{
+				var tempStr = value.ToString();
+				ulong tempVal;
+
+				try
+				{
+					if (!ulong.TryParse(EditorGUI.TextField(position, content, tempStr), out tempVal))
+					{
+						tempVal = value;
+					}
+				}
+				catch
+				{
+					tempVal = value;
+				}
+
+				return tempVal;
+			}
+
+			return value;
+		}
+
 		public override char CharField(GUIContent content, char value, Layout option)
 		{
 			var data = new ControlData(content, GUIStyles.TextField, option, ControlType.TextField);

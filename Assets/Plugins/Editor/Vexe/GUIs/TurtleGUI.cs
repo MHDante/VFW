@@ -277,6 +277,11 @@ namespace Vexe.Editor.GUIs
 			return EditorGUILayout.LongField(content, value, option);
 		}
 
+		public override ulong ULongField(GUIContent content, ulong value, Layout option)
+		{
+			return ULongField(content, ref value, option);
+		}
+
 		public override IDisposable If(bool condition, IDisposable body)
 		{
 			throw new NotImplementedException();

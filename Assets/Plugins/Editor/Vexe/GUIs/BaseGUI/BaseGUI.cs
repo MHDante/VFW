@@ -327,6 +327,26 @@ namespace Vexe.Editor.GUIs
 			}
 		}
 
+		public static ulong ULongField(GUIContent content, ref ulong value, Layout option)
+		{
+			var ulongStr = value.ToString();
+			ulong ulongValue;
+
+			try
+			{
+				if (!ulong.TryParse(EditorGUILayout.TextField(content, ulongStr), out ulongValue))
+				{
+					ulongValue = value;
+				}
+			}
+			catch
+			{
+				ulongValue = value;
+			}
+
+			return ulongValue;
+		}
+
 		public static char CharField(GUIContent content, ref char value, Layout option)
 		{
 			string stringValue = value.ToString();
