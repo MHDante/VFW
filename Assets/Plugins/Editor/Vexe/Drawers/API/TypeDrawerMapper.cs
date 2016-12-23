@@ -67,6 +67,7 @@ namespace Vexe.Editor
 					.Add<sbyte, SByteDrawer>()
 					.Add<double, DoubleDrawer>()
 					.Add<long, LongDrawer>()
+					.Add<ulong, ULongDrawer>()
 					.Add<bool, BoolDrawer>()
 					.Add<Color, ColorDrawer>()
 					.Add<Color32, Color32Drawer>()

@@ -51,6 +51,14 @@ namespace Vexe.Editor.Drawers
 		}
 	}
 
+	public class ULongDrawer : BasicDrawer<ulong>
+	{
+		protected override ulong DoField(string text, ulong value)
+		{
+			return gui.ULongField(text, value);
+		}
+	}
+
 	public class DoubleDrawer : BasicDrawer<double>
 	{
 		protected override double DoField(string text, double value)
