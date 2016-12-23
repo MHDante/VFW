@@ -420,10 +420,154 @@ namespace Vexe.Editor.Types
 
 	public static class EditorMemberExtensions
 	{
+		private const BindingFlags InstanceFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+		private const BindingFlags StaticFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static;
+		private const BindingFlags AllFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+
 		public static bool IsNull(this EditorMember member)
 		{
 			object value;
 			return (member == null || member.Equals(null)) || ((value = member.Value) == null || value.Equals(null));
+		}
+
+		public static FieldInfo GetField(this EditorMember member, string name)
+		{
+			return member.Type.GetField(name, AllFlags);
+		}
+
+		public static FieldInfo GetInstanceField(this EditorMember member, string name)
+		{
+			return member.Type.GetField(name, InstanceFlags);
+		}
+
+		public static FieldInfo GetStaticField(this EditorMember member, string name)
+		{
+			return member.Type.GetField(name, StaticFlags);
+		}
+
+		public static PropertyInfo GetProperty(this EditorMember member, string name)
+		{
+			return member.Type.GetProperty(name, AllFlags);
+		}
+
+		public static PropertyInfo GetInstanceProperty(this EditorMember member, string name)
+		{
+			return member.Type.GetProperty(name, InstanceFlags);
+		}
+
+		public static PropertyInfo GetStaticProperty(this EditorMember member, string name)
+		{
+			return member.Type.GetProperty(name, StaticFlags);
+		}
+
+		public static MethodInfo GetMethod(this EditorMember member, string name)
+		{
+			return member.Type.GetMethod(name, AllFlags);
+		}
+
+		public static MethodInfo GetInstanceMethod(this EditorMember member, string name)
+		{
+			return member.Type.GetMethod(name, InstanceFlags);
+		}
+
+		public static MethodInfo GetStaticMethod(this EditorMember member, string name)
+		{
+			return member.Type.GetMethod(name, StaticFlags);
+		}
+
+		public static bool SetField(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetField(name), ref value);
+		}
+
+		public static bool SetInstanceField(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetInstanceField(name), ref value);
+		}
+
+		public static bool SetStaticField(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetStaticField(name), ref value);
+		}
+
+		public static bool SetProperty(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetProperty(name), ref value);
+		}
+
+		public static bool SetInstanceProperty(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetInstanceProperty(name), ref value);
+		}
+
+		public static bool SetStaticProperty(this EditorMember member, string name, object value)
+		{
+			return SetValue(member, member.GetStaticProperty(name), ref value);
+		}
+
+		public static object InvokeMethod(this EditorMember member, string name, params object[] values)
+		{
+			return Invoke(member, member.GetMethod(name), values);
+		}
+
+		public static object InvokeInstanceMethod(this EditorMember member, string name, params object[] values)
+		{
+			return Invoke(member, member.GetInstanceMethod(name), values);
+		}
+
+		public static object InvokeStaticMethod(this EditorMember member, string name, params object[] values)
+		{
+			return Invoke(member, member.GetStaticMethod(name), values);
+		}
+
+		private static bool SetValue(EditorMember member, FieldInfo field, ref object value)
+		{
+			if (field == null)
+				return false;
+
+			try
+			{
+				field.SetValue(member.Value, value);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private static bool SetValue(EditorMember member, PropertyInfo property, ref object value)
+		{
+			if (property == null)
+				return false;
+
+			try
+			{
+				property.SetValue(member.Value, value, null);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private static object Invoke(EditorMember member, MethodInfo method, object[] values = null)
+		{
+			if (method == null)
+				return null;
+
+			try
+			{
+				if (values == null || values.Length <= 0)
+					return method.Invoke(member.Value);
+
+				return method.Invoke(member.Value, values);
+			}
+			catch
+			{
+				return null;
+			}
 		}
 	}
 }
