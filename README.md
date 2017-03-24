@@ -57,12 +57,12 @@ using Vexe.Runtime.Types;
 public class TestBehaviour : BaseBehaviour
 {
     [PerItem, Tags, OnChanged("Log")]
-		public string[] enemyTags;
+    public string[] enemyTags;
 
-		[Inline]
-		public GameObject go;
+    [Inline]
+    public GameObject go;
 
-		[Display(Seq.LineNumbers | Seq.Filter), PerItem("Whitespace"), Whitespace(Left = 5f)]
+    [Display(Seq.LineNumbers | Seq.Filter), PerItem("Whitespace"), Whitespace(Left = 5f)]
     public ItemsLookup[] ComplexArray;
 }
 
