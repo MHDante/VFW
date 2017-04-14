@@ -67,7 +67,7 @@ namespace Vexe.Runtime.Extensions
 		public static bool Contains(this LayerMask mask, LayerMask other)
 		{
 			// Convert the object's layer to a bitfield for comparison
-			int bitMask = 1 << other;
+			int bitMask = 1 << (int)other;
 			return (mask.value & bitMask) > 0;
 		}
 
