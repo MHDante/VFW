@@ -1,0 +1,186 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{65833F28-8711-407E-8D22-A7DC5FD6DB44}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>VFW-Improved</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY_EDITOR</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Vexe</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BasicSerializer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Runtime\FastSave\Serializer\BasicSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Unity 2017.1.0b1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Unity 2017.1.0b1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="HISTORY.txt" />
+    <Content Include="LICENSE.txt" />
+    <Content Include="Runtime\FastSave\README.txt" />
+    <Content Include="Runtime\FastSave\Serializer\BasicSerializer.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Runtime\FastSave\Core\FSCommon.cs" />
+    <Compile Include="Runtime\FastSave\Core\Load.cs" />
+    <Compile Include="Runtime\FastSave\Core\Save.cs" />
+    <Compile Include="Runtime\FastSave\Other\FSAttributes.cs" />
+    <Compile Include="Runtime\FastSave\Other\FSExtensions.cs" />
+    <Compile Include="Runtime\FastSave\Other\FSMarker.cs" />
+    <Compile Include="Runtime\FastSave\Other\FSReference.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\AnimationSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\AssetReferenceSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\ExplicitComponentSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\GameObjectSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\LightSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializers\ReflectiveComponentSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\BinaryX20.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Internal\X20Logic.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Internal\X20Member.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Internal\X20Reflection.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\ArraySerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\BaseSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\CollectionSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\DictionarySerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\EnumSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\ListSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\PrimitiveSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\ReflectiveSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\StrongSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\TypeSerializer.cs" />
+    <Compile Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\UnityStructs.cs" />
+    <Compile Include="Runtime\FastSave\Storage\AssetStorage.cs" />
+    <Compile Include="Runtime\FastSave\Storage\PrefabStorage.cs" />
+    <Compile Include="Runtime\Libs\Extensions\AnimatorExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\ComponentExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\DelegateExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\FastReflection.cs" />
+    <Compile Include="Runtime\Libs\Extensions\Flags.cs" />
+    <Compile Include="Runtime\Libs\Extensions\GameObjectExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\GenericEnumerableExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\LayerMaskExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\OtherExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\PropertyInfoExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\RendererExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\RigidbodyExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\StringExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\SystemObjectExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\TransformExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\TypeExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\UnityObjectExtensions.cs" />
+    <Compile Include="Runtime\Libs\Extensions\VectorExtensions.cs" />
+    <Compile Include="Runtime\Libs\Helpers\ErrorHelper.cs" />
+    <Compile Include="Runtime\Libs\Helpers\EventsHelper.cs" />
+    <Compile Include="Runtime\Libs\Helpers\GizHelper.cs" />
+    <Compile Include="Runtime\Libs\Helpers\ReflectionHelper.cs" />
+    <Compile Include="Runtime\Libs\Helpers\RuntimeHelper.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\CategoryAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\CategoryDisplay.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\CategoryMemberType.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\CategorySetOp.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\DefineCategoriesAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\Categories\DefineCategoryAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\DisplayAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\DrawingAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\UsingAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\API\VisibilityAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\AnimVarAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\AssignableAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\BetterVectorAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ButtonAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ClampAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\CommentAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ConstrainValueAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\DraggableAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\EnumMaskAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\FilterEnumAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\FilterTagsAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\InlineAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\InputAxisAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\IPAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\MaxAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\MinAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\OnChangedAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\OnChangedNoArgAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ParagraphAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PathAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\BytePopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\CharPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\DoublePopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\FloatPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\IntPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\LongPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\SBytePopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\ShortPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\StringPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\UIntPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\PopupAttributes\UShortPopupAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\RandAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ReadOnlyAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\RegexAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ResourcePathAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\SelectEnumAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\SelectSceneAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\ShowTypeAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\SliderAttributes.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\TagsAttribute.cs" />
+    <Compile Include="Runtime\Types\Attributes\User\WhiteSpaceAttribute.cs" />
+    <Compile Include="Runtime\Types\Core\BaseBehaviour.cs" />
+    <Compile Include="Runtime\Types\Core\BaseScriptableObject.cs" />
+    <Compile Include="Runtime\Types\Others\DataRecord.cs" />
+    <Compile Include="Runtime\Types\Others\ItemTuple.cs" />
+    <Compile Include="Runtime\Types\Others\KVPList.cs" />
+    <Compile Include="Runtime\Types\Others\SerializableDictionary.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Runtime\FastSave\Resources\AssetStorage.asset" />
+    <None Include="Runtime\FastSave\Resources\PrefabStorage.asset" />
+    <None Include="Runtime\FastSave\Serializers\AnimationSerializer.cs.meta" />
+    <None Include="Runtime\FastSave\Serializers\AssetReferenceSerializer.cs.meta" />
+    <None Include="Runtime\FastSave\Serializer\BinaryX20\Serializers\ArraySerializer.cs.meta" />
+    <None Include="Runtime\Libs\Extensions\AnimatorExtensions.cs.meta" />
+    <None Include="Runtime\Types\Attributes\API.meta" />
+    <None Include="Runtime\Types\Attributes\User\AnimVarAttribute.cs.meta" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

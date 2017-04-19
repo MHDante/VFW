@@ -1,0 +1,183 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1408D6D7-6643-4138-930A-8E767C763E62}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>VFW-Improved-Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY_EDITOR</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>VFW_Improved_Editor</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEditor">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Unity 2017.1.0b1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Unity 2017.1.0b1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Vexe\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vexe\Drawers\API.meta" />
+    <None Include="Vexe\Drawers\User\AnimVarDrawer.cs.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Vexe\Drawers\API\Base\AttributeDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Base\BaseDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Base\CompositeDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Base\ObjectDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\BasicDrawers.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\IDictionaryDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\MethodDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\NullableDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\RecursiveDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\Core\SequenceDrawer.cs" />
+    <Compile Include="Vexe\Drawers\API\MemberDrawersHandler.cs" />
+    <Compile Include="Vexe\Drawers\API\TypeDrawerMapper.cs" />
+    <Compile Include="Vexe\Drawers\User\AnimVarDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\AssignableDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\BetterVectorDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\ButtonDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\CommentDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\ConstrainValueDrawers.cs" />
+    <Compile Include="Vexe\Drawers\User\DraggableDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\EnumMaskDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\FilterDrawers.cs" />
+    <Compile Include="Vexe\Drawers\User\InlineDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\InputAxisDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\OnChangedDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\OnChangedNoArgDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\ParagraphDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PathDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\BytePopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\CharPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\DoublePopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\FloatPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\IntPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\LongPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\SBytePopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\ShortPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\StringPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\UIntPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\PopupDrawers\UShortPopupDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\RandomsDrawers.cs" />
+    <Compile Include="Vexe\Drawers\User\ReadOnlyDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\RegexDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\ResourcePathDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\SelectEnumDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\SelectSceneDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\ShowTypeDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\SliderDrawers.cs" />
+    <Compile Include="Vexe\Drawers\User\TagsDrawer.cs" />
+    <Compile Include="Vexe\Drawers\User\WhiteSpaceDrawer.cs" />
+    <Compile Include="Vexe\Editors\BaseBehaviourEditor.cs" />
+    <Compile Include="Vexe\Editors\BaseEditor.cs" />
+    <Compile Include="Vexe\Editors\BaseScriptableObjectEditor.cs" />
+    <Compile Include="Vexe\Editors\Internal\CategoryDefinitionResolver.cs" />
+    <Compile Include="Vexe\Editors\Internal\ConditionalVisibility.cs" />
+    <Compile Include="Vexe\Editors\Internal\MembersCategory.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\BaseGUI.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Bounds.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Boxes.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Buttons.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Bytes.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Chars.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Colors.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Curves.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Doubles.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\DragDrop.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Enums.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Floats.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Foldouts.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Gradients.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Ints.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Labels.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Layers.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Longs.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Masks.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Matrices.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Members.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Objects.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Popups.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Quaternions.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Rects.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\SBytes.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\ScrollViews.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Shorts.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Sliders.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Spaces.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Texts.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Toggles.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\UInts.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\ULong.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\UShorts.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Controls\Vectors.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\GUIStyles.cs" />
+    <Compile Include="Vexe\GUIs\BaseGUI\Layout.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\Blocks\GUIBlock.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\Blocks\HorizontalBlock.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\Blocks\Others.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\Blocks\VerticalBlock.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\GUIControl.cs" />
+    <Compile Include="Vexe\GUIs\RabbitGUI\RabbitGUI.cs" />
+    <Compile Include="Vexe\GUIs\TurtleGUI.cs" />
+    <Compile Include="Vexe\Libs\Extensions\EventExtensions.cs" />
+    <Compile Include="Vexe\Libs\Helpers\DirectoryHelper.cs" />
+    <Compile Include="Vexe\Libs\Helpers\EditorHelper.cs" />
+    <Compile Include="Vexe\Libs\Helpers\GUIHelper.cs" />
+    <Compile Include="Vexe\Libs\Helpers\PrefabHelper.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\BetterUndo.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\Operations\BasicOp.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\Operations\IUndoOp.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\Operations\ListOps.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\Operations\SelectionOp.cs" />
+    <Compile Include="Vexe\Types\BetterUndo\Operations\SetVarOp.cs" />
+    <Compile Include="Vexe\Types\EditorMember.cs" />
+    <Compile Include="Vexe\Types\SelectionMemorizer.cs" />
+    <Compile Include="Vexe\Types\VFWSettings.cs" />
+    <Compile Include="Vexe\Visibility\VisibilityAttributes.cs" />
+    <Compile Include="Vexe\Visibility\VisibilityLogic.cs" />
+    <Compile Include="Vexe\Windows\BetterWindow.cs" />
+    <Compile Include="Vexe\Windows\SelectionWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vexe\VFW-Improved.csproj">
+      <Project>{65833f28-8711-407e-8d22-a7dc5fd6db44}</Project>
+      <Name>VFW-Improved</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
